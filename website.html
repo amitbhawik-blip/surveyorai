@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>SurveyorAI — Insurance Intelligence Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#0B0F1A;--blue:#00F5FF;--purple:#9D4EDD;--green:#39FF14;--amber:#FFB800;
+  --t1:#E6EDF3;--t2:#94A3B8;--t3:#4A5568;--border:rgba(0,245,255,0.12);--r:12px;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--t1);overflow-x:hidden;}
+.deco{position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse 80% 50% at 10% 20%,rgba(0,245,255,.07) 0%,transparent 60%),
+    radial-gradient(ellipse 60% 40% at 90% 80%,rgba(157,78,221,.07) 0%,transparent 60%),
+    linear-gradient(rgba(0,245,255,.025) 1px,transparent 1px) 0 0/48px 48px,
+    linear-gradient(90deg,rgba(0,245,255,.025) 1px,transparent 1px) 0 0/48px 48px;}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,15,26,.97);
+  border-bottom:1px solid var(--border);backdrop-filter:blur(20px);
+  padding:0 24px;height:64px;display:flex;align-items:center;gap:12px;}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.2rem;color:var(--t1);
+  text-decoration:none;display:flex;align-items:center;gap:8px;}
+.logo-dot{width:8px;height:8px;border-radius:50%;background:var(--blue);box-shadow:0 0 8px var(--blue);}
+.logo span{color:var(--blue);}
+.sp{flex:1;}
+a.btn,button.btn{padding:9px 20px;border-radius:8px;font-family:'Outfit',sans-serif;
+  font-size:.88rem;font-weight:600;cursor:pointer;border:none;
+  transition:all .25s;text-decoration:none;display:inline-flex;align-items:center;gap:7px;}
+.gh{background:rgba(0,245,255,.06);border:1px solid var(--border);color:var(--t2);}
+.gh:hover{background:rgba(0,245,255,.12);color:var(--blue);}
+.pr{background:linear-gradient(135deg,var(--blue),var(--purple));color:#0B0F1A;font-weight:700;}
+.pr:hover{transform:translateY(-1px);box-shadow:0 0 24px rgba(0,245,255,.35);}
+main{position:relative;z-index:1;padding-top:64px;}
+.hero{min-height:90vh;display:flex;align-items:center;justify-content:center;
+  padding:60px 24px;text-align:center;}
+.hero-in{max-width:820px;}
+.htag{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;
+  background:rgba(0,245,255,.08);border:1px solid rgba(0,245,255,.2);
+  border-radius:20px;font-family:'DM Mono',monospace;font-size:.78rem;
+  color:var(--blue);margin-bottom:28px;letter-spacing:.06em;}
+.hero h1{font-family:'Syne',sans-serif;font-weight:800;
+  font-size:clamp(2.2rem,5vw,4rem);line-height:1.15;margin-bottom:20px;}
+.hero h1 span{background:linear-gradient(135deg,var(--blue),var(--purple));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero p{font-size:1.05rem;color:var(--t2);line-height:1.75;
+  max-width:600px;margin:0 auto 36px;}
+.hbtns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+.hb1{padding:15px 32px;border-radius:10px;font-family:'Outfit',sans-serif;font-size:1rem;
+  font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:8px;
+  background:linear-gradient(135deg,var(--blue),var(--purple));color:#0B0F1A;
+  box-shadow:0 0 28px rgba(0,245,255,.3);transition:all .25s;}
+.hb1:hover{transform:translateY(-2px);box-shadow:0 0 42px rgba(0,245,255,.5);}
+.hb2{padding:15px 28px;border-radius:10px;font-family:'Outfit',sans-serif;font-size:1rem;
+  font-weight:600;text-decoration:none;background:rgba(255,255,255,.04);
+  border:1px solid var(--border);color:var(--t2);transition:all .25s;}
+.hb2:hover{background:rgba(0,245,255,.06);color:var(--blue);}
+.stats{display:flex;border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.stat{flex:1;padding:28px 16px;text-align:center;border-right:1px solid var(--border);}
+.stat:last-child{border-right:none;}
+.sv{font-family:'Syne',sans-serif;font-weight:800;font-size:1.8rem;color:var(--blue);}
+.sl{font-size:.75rem;color:var(--t3);font-family:'DM Mono',monospace;
+  text-transform:uppercase;letter-spacing:.08em;margin-top:4px;}
+.section{max-width:1160px;margin:0 auto;padding:80px 24px;}
+.stag{text-align:center;margin-bottom:52px;}
+.stag h2{font-family:'Syne',sans-serif;font-weight:800;font-size:2rem;margin-bottom:10px;}
+.stag h2 span{color:var(--blue);}
+.stag p{color:var(--t2);font-size:.95rem;max-width:500px;margin:0 auto;line-height:1.7;}
+.fgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+@media(max-width:760px){.fgrid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:480px){.fgrid{grid-template-columns:1fr;}}
+.fcard{background:rgba(15,22,40,.85);border:1px solid var(--border);border-radius:var(--r);
+  padding:26px;transition:all .25s;backdrop-filter:blur(12px);}
+.fcard:hover{border-color:rgba(0,245,255,.35);transform:translateY(-3px);
+  box-shadow:0 12px 40px rgba(0,0,0,.3);}
+.fico{font-size:2rem;margin-bottom:14px;}
+.ftitle{font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;
+  margin-bottom:8px;color:var(--t1);}
+.fdesc{font-size:.85rem;color:var(--t2);line-height:1.65;}
+.hiw{background:rgba(0,245,255,.02);border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);padding:80px 24px;}
+.hiw-in{max-width:960px;margin:0 auto;}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px;}
+@media(max-width:640px){.steps{grid-template-columns:1fr;}}
+.step{text-align:center;padding:20px;}
+.snum{width:52px;height:52px;border-radius:50%;
+  background:linear-gradient(135deg,var(--blue),var(--purple));
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Syne',sans-serif;font-weight:800;font-size:1.2rem;
+  color:#0B0F1A;margin:0 auto 18px;}
+.stitle{font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;margin-bottom:8px;}
+.sdesc{font-size:.85rem;color:var(--t2);line-height:1.65;}
+.cta-band{max-width:680px;margin:80px auto;padding:48px 24px;text-align:center;}
+.cta-band h2{font-family:'Syne',sans-serif;font-weight:800;font-size:2rem;margin-bottom:14px;}
+.cta-band p{color:var(--t2);font-size:1rem;margin-bottom:36px;line-height:1.7;}
+footer{border-top:1px solid rgba(0,245,255,.08);padding:24px;text-align:center;
+  font-family:'DM Mono',monospace;font-size:.72rem;
+  color:rgba(148,163,184,.4);text-transform:uppercase;letter-spacing:.1em;}
+</style>
+</head>
+<body>
+<div class="deco"></div>
+<nav>
+  <a href="website.html" class="logo"><div class="logo-dot"></div>Surveyor<span>AI</span></a>
+  <div class="sp"></div>
+  <a href="login.html" class="btn gh">Sign In</a>
+  <a href="login.html" class="btn pr">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+    Get Started
+  </a>
+</nav>
+<main>
+  <section class="hero">
+    <div class="hero-in">
+      <div class="htag">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M4.22 4.22l2.12 2.12m11.32 11.32l2.12 2.12M2 12h3m14 0h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>
+        AI-Powered · IRDAI Compliant Format · McLarens Standard
+      </div>
+      <h1>Insurance Survey Reports,<br/><span>10× Faster.</span></h1>
+      <p>SurveyorAI automates loss assessment, financial computation, and professional report generation — in the exact format accepted by ICICI Lombard, New India, National Insurance, and all major insurers.</p>
+      <div class="hbtns">
+        <a href="login.html" class="hb1">Start Generating Reports →</a>
+        <a href="#features" class="hb2">See Features</a>
+      </div>
+    </div>
+  </section>
+  <div class="stats">
+    <div class="stat"><div class="sv">IRDAI</div><div class="sl">Compliant Format</div></div>
+    <div class="stat"><div class="sv">3 min</div><div class="sl">Avg. Report Time</div></div>
+    <div class="stat"><div class="sv">PDF/Word</div><div class="sl">Export Formats</div></div>
+    <div class="stat"><div class="sv">AI</div><div class="sl">Auto-Fill Fields</div></div>
+  </div>
+  <div class="section" id="features">
+    <div class="stag">
+      <h2>Everything a Surveyor Needs — <span>One Platform</span></h2>
+      <p>From claim intake to signed final report, SurveyorAI handles the heavy lifting.</p>
+    </div>
+    <div class="fgrid">
+      <div class="fcard"><div class="fico">🤖</div><div class="ftitle">AI Report Generation</div><div class="fdesc">Generate complete Final Survey Reports in seconds. All required sections, professional language, IRDAI-standard format.</div></div>
+      <div class="fcard"><div class="fico">⚡</div><div class="ftitle">Financial Assessment Engine</div><div class="fdesc">9-step calculation: GST deduction, underinsurance Average Clause, policy excess, holdback — all computed instantly.</div></div>
+      <div class="fcard"><div class="fico">📄</div><div class="ftitle">Document Upload &amp; AI Extraction</div><div class="fdesc">Upload any PDF, image, or Word document. AI reads it and automatically fills claim fields — no manual typing needed.</div></div>
+      <div class="fcard"><div class="fico">📊</div><div class="ftitle">Breakdown Annexure</div><div class="fdesc">Auto-generated calculation table ready to attach as Annexure A. Matches McLarens-style assessment sheets.</div></div>
+      <div class="fcard"><div class="fico">🔒</div><div class="ftitle">Report Vault</div><div class="fdesc">All claims saved securely in your Vault. Search, filter, revisit, and re-download any past survey report anytime.</div></div>
+      <div class="fcard"><div class="fico">💬</div><div class="ftitle">AI Co-Pilot</div><div class="fdesc">Ask the Co-Pilot to rewrite sections, explain underinsurance calculations, or add IRDAI regulation references.</div></div>
+    </div>
+  </div>
+  <div class="hiw">
+    <div class="hiw-in">
+      <div class="stag">
+        <h2>From Claim to Report in <span>3 Steps</span></h2>
+        <p>No training required. Any surveyor can use it from day one.</p>
+      </div>
+      <div class="steps">
+        <div class="step"><div class="snum">1</div><div class="stitle">Fill Claim Details</div><div class="sdesc">Enter metadata manually, or upload a document and let AI extract and fill all fields automatically.</div></div>
+        <div class="step"><div class="snum">2</div><div class="stitle">Compute Settlement</div><div class="sdesc">Enter financial values. The engine computes net settlement with full underinsurance and deductible logic.</div></div>
+        <div class="step"><div class="snum">3</div><div class="stitle">Generate &amp; Export</div><div class="sdesc">Click Generate Report. Preview, refine with AI Co-Pilot, then download as PDF, Word, or TXT.</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="cta-band">
+    <h2>Ready to Generate Your First Report?</h2>
+    <p>Join surveyors using SurveyorAI to save hours every week while producing better, more consistent reports.</p>
+    <a href="login.html" class="hb1">Sign In &amp; Start Free →</a>
+  </div>
+</main>
+<footer>SurveyorAI Intelligence Platform v3.1 · Powered by AB Enterprise · IRDAI Compliant</footer>
+</body>
+</html>
