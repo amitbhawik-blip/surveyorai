@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>SurveyorAI — Sign In</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#0B0F1A;--blue:#00F5FF;--purple:#9D4EDD;--green:#39FF14;
+  --t1:#E6EDF3;--t2:#94A3B8;--t3:#4A5568;--border:rgba(0,245,255,0.12);--r:12px;--rs:8px;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--t1);
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  padding:20px;overflow:hidden;}
+.deco{position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse 80% 50% at 10% 20%,rgba(0,245,255,.07) 0%,transparent 60%),
+    radial-gradient(ellipse 60% 40% at 90% 80%,rgba(157,78,221,.08) 0%,transparent 60%),
+    linear-gradient(rgba(0,245,255,.03) 1px,transparent 1px) 0 0/48px 48px,
+    linear-gradient(90deg,rgba(0,245,255,.03) 1px,transparent 1px) 0 0/48px 48px;}
+.wrap{position:relative;z-index:1;width:100%;max-width:460px;}
+.logo-area{text-align:center;margin-bottom:32px;}
+.logo-ico{width:58px;height:58px;border-radius:14px;
+  background:linear-gradient(135deg,var(--blue),var(--purple));
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 16px;box-shadow:0 0 24px rgba(0,245,255,.3),0 0 48px rgba(0,245,255,.1);}
+.logo-ico svg{width:28px;height:28px;}
+.logo-title{font-family:'Syne',sans-serif;font-weight:800;font-size:1.8rem;}
+.logo-title span{color:var(--blue);text-shadow:0 0 12px rgba(0,245,255,.6);}
+.logo-sub{font-size:.8rem;color:var(--t3);font-family:'DM Mono',monospace;
+  letter-spacing:.08em;margin-top:6px;}
+.card{background:rgba(15,22,40,.92);border:1px solid var(--border);border-radius:var(--r);
+  padding:32px;backdrop-filter:blur(20px);box-shadow:0 0 40px rgba(0,245,255,.04),0 20px 60px rgba(0,0,0,.4);}
+.tabs{display:flex;border:1px solid var(--border);border-radius:var(--rs);
+  padding:4px;margin-bottom:28px;background:rgba(0,0,0,.2);}
+.tab{flex:1;padding:9px;text-align:center;font-size:.875rem;font-weight:600;
+  cursor:pointer;border-radius:6px;transition:all .25s;color:var(--t3);}
+.tab.active{background:rgba(0,245,255,.12);color:var(--blue);box-shadow:0 0 12px rgba(0,245,255,.15);}
+.fg{margin-bottom:20px;}
+label{display:block;font-size:.76rem;font-weight:600;color:var(--t2);
+  text-transform:uppercase;letter-spacing:.06em;margin-bottom:7px;}
+input,select{width:100%;padding:11px 14px;background:rgba(0,245,255,.04);
+  border:1px solid var(--border);border-radius:var(--rs);color:var(--t1);
+  font-family:'Outfit',sans-serif;font-size:.9rem;outline:none;transition:all .25s;}
+input:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,245,255,.1);}
+input::placeholder{color:var(--t3);}
+select option{background:#0F1628;color:var(--t1);}
+.pwrap{position:relative;}
+.ptog{position:absolute;right:12px;top:50%;transform:translateY(-50%);
+  background:none;border:none;cursor:pointer;color:var(--t3);padding:4px;}
+.btn{width:100%;padding:13px;border:none;border-radius:var(--rs);
+  font-family:'Outfit',sans-serif;font-size:.9rem;font-weight:600;
+  cursor:pointer;transition:all .25s;display:flex;align-items:center;
+  justify-content:center;gap:8px;margin-top:8px;}
+.btn-pr{background:linear-gradient(135deg,var(--blue),var(--purple));
+  color:#0B0F1A;box-shadow:0 0 20px rgba(0,245,255,.25);}
+.btn-pr:hover{transform:translateY(-1px);box-shadow:0 0 32px rgba(0,245,255,.4);}
+.btn-pr:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+.div{display:flex;align-items:center;gap:12px;margin:20px 0;color:var(--t3);font-size:.8rem;}
+.div::before,.div::after{content:'';flex:1;height:1px;background:var(--border);}
+.hint{background:rgba(0,245,255,.04);border:1px solid var(--border);border-radius:8px;
+  padding:12px;font-size:.8rem;font-family:'DM Mono',monospace;color:var(--t2);}
+.hint div+div{margin-top:4px;}
+.hint small{color:var(--t3);font-size:.7rem;}
+.alert{padding:12px 16px;border-radius:var(--rs);font-size:.85rem;margin-bottom:16px;display:none;}
+.err{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:#fca5a5;}
+.suc{background:rgba(57,255,20,.08);border:1px solid rgba(57,255,20,.3);color:#86efac;}
+.spin{width:16px;height:16px;border:2px solid rgba(0,0,0,.3);border-top-color:#0B0F1A;
+  border-radius:50%;animation:rot .8s linear infinite;display:none;}
+.spin.on{display:inline-block;}
+@keyframes rot{to{transform:rotate(360deg);}}
+.foot{text-align:center;margin-top:20px;font-size:.74rem;color:var(--t3);
+  font-family:'DM Mono',monospace;}
+.back{display:block;text-align:center;margin-top:12px;font-size:.8rem;
+  color:var(--t3);text-decoration:none;}
+.back:hover{color:var(--blue);}
+</style>
+</head>
+<body>
+<div class="deco"></div>
+<div class="wrap">
+  <div class="logo-area">
+    <div class="logo-ico">
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    </div>
+    <div class="logo-title">Surveyor<span>AI</span></div>
+    <div class="logo-sub">Insurance Claim Intelligence Platform</div>
+  </div>
+  <div class="card">
+    <div class="tabs">
+      <div class="tab active" id="tl" onclick="sw('login')">Sign In</div>
+      <div class="tab" id="tr" onclick="sw('reg')">Register</div>
+    </div>
+    <div id="alertBox" class="alert"></div>
+    <!-- LOGIN -->
+    <div id="fLogin">
+      <div class="fg"><label>Email Address</label><input type="email" id="lEmail" placeholder="you@company.com" autocomplete="email"/></div>
+      <div class="fg"><label>Password</label>
+        <div class="pwrap">
+          <input type="password" id="lPwd" placeholder="Enter your password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"/>
+          <button class="ptog" onclick="togglePwd('lPwd')" type="button">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+      </div>
+      <button class="btn btn-pr" id="lBtn" onclick="doLogin()"><span class="spin" id="lSpin"></span>Sign In</button>
+      <div class="div">or use demo account</div>
+      <div class="hint">
+        <div>📧 admin@surveyorai.com</div>
+        <div>🔑 Admin@123</div>
+        <div style="margin-top:6px"><small>Change after first login. Works without Apps Script.</small></div>
+      </div>
+    </div>
+    <!-- REGISTER -->
+    <div id="fReg" style="display:none">
+      <div class="fg"><label>Full Name</label><input type="text" id="rName" placeholder="Rajesh Kumar" autocomplete="name"/></div>
+      <div class="fg"><label>Email Address</label><input type="email" id="rEmail" placeholder="you@company.com" autocomplete="email"/></div>
+      <div class="fg"><label>License Number (optional)</label><input type="text" id="rLic" placeholder="e.g. IRDAI/SLA/Reg/2024/001"/></div>
+      <div class="fg"><label>Role</label>
+        <select id="rRole"><option value="Surveyor">Surveyor</option><option value="Reviewer">Reviewer</option><option value="Admin">Admin</option></select>
+      </div>
+      <div class="fg"><label>Password</label>
+        <div class="pwrap">
+          <input type="password" id="rPwd" placeholder="Minimum 8 characters" autocomplete="new-password"/>
+          <button class="ptog" onclick="togglePwd('rPwd')" type="button">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+      </div>
+      <button class="btn btn-pr" id="rBtn" onclick="doReg()"><span class="spin" id="rSpin"></span>Create Account</button>
+    </div>
+  </div>
+  <a href="website.html" class="back">← Back to website</a>
+  <div class="foot">Powered by AB Enterprise · SurveyorAI v3.1</div>
+</div>
+<script>
+var APPS_SCRIPT_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
+
+if(localStorage.getItem('sai_token')) window.location.href='dashboard.html';
+
+function sw(tab){
+  document.getElementById('fLogin').style.display = tab==='login'?'':'none';
+  document.getElementById('fReg').style.display = tab==='reg'?'':'none';
+  document.getElementById('tl').classList.toggle('active',tab==='login');
+  document.getElementById('tr').classList.toggle('active',tab==='reg');
+  hideAlert();
+}
+function showAlert(msg,type){
+  var el=document.getElementById('alertBox');
+  el.className='alert '+(type==='s'?'suc':'err');
+  el.textContent=msg; el.style.display='block';
+}
+function hideAlert(){ document.getElementById('alertBox').style.display='none'; }
+function togglePwd(id){
+  var el=document.getElementById(id);
+  el.type = el.type==='password'?'text':'password';
+}
+async function hashPwd(pwd){
+  var buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(pwd));
+  return Array.from(new Uint8Array(buf)).map(function(b){return b.toString(16).padStart(2,'0');}).join('');
+}
+async function doLogin(){
+  hideAlert();
+  var email=document.getElementById('lEmail').value.trim();
+  var pwd=document.getElementById('lPwd').value;
+  if(!email||!pwd){showAlert('Enter email and password.');return;}
+  var btn=document.getElementById('lBtn');
+  btn.disabled=true; document.getElementById('lSpin').classList.add('on');
+  try{
+    var hash=await hashPwd(pwd);
+    var resp=await fetch(APPS_SCRIPT_URL+'?action=login&email='+encodeURIComponent(email)+'&hash='+hash);
+    var data=await resp.json();
+    if(data.success){
+      localStorage.setItem('sai_user',JSON.stringify(data.user));
+      localStorage.setItem('sai_token',data.token);
+      showAlert('Login successful! Redirecting…','s');
+      setTimeout(function(){window.location.href='dashboard.html';},800);
+    } else { showAlert(data.error||'Invalid email or password.'); }
+  } catch(e){
+    if(email==='admin@surveyorai.com'&&pwd==='Admin@123'){
+      var demo={id:'admin-001',name:'Admin User',email:email,role:'Admin',license:''};
+      localStorage.setItem('sai_user',JSON.stringify(demo));
+      localStorage.setItem('sai_token','demo-'+Date.now());
+      showAlert('Demo mode active. Redirecting…','s');
+      setTimeout(function(){window.location.href='dashboard.html';},1000);
+    } else { showAlert('Cannot connect. Use admin@surveyorai.com / Admin@123 for demo mode.'); }
+  }
+  btn.disabled=false; document.getElementById('lSpin').classList.remove('on');
+}
+async function doReg(){
+  hideAlert();
+  var name=document.getElementById('rName').value.trim();
+  var email=document.getElementById('rEmail').value.trim();
+  var lic=document.getElementById('rLic').value.trim();
+  var role=document.getElementById('rRole').value;
+  var pwd=document.getElementById('rPwd').value;
+  if(!name||!email||!pwd){showAlert('Name, email and password are required.');return;}
+  if(pwd.length<8){showAlert('Password must be at least 8 characters.');return;}
+  var btn=document.getElementById('rBtn');
+  btn.disabled=true; document.getElementById('rSpin').classList.add('on');
+  try{
+    var hash=await hashPwd(pwd);
+    var url=APPS_SCRIPT_URL+'?action=register&name='+encodeURIComponent(name)+'&email='+encodeURIComponent(email)+'&hash='+hash+'&role='+role+'&license='+encodeURIComponent(lic);
+    var resp=await fetch(url);
+    var data=await resp.json();
+    if(data.success){showAlert('Account created! You can now sign in.','s'); setTimeout(function(){sw('login');},1500);}
+    else{showAlert(data.error||'Registration failed. Try again.');}
+  } catch(e){ showAlert('Cannot connect. Set up Google Apps Script first.'); }
+  btn.disabled=false; document.getElementById('rSpin').classList.remove('on');
+}
+</script>
+</body>
+</html>
