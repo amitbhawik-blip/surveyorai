@@ -980,7 +980,11 @@ Download PDF
 
 <footer>SurveyorAI Intelligence Platform v3.2 · Powered by AB Enterprise · IRDAI Compliant Format</footer>
 
-<script>
+  <script>
+if(!localStorage.getItem('sai_token')){
+  window.location.href = 'login.html';
+}
+</script>
 
 /* ════════════════════════════════════════════════════════════
 
@@ -1834,4 +1838,5 @@ document.getElementById('moverlay').addEventListener('click',function(e){
 </script>
 </body>
 </html>
+
 
