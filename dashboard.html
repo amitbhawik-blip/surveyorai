@@ -42,7 +42,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(11,15,26,.97);
 
 border-bottom:1px solid var(\--border);backdrop-filter:blur(20px);
 
-padding:0 18px;height:62px;display:flex;align-items:center;gap:8px;flex-wrap:nowrap;}
+padding:0 12px;min-height:62px;display:flex;align-items:center;gap:6px;flex-wrap:nowrap;overflow-x:auto;}
 
 .nlogo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;color:var(\--t1);
 
@@ -70,7 +70,7 @@ display:flex;align-items:center;gap:6px;white-space:nowrap;}
 
 color:var(\--t2);font-family:'DM Mono',monospace;font-size:.74rem;
 
-padding:5px 10px;outline:none;cursor:pointer;flex-shrink:0;}
+padding:5px 8px;outline:none;cursor:pointer;max-width:160px;}
 
 .nsel option{background:#0F1628;}
 
@@ -82,7 +82,7 @@ opacity:0;transition:opacity .5s;white-space:nowrap;flex-shrink:0;}
 
 .sok.on{opacity:1;}
 
-.nbtn{padding:7px 12px;border-radius:8px;font-family:'Outfit',sans-serif;font-size:.82rem;
+.nbtn{padding:6px 10px;border-radius:8px;font-family:'Outfit',sans-serif;font-size:.8rem;
 
 font-weight:600;cursor:pointer;border:none;transition:var(\--ease);
 
@@ -100,11 +100,11 @@ display:flex;align-items:center;gap:5px;white-space:nowrap;flex-shrink:0;text-de
 
 .n-out:hover{background:rgba(239,68,68,.18);}
 
-.upill{display:flex;align-items:center;gap:6px;padding:5px 10px;
+.upill{display:flex;align-items:center;gap:5px;padding:4px 8px;
 
 background:rgba(0,245,255,.06);border:1px solid var(\--border);
 
-border-radius:20px;font-size:.76rem;color:var(\--t2);flex-shrink:0;}
+border-radius:20px;font-size:.74rem;color:var(\--t2);flex-shrink:0;}
 
 .rtag{font-family:'DM Mono',monospace;font-size:.63rem;color:var(\--purple);
 
@@ -1000,7 +1000,13 @@ var INTERNAL_API_KEY = 'YOUR_INTERNAL_API_KEY_HERE'; /* Must match env.INTERNAL_
 
 var user=(function(){try{return JSON.parse(localStorage.getItem('sai_user'));}catch(e){return null;}})();
 
-if(!user||!localStorage.getItem('sai_token')){
+var _tok=localStorage.getItem('sai_token')||'';
+
+/* Reject stale demo/preview tokens from old sessions */
+var _isStale=(_tok.indexOf('demo-')==0||_tok.indexOf('demo-preview-')==0);
+
+if(!user||!_tok||_isStale){
+  try{localStorage.removeItem('sai_user');localStorage.removeItem('sai_token');}catch(e){}
   window.location.href='login.html';
 }
 
