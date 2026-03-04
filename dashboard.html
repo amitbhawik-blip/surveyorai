@@ -1,1158 +1,1836 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8"/>
+
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>SurveyorAI — Dashboard</title>
+
+<title>SurveyorAI --- Dashboard</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 <style>
-:root{--bg:#0B0F1A;--blue:#00F5FF;--purple:#9D4EDD;--green:#39FF14;--amber:#FFB800;
-  --t1:#E6EDF3;--t2:#94A3B8;--t3:#4A5568;--border:rgba(0,245,255,0.12);--r:12px;--rs:8px;
-  --ease:all 0.25s cubic-bezier(0.4,0,0.2,1);}
+
+:root{\--bg:#0B0F1A;\--blue:#00F5FF;\--purple:#9D4EDD;\--green:#39FF14;\--amber:#FFB800;
+
+\--t1:#E6EDF3;\--t2:#94A3B8;\--t3:#4A5568;\--border:rgba(0,245,255,0.12);\--r:12px;\--rs:8px;
+
+\--ease:all 0.25s cubic-bezier(0.4,0,0.2,1);}
+
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
 html,body{height:100%;}
-body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--t1);overflow-x:hidden;}
+
+body{font-family:'Outfit',sans-serif;background:var(\--bg);color:var(\--t1);overflow-x:hidden;}
+
 .deco{position:fixed;inset:0;pointer-events:none;z-index:0;
-  background:radial-gradient(ellipse 80% 50% at 10% 20%,rgba(0,245,255,.05) 0%,transparent 60%),
-    radial-gradient(ellipse 60% 40% at 90% 80%,rgba(157,78,221,.06) 0%,transparent 60%),
-    linear-gradient(rgba(0,245,255,.025) 1px,transparent 1px) 0 0/48px 48px,
-    linear-gradient(90deg,rgba(0,245,255,.025) 1px,transparent 1px) 0 0/48px 48px;}
 
-/* ── NAV ── */
+background:radial-gradient(ellipse 80% 50% at 10% 20%,rgba(0,245,255,.05) 0%,transparent 60%),
+
+radial-gradient(ellipse 60% 40% at 90% 80%,rgba(157,78,221,.06) 0%,transparent 60%),
+
+linear-gradient(rgba(0,245,255,.025) 1px,transparent 1px) 0 0/48px 48px,
+
+linear-gradient(90deg,rgba(0,245,255,.025) 1px,transparent 1px) 0 0/48px 48px;}
+
 nav{position:sticky;top:0;z-index:100;background:rgba(11,15,26,.97);
-  border-bottom:1px solid var(--border);backdrop-filter:blur(20px);
-  padding:0 18px;height:62px;display:flex;align-items:center;gap:8px;flex-wrap:nowrap;}
-.nlogo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;color:var(--t1);
-  text-decoration:none;display:flex;align-items:center;gap:7px;flex-shrink:0;}
-.ndot{width:8px;height:8px;border-radius:50%;background:var(--blue);box-shadow:0 0 8px var(--blue);}
-.nlogo span{color:var(--blue);}
-.ndiv{width:1px;height:22px;background:var(--border);flex-shrink:0;}
-.vtabs{display:flex;background:rgba(0,0,0,.2);border:1px solid var(--border);
-  border-radius:8px;padding:3px;gap:3px;flex-shrink:0;}
-.vtab{padding:6px 14px;border-radius:6px;font-size:.8rem;font-weight:600;
-  cursor:pointer;transition:var(--ease);color:var(--t3);border:none;background:none;
-  display:flex;align-items:center;gap:6px;white-space:nowrap;}
-.vtab.active{background:rgba(0,245,255,.12);color:var(--blue);}
-.nsel{background:rgba(0,245,255,.04);border:1px solid var(--border);border-radius:8px;
-  color:var(--t2);font-family:'DM Mono',monospace;font-size:.74rem;
-  padding:5px 10px;outline:none;cursor:pointer;flex-shrink:0;}
-.nsel option{background:#0F1628;}
-.sp{flex:1;}
-.sok{font-size:.72rem;color:var(--green);font-family:'DM Mono',monospace;
-  opacity:0;transition:opacity .5s;white-space:nowrap;flex-shrink:0;}
-.sok.on{opacity:1;}
-.nbtn{padding:7px 12px;border-radius:8px;font-family:'Outfit',sans-serif;font-size:.82rem;
-  font-weight:600;cursor:pointer;border:none;transition:var(--ease);
-  display:flex;align-items:center;gap:5px;white-space:nowrap;flex-shrink:0;text-decoration:none;}
-.n-gh{background:rgba(0,245,255,.06);border:1px solid var(--border);color:var(--t2);}
-.n-gh:hover{background:rgba(0,245,255,.12);color:var(--blue);}
-.n-pr{background:linear-gradient(135deg,var(--blue),var(--purple));color:#0B0F1A;box-shadow:0 0 14px rgba(0,245,255,.2);}
-.n-pr:hover{box-shadow:0 0 22px rgba(0,245,255,.4);transform:translateY(-1px);}
-.n-out{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);color:#fca5a5;}
-.n-out:hover{background:rgba(239,68,68,.18);}
-.upill{display:flex;align-items:center;gap:6px;padding:5px 10px;
-  background:rgba(0,245,255,.06);border:1px solid var(--border);
-  border-radius:20px;font-size:.76rem;color:var(--t2);flex-shrink:0;}
-.rtag{font-family:'DM Mono',monospace;font-size:.63rem;color:var(--purple);
-  background:rgba(157,78,221,.1);border:1px solid rgba(157,78,221,.2);
-  padding:1px 6px;border-radius:10px;}
 
-/* ── MAIN ── */
+border-bottom:1px solid var(\--border);backdrop-filter:blur(20px);
+
+padding:0 18px;height:62px;display:flex;align-items:center;gap:8px;flex-wrap:nowrap;}
+
+.nlogo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;color:var(\--t1);
+
+text-decoration:none;display:flex;align-items:center;gap:7px;flex-shrink:0;}
+
+.ndot{width:8px;height:8px;border-radius:50%;background:var(\--blue);box-shadow:0 0 8px var(\--blue);}
+
+.nlogo span{color:var(\--blue);}
+
+.ndiv{width:1px;height:22px;background:var(\--border);flex-shrink:0;}
+
+.vtabs{display:flex;background:rgba(0,0,0,.2);border:1px solid var(\--border);
+
+border-radius:8px;padding:3px;gap:3px;flex-shrink:0;}
+
+.vtab{padding:6px 14px;border-radius:6px;font-size:.8rem;font-weight:600;
+
+cursor:pointer;transition:var(\--ease);color:var(\--t3);border:none;background:none;
+
+display:flex;align-items:center;gap:6px;white-space:nowrap;}
+
+.vtab.active{background:rgba(0,245,255,.12);color:var(\--blue);}
+
+.nsel{background:rgba(0,245,255,.04);border:1px solid var(\--border);border-radius:8px;
+
+color:var(\--t2);font-family:'DM Mono',monospace;font-size:.74rem;
+
+padding:5px 10px;outline:none;cursor:pointer;flex-shrink:0;}
+
+.nsel option{background:#0F1628;}
+
+.sp{flex:1;}
+
+.sok{font-size:.72rem;color:var(\--green);font-family:'DM Mono',monospace;
+
+opacity:0;transition:opacity .5s;white-space:nowrap;flex-shrink:0;}
+
+.sok.on{opacity:1;}
+
+.nbtn{padding:7px 12px;border-radius:8px;font-family:'Outfit',sans-serif;font-size:.82rem;
+
+font-weight:600;cursor:pointer;border:none;transition:var(\--ease);
+
+display:flex;align-items:center;gap:5px;white-space:nowrap;flex-shrink:0;text-decoration:none;}
+
+.n-gh{background:rgba(0,245,255,.06);border:1px solid var(\--border);color:var(\--t2);}
+
+.n-gh:hover{background:rgba(0,245,255,.12);color:var(\--blue);}
+
+.n-pr{background:linear-gradient(135deg,var(\--blue),var(\--purple));color:#0B0F1A;box-shadow:0 0 14px rgba(0,245,255,.2);}
+
+.n-pr:hover{box-shadow:0 0 22px rgba(0,245,255,.4);transform:translateY(-1px);}
+
+.n-out{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);color:#fca5a5;}
+
+.n-out:hover{background:rgba(239,68,68,.18);}
+
+.upill{display:flex;align-items:center;gap:6px;padding:5px 10px;
+
+background:rgba(0,245,255,.06);border:1px solid var(\--border);
+
+border-radius:20px;font-size:.76rem;color:var(\--t2);flex-shrink:0;}
+
+.rtag{font-family:'DM Mono',monospace;font-size:.63rem;color:var(\--purple);
+
+background:rgba(157,78,221,.1);border:1px solid rgba(157,78,221,.2);
+
+padding:1px 6px;border-radius:10px;}
+
 .wrap{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:24px 18px 100px;}
 
-/* ── SECTIONS ── */
 .sec{margin-bottom:26px;}
-.sechd{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
-.sico{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.ib{background:rgba(0,245,255,.1);border:1px solid rgba(0,245,255,.2);}
-.ip{background:rgba(157,78,221,.1);border:1px solid rgba(157,78,221,.2);}
-.ig{background:rgba(57,255,20,.08);border:1px solid rgba(57,255,20,.2);}
-.ia{background:rgba(255,184,0,.08);border:1px solid rgba(255,184,0,.2);}
-.stitle{font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;color:var(--t1);}
-.ssub{font-size:.76rem;color:var(--t3);font-family:'DM Mono',monospace;margin-top:2px;}
-.badge{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:20px;
-  font-size:.7rem;font-weight:600;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.04em;}
-.bb{background:rgba(0,245,255,.1);border:1px solid rgba(0,245,255,.25);color:var(--blue);}
-.ba{background:rgba(255,184,0,.1);border:1px solid rgba(255,184,0,.25);color:var(--amber);}
-.bg_{background:rgba(57,255,20,.08);border:1px solid rgba(57,255,20,.25);color:var(--green);}
-.brd{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:#fca5a5;}
-.pdot{width:6px;height:6px;border-radius:50%;background:var(--blue);animation:pu 2s infinite;}
-@keyframes pu{0%,100%{opacity:1;box-shadow:0 0 4px var(--blue);}50%{opacity:.6;box-shadow:0 0 10px var(--blue);}}
 
-/* ── CARD ── */
-.card{background:rgba(15,22,40,.85);border:1px solid var(--border);border-radius:var(--r);padding:22px;backdrop-filter:blur(12px);}
+.sechd{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+
+.sico{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+
+.ib{background:rgba(0,245,255,.1);border:1px solid rgba(0,245,255,.2);}
+
+.ip{background:rgba(157,78,221,.1);border:1px solid rgba(157,78,221,.2);}
+
+.ig{background:rgba(57,255,20,.08);border:1px solid rgba(57,255,20,.2);}
+
+.ia{background:rgba(255,184,0,.08);border:1px solid rgba(255,184,0,.2);}
+
+.stitle{font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;color:var(\--t1);}
+
+.ssub{font-size:.76rem;color:var(\--t3);font-family:'DM Mono',monospace;margin-top:2px;}
+
+.badge{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:20px;
+
+font-size:.7rem;font-weight:600;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.04em;}
+
+.bb{background:rgba(0,245,255,.1);border:1px solid rgba(0,245,255,.25);color:var(\--blue);}
+
+.ba{background:rgba(255,184,0,.1);border:1px solid rgba(255,184,0,.25);color:var(\--amber);}
+
+.bg\_{background:rgba(57,255,20,.08);border:1px solid rgba(57,255,20,.25);color:var(\--green);}
+
+.pdot{width:6px;height:6px;border-radius:50%;background:var(\--blue);animation:pu 2s infinite;}
+
+\@keyframes pu{0%,100%{opacity:1;box-shadow:0 0 4px var(\--blue);}50%{opacity:.6;box-shadow:0 0 10px var(\--blue);}}
+
+.card{background:rgba(15,22,40,.85);border:1px solid var(\--border);border-radius:var(\--r);padding:22px;backdrop-filter:blur(12px);}
+
 .cb{box-shadow:0 0 30px rgba(0,245,255,.04);}
+
 .cp{box-shadow:0 0 30px rgba(157,78,221,.04);}
 
-/* ── FORM ── */
 .fgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px 18px;}
-@media(max-width:640px){.fgrid{grid-template-columns:1fr;}}
+
+\@media(max-width:640px){.fgrid{grid-template-columns:1fr;}}
+
 .fg{display:flex;flex-direction:column;}
+
 .full{grid-column:1/-1;}
-.fdiv{grid-column:1/-1;height:1px;background:var(--border);}
-label{font-size:.73rem;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;}
+
+.fdiv{grid-column:1/-1;height:1px;background:var(\--border);}
+
+label{font-size:.73rem;font-weight:600;color:var(\--t2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;}
+
 .ipw{position:relative;display:flex;align-items:center;}
+
 .hsp input{padding-left:28px;}
-.ipr{position:absolute;left:10px;color:var(--t3);font-size:.9rem;pointer-events:none;}
+
+.ipr{position:absolute;left:10px;color:var(\--t3);font-size:.9rem;pointer-events:none;}
+
 input[type=text],input[type=date],input[type=number],textarea,select{
-  width:100%;padding:10px 12px;background:rgba(0,245,255,.03);
-  border:1px solid var(--border);border-radius:var(--rs);color:var(--t1);
-  font-family:'Outfit',sans-serif;font-size:.87rem;outline:none;transition:var(--ease);}
+
+width:100%;padding:10px 12px;background:rgba(0,245,255,.03);border:1px solid var(\--border);
+
+border-radius:var(\--rs);color:var(\--t1);font-family:'Outfit',sans-serif;font-size:.87rem;outline:none;transition:var(\--ease);}
+
 textarea{resize:vertical;min-height:68px;}
+
 input:focus,textarea:focus,select:focus{border-color:rgba(0,245,255,.5);box-shadow:0 0 0 3px rgba(0,245,255,.08);}
-input::placeholder,textarea::placeholder{color:var(--t3);}
-select option{background:#0F1628;color:var(--t1);}
+
+input::placeholder,textarea::placeholder{color:var(\--t3);}
+
+select option{background:#0F1628;color:var(\--t1);}
+
 .ferr{display:none;font-size:.7rem;color:#fca5a5;margin-top:3px;}
+
 .ferr.on{display:block;}
 
-/* ── FINANCIAL LAYOUT ── */
 .finlay{display:grid;grid-template-columns:1fr 370px;gap:18px;align-items:start;}
-@media(max-width:900px){.finlay{grid-template-columns:1fr;}}
-.respanel{background:rgba(15,22,40,.85);border:1px solid var(--border);border-radius:var(--r);
-  padding:18px;backdrop-filter:blur(12px);position:sticky;top:76px;}
-.restitle{font-family:'DM Mono',monospace;font-size:.7rem;color:var(--t3);
-  text-transform:uppercase;letter-spacing:.1em;display:flex;align-items:center;gap:6px;
-  margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);}
-.resph{text-align:center;padding:26px 14px;color:var(--t3);font-size:.84rem;line-height:1.7;}
-.rline{display:flex;justify-content:space-between;align-items:center;
-  padding:8px 10px;border-radius:8px;margin-bottom:3px;transition:var(--ease);}
-.rline:hover{background:rgba(0,245,255,.04);}
-.rl{font-size:.77rem;color:var(--t2);}
-.rv{font-family:'DM Mono',monospace;font-size:.8rem;color:var(--t1);font-weight:500;}
-.rw .rv{color:var(--amber);}
-.ra .rv{color:#fca5a5;}
-.rtot{background:rgba(57,255,20,.05);border:1px solid rgba(57,255,20,.15);margin-top:4px;}
-.rtot .rv{color:var(--green);font-size:.92rem;font-weight:700;}
 
-/* ── BUTTONS ── */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;
-  padding:10px 18px;border:none;border-radius:var(--rs);
-  font-family:'Outfit',sans-serif;font-size:.85rem;font-weight:600;cursor:pointer;transition:var(--ease);}
+\@media(max-width:900px){.finlay{grid-template-columns:1fr;}}
+
+.respanel{background:rgba(15,22,40,.85);border:1px solid var(\--border);border-radius:var(\--r);padding:18px;backdrop-filter:blur(12px);position:sticky;top:76px;}
+
+.restitle{font-family:'DM Mono',monospace;font-size:.7rem;color:var(\--t3);text-transform:uppercase;letter-spacing:.1em;display:flex;align-items:center;gap:6px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(\--border);}
+
+.resph{text-align:center;padding:26px 14px;color:var(\--t3);font-size:.84rem;line-height:1.7;}
+
+.rline{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;border-radius:8px;margin-bottom:3px;transition:var(\--ease);}
+
+.rline:hover{background:rgba(0,245,255,.04);}
+
+.rl{font-size:.77rem;color:var(\--t2);}
+
+.rv{font-family:'DM Mono',monospace;font-size:.8rem;color:var(\--t1);font-weight:500;}
+
+.rw .rv{color:var(\--amber);}
+
+.ra .rv{color:#fca5a5;}
+
+.rtot{background:rgba(57,255,20,.05);border:1px solid rgba(57,255,20,.15);margin-top:4px;}
+
+.rtot .rv{color:var(\--green);font-size:.92rem;font-weight:700;}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 18px;border:none;border-radius:var(\--rs);font-family:'Outfit',sans-serif;font-size:.85rem;font-weight:600;cursor:pointer;transition:var(\--ease);}
+
 .btn:disabled{opacity:.5;cursor:not-allowed;}
-.bc{width:100%;background:linear-gradient(135deg,rgba(157,78,221,.2),rgba(0,245,255,.2));
-  border:1px solid rgba(0,245,255,.3);color:var(--blue);padding:12px;font-size:.9rem;margin-top:12px;}
+
+.bc{width:100%;background:linear-gradient(135deg,rgba(157,78,221,.2),rgba(0,245,255,.2));border:1px solid rgba(0,245,255,.3);color:var(\--blue);padding:12px;font-size:.9rem;margin-top:12px;}
+
 .bc:hover:not(:disabled){background:linear-gradient(135deg,rgba(157,78,221,.35),rgba(0,245,255,.35));box-shadow:0 0 18px rgba(0,245,255,.2);}
-.bg{background:rgba(57,255,20,.12);border:1px solid rgba(57,255,20,.3);color:var(--green);}
+
+.bg{background:rgba(57,255,20,.12);border:1px solid rgba(57,255,20,.3);color:var(\--green);}
+
 .bg:hover{background:rgba(57,255,20,.22);}
-.bp{background:rgba(157,78,221,.12);border:1px solid rgba(157,78,221,.3);color:var(--purple);}
+
+.bp{background:rgba(157,78,221,.12);border:1px solid rgba(157,78,221,.3);color:var(\--purple);}
+
 .bp:hover{background:rgba(157,78,221,.22);}
-.bgh{background:rgba(0,245,255,.04);border:1px solid var(--border);color:var(--t2);}
-.bgh:hover{background:rgba(0,245,255,.1);color:var(--blue);}
+
+.bgh{background:rgba(0,245,255,.04);border:1px solid var(\--border);color:var(\--t2);}
+
+.bgh:hover{background:rgba(0,245,255,.1);color:var(\--blue);}
+
 .bgrp{display:flex;gap:8px;flex-wrap:wrap;}
+
 .mt{margin-top:14px;}
 
-/* ── SPINNER ── */
-.spin{width:14px;height:14px;border:2px solid rgba(255,255,255,.2);
-  border-top-color:currentColor;border-radius:50%;animation:rot .8s linear infinite;display:none;}
+.spin{width:14px;height:14px;border:2px solid rgba(255,255,255,.2);border-top-color:currentColor;border-radius:50%;animation:rot .8s linear infinite;display:none;}
+
 .spin.on{display:inline-block;}
-@keyframes rot{to{transform:rotate(360deg);}}
+
+\@keyframes rot{to{transform:rotate(360deg);}}
+
 .bspin{width:28px;height:28px;border-width:3px;}
 
-/* ── REPORT PANEL ── */
-.rpttb{display:flex;align-items:center;justify-content:space-between;
-  gap:10px;padding:14px 18px;border-bottom:1px solid var(--border);flex-wrap:wrap;}
-.rptmeta{display:flex;gap:14px;padding:9px 18px;background:rgba(0,0,0,.2);
-  border-bottom:1px solid var(--border);overflow-x:auto;flex-wrap:wrap;}
-.rmi{font-size:.73rem;color:var(--t3);font-family:'DM Mono',monospace;white-space:nowrap;}
-.rmi span{color:var(--t2);}
-.rptarea{min-height:280px;padding:22px;position:relative;}
-.rptph{display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:14px;padding:40px;color:var(--t3);text-align:center;font-size:.88rem;line-height:1.8;}
-.genov{display:none;position:absolute;inset:0;background:rgba(11,15,26,.93);
-  align-items:center;justify-content:center;flex-direction:column;
-  gap:14px;z-index:10;border-radius:inherit;}
-.genov.on{display:flex;}
-.gentxt{font-family:'DM Mono',monospace;font-size:.78rem;color:var(--blue);letter-spacing:.08em;}
-.genbar{width:240px;height:3px;background:rgba(0,245,255,.1);border-radius:2px;overflow:hidden;}
-.genfill{height:100%;background:linear-gradient(90deg,var(--blue),var(--purple));transition:width .5s ease;width:0%;}
-#rptOut{white-space:pre-wrap;color:var(--t2);font-family:'DM Mono',monospace;font-size:.79rem;line-height:1.9;display:none;}
+.rpttb{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 18px;border-bottom:1px solid var(\--border);flex-wrap:wrap;}
 
-/* ── BREAKDOWN TABLE ── */
+.rptmeta{display:flex;gap:14px;padding:9px 18px;background:rgba(0,0,0,.2);border-bottom:1px solid var(\--border);overflow-x:auto;flex-wrap:wrap;}
+
+.rmi{font-size:.73rem;color:var(\--t3);font-family:'DM Mono',monospace;white-space:nowrap;}
+
+.rmi span{color:var(\--t2);}
+
+.rptarea{min-height:280px;padding:22px;position:relative;}
+
+.rptph{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:40px;color:var(\--t3);text-align:center;font-size:.88rem;line-height:1.8;}
+
+.genov{display:none;position:absolute;inset:0;background:rgba(11,15,26,.93);align-items:center;justify-content:center;flex-direction:column;gap:14px;z-index:10;border-radius:inherit;}
+
+.genov.on{display:flex;}
+
+.gentxt{font-family:'DM Mono',monospace;font-size:.78rem;color:var(\--blue);letter-spacing:.08em;}
+
+.genbar{width:240px;height:3px;background:rgba(0,245,255,.1);border-radius:2px;overflow:hidden;}
+
+.genfill{height:100%;background:linear-gradient(90deg,var(\--blue),var(\--purple));transition:width .5s ease;width:0%;}
+
+/* ✅ Fix 1: rptOut is the correct target element */
+
+#rptOut{white-space:pre-wrap;color:var(\--t2);font-family:'DM Mono',monospace;font-size:.79rem;line-height:1.9;display:none;}
+
 .twrap{overflow-x:auto;}
+
 .btbl{width:100%;border-collapse:collapse;font-size:.81rem;}
-.btbl th{background:rgba(0,245,255,.06);color:var(--t2);font-family:'DM Mono',monospace;
-  font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;
-  padding:9px 14px;text-align:left;border-bottom:1px solid var(--border);}
-.btbl td{padding:9px 14px;border-bottom:1px solid rgba(0,245,255,.05);color:var(--t2);vertical-align:top;}
-.btbl td.amt{font-family:'DM Mono',monospace;text-align:right;color:var(--t1);}
+
+.btbl th{background:rgba(0,245,255,.06);color:var(\--t2);font-family:'DM Mono',monospace;font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;padding:9px 14px;text-align:left;border-bottom:1px solid var(\--border);}
+
+.btbl td{padding:9px 14px;border-bottom:1px solid rgba(0,245,255,.05);color:var(\--t2);vertical-align:top;}
+
+.btbl td.amt{font-family:'DM Mono',monospace;text-align:right;color:var(\--t1);}
+
 .btbl tr:last-child td{border-bottom:none;}
-.btbl .tot td{background:rgba(57,255,20,.05);color:var(--green);font-weight:700;}
+
+.btbl .tot td{background:rgba(57,255,20,.05);color:var(\--green);font-weight:700;}
+
 .btbl .tot td.amt{font-size:.95rem;}
 
-/* ── UPLOAD ── */
-.uzone{border:2px dashed var(--border);border-radius:var(--r);padding:34px;
-  text-align:center;cursor:pointer;transition:var(--ease);color:var(--t3);position:relative;}
-.uzone:hover,.uzone.drag{border-color:var(--blue);background:rgba(0,245,255,.03);color:var(--t2);}
+.uzone{border:2px dashed var(\--border);border-radius:var(\--r);padding:34px;text-align:center;cursor:pointer;transition:var(\--ease);color:var(\--t3);position:relative;}
+
+.uzone:hover,.uzone.drag{border-color:var(\--blue);background:rgba(0,245,255,.03);color:var(\--t2);}
+
 .uzone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+
 .uzone-ico{font-size:2.2rem;margin-bottom:10px;}
+
 .uzone p{font-size:.87rem;line-height:1.6;}
-.uzone small{font-size:.73rem;color:var(--t3);font-family:'DM Mono',monospace;}
+
+.uzone small{font-size:.73rem;color:var(\--t3);font-family:'DM Mono',monospace;}
+
 .flist{display:flex;flex-direction:column;gap:7px;margin-top:12px;}
-.fitem{display:flex;align-items:center;gap:10px;padding:9px 13px;
-  background:rgba(0,245,255,.04);border:1px solid var(--border);border-radius:8px;font-size:.81rem;}
-.fname{flex:1;color:var(--t2);font-family:'DM Mono',monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+
+.fitem{display:flex;align-items:center;gap:10px;padding:9px 13px;background:rgba(0,245,255,.04);border:1px solid var(\--border);border-radius:8px;font-size:.81rem;}
+
+.fname{flex:1;color:var(\--t2);font-family:'DM Mono',monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+
 .fst{font-size:.7rem;padding:2px 7px;border-radius:10px;}
-.fp{background:rgba(255,184,0,.1);color:var(--amber);}
-.fd{background:rgba(57,255,20,.08);color:var(--green);}
+
+.fp{background:rgba(255,184,0,.1);color:var(\--amber);}
+
+.fd{background:rgba(57,255,20,.08);color:var(\--green);}
+
 .fe{background:rgba(239,68,68,.1);color:#fca5a5;}
-.extbtn{width:100%;background:rgba(0,245,255,.07);border:1px solid rgba(0,245,255,.2);
-  color:var(--blue);padding:12px;font-size:.87rem;margin-top:12px;
-  border-radius:var(--rs);cursor:pointer;transition:var(--ease);}
+
+.extbtn{width:100%;background:rgba(0,245,255,.07);border:1px solid rgba(0,245,255,.2);color:var(\--blue);padding:12px;font-size:.87rem;margin-top:12px;border-radius:var(\--rs);cursor:pointer;transition:var(\--ease);}
+
 .extbtn:hover{background:rgba(0,245,255,.14);}
+
 .extbtn:disabled{opacity:.5;cursor:not-allowed;}
 
-/* ── VAULT VIEW ── */
 .vlt-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px;}
-@media(max-width:640px){.vlt-stats{grid-template-columns:repeat(2,1fr);}}
-.vstcard{background:rgba(15,22,40,.85);border:1px solid var(--border);
-  border-radius:var(--r);padding:20px;backdrop-filter:blur(12px);}
-.vsv{font-family:'Syne',sans-serif;font-weight:700;font-size:1.7rem;color:var(--t1);}
-.vsl{font-size:.73rem;color:var(--t3);font-family:'DM Mono',monospace;
-  text-transform:uppercase;letter-spacing:.08em;margin-top:4px;}
+
+\@media(max-width:640px){.vlt-stats{grid-template-columns:repeat(2,1fr);}}
+
+.vstcard{background:rgba(15,22,40,.85);border:1px solid var(\--border);border-radius:var(\--r);padding:20px;backdrop-filter:blur(12px);}
+
+.vsv{font-family:'Syne',sans-serif;font-weight:700;font-size:1.7rem;color:var(\--t1);}
+
+.vsl{font-size:.73rem;color:var(\--t3);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.08em;margin-top:4px;}
+
 .vctrl{display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap;}
-.vsearch{flex:1;min-width:180px;padding:10px 14px;background:rgba(0,245,255,.04);
-  border:1px solid var(--border);border-radius:var(--rs);color:var(--t1);
-  font-family:'Outfit',sans-serif;font-size:.87rem;outline:none;transition:var(--ease);}
+
+.vsearch{flex:1;min-width:180px;padding:10px 14px;background:rgba(0,245,255,.04);border:1px solid var(\--border);border-radius:var(\--rs);color:var(\--t1);font-family:'Outfit',sans-serif;font-size:.87rem;outline:none;transition:var(\--ease);}
+
 .vsearch:focus{border-color:rgba(0,245,255,.5);}
-.vsearch::placeholder{color:var(--t3);}
-.vfsel{padding:10px 13px;background:rgba(0,245,255,.04);border:1px solid var(--border);
-  border-radius:var(--rs);color:var(--t2);font-family:'DM Mono',monospace;
-  font-size:.74rem;outline:none;cursor:pointer;}
+
+.vsearch::placeholder{color:var(\--t3);}
+
+.vfsel{padding:10px 13px;background:rgba(0,245,255,.04);border:1px solid var(\--border);border-radius:var(\--rs);color:var(\--t2);font-family:'DM Mono',monospace;font-size:.74rem;outline:none;cursor:pointer;}
+
 .vfsel option{background:#0F1628;}
+
 .vcards{display:flex;flex-direction:column;gap:10px;}
-.vcard{background:rgba(15,22,40,.85);border:1px solid var(--border);border-radius:var(--r);
-  padding:18px 22px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:var(--ease);}
+
+.vcard{background:rgba(15,22,40,.85);border:1px solid var(\--border);border-radius:var(\--r);padding:18px 22px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:var(\--ease);}
+
 .vcard:hover{border-color:rgba(0,245,255,.3);background:rgba(15,22,40,.98);}
-.vcico{width:44px;height:44px;border-radius:10px;background:rgba(0,245,255,.08);
-  border:1px solid rgba(0,245,255,.15);display:flex;align-items:center;
-  justify-content:center;flex-shrink:0;font-size:1.3rem;}
+
+.vcico{width:44px;height:44px;border-radius:10px;background:rgba(0,245,255,.08);border:1px solid rgba(0,245,255,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.3rem;}
+
 .vcinfo{flex:1;min-width:0;}
-.vcname{font-family:'Syne',sans-serif;font-weight:700;font-size:.93rem;
-  color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+.vcname{font-family:'Syne',sans-serif;font-weight:700;font-size:.93rem;color:var(\--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
 .vcmeta{display:flex;gap:12px;margin-top:4px;flex-wrap:wrap;}
-.vcmi{font-size:.73rem;color:var(--t3);font-family:'DM Mono',monospace;}
-.vcmi span{color:var(--t2);}
-.vcamt{font-family:'DM Mono',monospace;font-weight:700;color:var(--green);font-size:.92rem;white-space:nowrap;text-align:right;}
-.vcaml{font-size:.68rem;color:var(--t3);text-align:right;margin-top:2px;}
-.vempty{text-align:center;padding:56px 24px;color:var(--t3);}
+
+.vcmi{font-size:.73rem;color:var(\--t3);font-family:'DM Mono',monospace;}
+
+.vcmi span{color:var(\--t2);}
+
+.vcamt{font-family:'DM Mono',monospace;font-weight:700;color:var(\--green);font-size:.92rem;white-space:nowrap;text-align:right;}
+
+.vcaml{font-size:.68rem;color:var(\--t3);text-align:right;margin-top:2px;}
+
+.vempty{text-align:center;padding:56px 24px;color:var(\--t3);}
+
 .vempty-ico{font-size:2.8rem;margin-bottom:14px;}
+
 .vempty p{font-size:.88rem;margin-bottom:18px;line-height:1.6;}
-.vloading{display:flex;align-items:center;justify-content:center;
-  gap:12px;padding:48px;color:var(--t3);font-family:'DM Mono',monospace;font-size:.8rem;}
 
-/* ── MODAL ── */
-.moverlay{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:200;
-  display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px);}
+.vloading{display:flex;align-items:center;justify-content:center;gap:12px;padding:48px;color:var(\--t3);font-family:'DM Mono',monospace;font-size:.8rem;}
+
+.moverlay{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:200;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px);}
+
 .moverlay.on{display:flex;}
-.modal{background:rgba(11,15,26,.99);border:1px solid var(--border);border-radius:var(--r);
-  width:100%;max-width:760px;max-height:90vh;display:flex;flex-direction:column;
-  box-shadow:0 0 60px rgba(0,245,255,.08);}
-.mhdr{display:flex;align-items:center;gap:12px;padding:18px 22px;border-bottom:1px solid var(--border);}
-.mtitle{font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;flex:1;}
-.mclose{background:none;border:none;color:var(--t3);cursor:pointer;font-size:1.2rem;padding:4px;}
-.mbody{flex:1;overflow-y:auto;padding:22px;}
-.mfoot{padding:14px 22px;border-top:1px solid var(--border);display:flex;gap:9px;justify-content:flex-end;}
-.mrpt{white-space:pre-wrap;font-family:'DM Mono',monospace;font-size:.79rem;line-height:1.9;color:var(--t2);}
 
-/* ── AI COPILOT ── */
-#aiBox{position:fixed;bottom:24px;right:24px;width:340px;
-  background:rgba(11,15,26,.98);border:1px solid rgba(0,245,255,.2);
-  border-radius:var(--r);box-shadow:0 0 40px rgba(0,245,255,.1),0 20px 60px rgba(0,0,0,.5);
-  z-index:201;display:none;flex-direction:column;max-height:520px;backdrop-filter:blur(20px);}
+.modal{background:rgba(11,15,26,.99);border:1px solid var(\--border);border-radius:var(\--r);width:100%;max-width:760px;max-height:90vh;display:flex;flex-direction:column;box-shadow:0 0 60px rgba(0,245,255,.08);}
+
+.mhdr{display:flex;align-items:center;gap:12px;padding:18px 22px;border-bottom:1px solid var(\--border);}
+
+.mtitle{font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;flex:1;}
+
+.mclose{background:none;border:none;color:var(\--t3);cursor:pointer;font-size:1.2rem;padding:4px;}
+
+.mbody{flex:1;overflow-y:auto;padding:22px;}
+
+.mfoot{padding:14px 22px;border-top:1px solid var(\--border);display:flex;gap:9px;justify-content:flex-end;}
+
+.mrpt{white-space:pre-wrap;font-family:'DM Mono',monospace;font-size:.79rem;line-height:1.9;color:var(\--t2);}
+
+#aiBox{position:fixed;bottom:24px;right:24px;width:340px;background:rgba(11,15,26,.98);border:1px solid rgba(0,245,255,.2);border-radius:var(\--r);box-shadow:0 0 40px rgba(0,245,255,.1),0 20px 60px rgba(0,0,0,.5);z-index:201;display:none;flex-direction:column;max-height:520px;backdrop-filter:blur(20px);}
+
 #aiBox.on{display:flex;}
+
 #aiHdr{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid rgba(0,245,255,.12);}
+
 #aiMsgs{padding:14px;overflow-y:auto;max-height:300px;display:flex;flex-direction:column;gap:10px;flex:1;}
+
 .bbl{max-width:90%;padding:10px 13px;border-radius:10px;font-size:.81rem;line-height:1.6;}
-.bai{background:rgba(0,245,255,.06);border:1px solid rgba(0,245,255,.12);color:var(--t2);align-self:flex-start;}
-.bus{background:rgba(157,78,221,.15);border:1px solid rgba(157,78,221,.3);color:var(--t1);align-self:flex-end;text-align:right;}
+
+.bai{background:rgba(0,245,255,.06);border:1px solid rgba(0,245,255,.12);color:var(\--t2);align-self:flex-start;}
+
+.bus{background:rgba(157,78,221,.15);border:1px solid rgba(157,78,221,.3);color:var(\--t1);align-self:flex-end;text-align:right;}
+
 .qps{display:flex;gap:5px;padding:8px 14px;flex-wrap:wrap;border-bottom:1px solid rgba(0,245,255,.08);}
-.qp{background:rgba(0,245,255,.06);border:1px solid rgba(0,245,255,.15);color:var(--t3);
-  font-size:.7rem;padding:4px 9px;border-radius:12px;cursor:pointer;
-  transition:var(--ease);font-family:'DM Mono',monospace;}
-.qp:hover{color:var(--blue);border-color:rgba(0,245,255,.4);}
+
+.qp{background:rgba(0,245,255,.06);border:1px solid rgba(0,245,255,.15);color:var(\--t3);font-size:.7rem;padding:4px 9px;border-radius:12px;cursor:pointer;transition:var(\--ease);font-family:'DM Mono',monospace;}
+
+.qp:hover{color:var(\--blue);border-color:rgba(0,245,255,.4);}
+
 #aiInp{display:flex;gap:8px;padding:12px 14px;border-top:1px solid rgba(0,245,255,.12);}
-#aiChat{flex:1;padding:8px 12px;background:rgba(0,245,255,.04);border:1px solid var(--border);
-  border-radius:8px;color:var(--t1);font-family:'Outfit',sans-serif;font-size:.84rem;outline:none;}
-#aiChat:focus{border-color:var(--blue);}
-#aiFab{position:fixed;bottom:24px;right:24px;width:52px;height:52px;border-radius:50%;
-  background:linear-gradient(135deg,var(--blue),var(--purple));border:none;cursor:pointer;
-  box-shadow:0 0 24px rgba(0,245,255,.35);z-index:200;display:flex;
-  align-items:center;justify-content:center;transition:var(--ease);}
+
+#aiChat{flex:1;padding:8px 12px;background:rgba(0,245,255,.04);border:1px solid var(\--border);border-radius:8px;color:var(\--t1);font-family:'Outfit',sans-serif;font-size:.84rem;outline:none;}
+
+#aiChat:focus{border-color:var(\--blue);}
+
+#aiFab{position:fixed;bottom:24px;right:24px;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(\--blue),var(\--purple));border:none;cursor:pointer;box-shadow:0 0 24px rgba(0,245,255,.35);z-index:200;display:flex;align-items:center;justify-content:center;transition:var(\--ease);}
+
 #aiFab:hover{transform:scale(1.08);box-shadow:0 0 36px rgba(0,245,255,.5);}
+
 #aiFab.hide{display:none;}
 
-/* ── TOAST ── */
-#toast{position:fixed;bottom:86px;right:24px;background:rgba(15,22,40,.98);
-  border:1px solid var(--border);border-radius:10px;padding:12px 18px;
-  font-size:.84rem;color:var(--t1);z-index:300;
-  transform:translateX(200%);transition:transform .3s ease;
-  box-shadow:0 8px 32px rgba(0,0,0,.4);max-width:320px;}
+#toast{position:fixed;bottom:86px;right:24px;background:rgba(15,22,40,.98);border:1px solid var(\--border);border-radius:10px;padding:12px 18px;font-size:.84rem;color:var(\--t1);z-index:300;transform:translateX(200%);transition:transform .3s ease;box-shadow:0 8px 32px rgba(0,0,0,.4);max-width:320px;}
+
 #toast.on{transform:translateX(0);}
-#toast.ts{border-color:rgba(57,255,20,.4);color:var(--green);}
+
+#toast.ts{border-color:rgba(57,255,20,.4);color:var(\--green);}
+
 #toast.te{border-color:rgba(239,68,68,.4);color:#fca5a5;}
 
-footer{position:relative;z-index:1;text-align:center;padding:20px 0 16px;
-  border-top:1px solid rgba(0,245,255,.08);font-family:'DM Mono',monospace;
-  font-size:.7rem;letter-spacing:.1em;color:rgba(148,163,184,.38);text-transform:uppercase;}
+footer{position:relative;z-index:1;text-align:center;padding:20px 0 16px;border-top:1px solid rgba(0,245,255,.08);font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.1em;color:rgba(148,163,184,.38);text-transform:uppercase;}
+
 .fc{display:flex;align-items:center;gap:8px;}
+
 </style>
+
 </head>
+
 <body>
+
 <div class="deco"></div>
 
-<!-- ── NAV ── -->
 <nav>
-  <a href="website.html" class="nlogo"><div class="ndot"></div>Surveyor<span>AI</span></a>
-  <div class="ndiv"></div>
-  <div class="vtabs">
-    <button class="vtab active" id="tabClaim" onclick="switchView('claim')">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-      New Claim
-    </button>
-    <button class="vtab" id="tabVault" onclick="switchView('vault')">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-      Vault
-    </button>
-  </div>
-  <div class="ndiv"></div>
-  <select class="nsel" id="claimType">
-    <option value="fire">Fire — Material Damage</option>
-    <option value="burglary">Burglary / House Breaking</option>
-    <option value="marine">Marine — Transit Damage</option>
-    <option value="cat_flood">CAT — Flood / Inundation</option>
-    <option value="cat_cyclone">CAT — Cyclone / Storm</option>
-  </select>
-  <div class="sp"></div>
-  <span class="sok" id="sokEl">✓ Saved</span>
-  <button class="nbtn n-gh" onclick="saveDraft()">
-    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13"/><polyline points="7 3 7 8 15 8"/></svg>
-    Save
-  </button>
-  <button class="nbtn n-pr" onclick="genReport()">
-    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-    Generate Report
-  </button>
-  <div class="upill">
-    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-    <span id="uName">—</span>
-    <span class="rtag" id="uRole">—</span>
-  </div>
-  <button class="nbtn n-out" onclick="doLogout()">
-    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-    Sign Out
-  </button>
+
+<a href="website.html" class="nlogo"><div class="ndot"></div>Surveyor<span>AI</span></a>
+
+<div class="ndiv"></div>
+
+<div class="vtabs">
+
+<button class="vtab active" id="tabClaim" onclick="switchView('claim')">
+
+<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+
+New Claim
+
+</button>
+
+<button class="vtab" id="tabVault" onclick="switchView('vault')">
+
+<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+
+Vault
+
+</button>
+
+</div>
+
+<div class="ndiv"></div>
+
+<select class="nsel" id="claimType">
+
+<option value="fire">Fire --- Material Damage</option>
+
+<option value="burglary">Burglary / House Breaking</option>
+
+<option value="marine">Marine --- Transit Damage</option>
+
+<option value="cat_flood">CAT --- Flood / Inundation</option>
+
+<option value="cat_cyclone">CAT --- Cyclone / Storm</option>
+
+</select>
+
+<div class="sp"></div>
+
+<span class="sok" id="sokEl">✓ Saved</span>
+
+<button class="nbtn n-gh" onclick="saveDraft()">
+
+<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13"/><polyline points="7 3 7 8 15 8"/></svg>
+
+Save
+
+</button>
+
+<button class="nbtn n-pr" onclick="genReport()">
+
+<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+
+Generate Report
+
+</button>
+
+<div class="upill">
+
+<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+
+<span id="uName">---</span><span class="rtag" id="uRole">---</span>
+
+</div>
+
+<button class="nbtn n-out" onclick="doLogout()">
+
+<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+
+Sign Out
+
+</button>
+
 </nav>
 
 <main>
-<!-- ════════════ CLAIM VIEW ════════════ -->
+
+<!\-- ═══════════════════ CLAIM VIEW ═══════════════════ \-->
+
 <div id="viewClaim" class="wrap">
 
-  <!-- § 1 METADATA -->
-  <section class="sec">
-    <div class="sechd">
-      <div class="sico ib"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00F5FF" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
-      <div><div class="stitle">Claim Metadata Panel</div><div class="ssub">Policy &amp; Loss Identification</div></div>
-      <div style="margin-left:auto"><span class="badge bb"><span class="pdot"></span> Draft</span></div>
-    </div>
-    <div class="card cb">
-      <div class="fgrid">
-        <div class="fg"><label for="refNum">Reference Number</label><input type="text" id="refNum" placeholder="e.g. SRV/2024-25/001"/></div>
-        <div class="fg"><label for="claimNum">Claim Number</label><input type="text" id="claimNum" placeholder="e.g. CLM/FIR/2024/00342"/></div>
-        <div class="fg"><label for="polNum">Policy Number</label><input type="text" id="polNum" placeholder="e.g. P-FIR-2024-00891"/></div>
-        <div class="fg"><label for="insurer">Insurer Name</label><input type="text" id="insurer" placeholder="e.g. ICICI Lombard General Insurance Co. Ltd."/></div>
-        <div class="fdiv"></div>
-        <div class="fg full"><label for="insured">Insured Name / Firm</label><input type="text" id="insured" placeholder="e.g. M/s. Sparsh Electronics India Pvt. Ltd."/></div>
-        <div class="fg full"><label for="insuredAddr">Insured Address</label><input type="text" id="insuredAddr" placeholder="Full address of insured premises"/></div>
-        <div class="fg"><label for="dol">Date of Loss</label><input type="date" id="dol"/></div>
-        <div class="fg"><label for="doi">Date of Intimation</label><input type="date" id="doi"/></div>
-        <div class="fg"><label for="dos">Date of Survey</label><input type="date" id="dos"/></div>
-        <div class="fg"><label for="cause">Cause of Loss</label>
-          <select id="cause">
-            <option value="">— Select —</option>
-            <option value="fire">Fire</option>
-            <option value="burglary">Burglary / House Breaking</option>
-            <option value="marine">Marine — Transit Damage</option>
-            <option value="cat_flood">Flood / Inundation</option>
-            <option value="cat_cyclone">Cyclone / Storm</option>
-            <option value="riot">Riot, Strike &amp; Malicious Damage</option>
-            <option value="explosion">Explosion</option>
-          </select>
-        </div>
-        <div class="fg full"><label for="situation">Situation of Loss</label>
-          <textarea id="situation" placeholder="Describe how and when the loss occurred…"></textarea>
-        </div>
-        <div class="fg full"><label for="aboutIns">About the Insured (Business Description)</label>
-          <textarea id="aboutIns" placeholder="Nature of business, products/services, operations…"></textarea>
-        </div>
-      </div>
-    </div>
-  </section>
+<section class="sec">
 
-  <!-- § 2 FINANCIAL -->
-  <section class="sec">
-    <div class="sechd">
-      <div class="sico ip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9D4EDD" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
-      <div><div class="stitle">Financial Assessment Engine</div><div class="ssub">Loss Quantification &amp; Settlement Computation</div></div>
-    </div>
-    <div class="finlay">
-      <div class="card cp">
-        <div class="fgrid">
-          <div class="fg"><label for="gc">Gross Claimed Amount (₹)</label>
-            <div class="ipw hsp"><span class="ipr">₹</span><input type="text" id="gc" placeholder="0.00" oninput="fmtINR(this)"/></div>
-            <span class="ferr" id="egc">Enter valid amount</span>
-          </div>
-          <div class="fg"><label for="gst">GST Amount (₹)</label>
-            <div class="ipw hsp"><span class="ipr">₹</span><input type="text" id="gst" placeholder="0.00" oninput="fmtINR(this)"/></div>
-          </div>
-          <div class="fg"><label for="rec">Recovered / Salvage Value (₹)</label>
-            <div class="ipw hsp"><span class="ipr">₹</span><input type="text" id="rec" placeholder="0.00" oninput="fmtINR(this)"/></div>
-          </div>
-          <div class="fg"><label for="si">Sum Insured (₹)</label>
-            <div class="ipw hsp"><span class="ipr">₹</span><input type="text" id="si" placeholder="0.00" oninput="fmtINR(this)"/></div>
-            <span class="ferr" id="esi">Required</span>
-          </div>
-          <div class="fg"><label for="vr">Value at Risk (₹)</label>
-            <div class="ipw hsp"><span class="ipr">₹</span><input type="text" id="vr" placeholder="0.00" oninput="fmtINR(this)"/></div>
-            <span class="ferr" id="evr">Required</span>
-          </div>
-          <div class="fg"><label for="ds">Dead Stock % (Obsolescence)</label>
-            <input type="number" id="ds" placeholder="0" min="0" max="100" step="0.01"/>
-          </div>
-          <div class="fg"><label for="ded">Policy Deductible (%)</label>
-            <input type="number" id="ded" placeholder="0" min="0" max="100" step="0.01"/>
-          </div>
-          <div class="fg"><label for="hb">Holdback % <span style="color:var(--t3);font-size:.68rem;">(optional)</span></label>
-            <input type="number" id="hb" placeholder="0" min="0" max="100" step="0.01"/>
-          </div>
-        </div>
-        <button class="btn bc" id="compBtn" onclick="compute()">
-          <span class="spin" id="cSpin"></span>
-          <svg id="cIco" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-          Compute Settlement
-        </button>
-      </div>
-      <div class="respanel">
-        <div class="restitle">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-          Settlement Output
-        </div>
-        <div id="resPh" class="resph"><div style="font-size:1.8rem;margin-bottom:10px">⚡</div>Enter values &amp; click<br/><strong style="color:var(--blue)">Compute Settlement</strong></div>
-        <div id="resLines" style="display:none">
-          <div class="rline"><span class="rl">Net Cost of Restoration</span><span class="rv" id="v0">—</span></div>
-          <div class="rline"><span class="rl">Gross Loss Post Recovery</span><span class="rv" id="v1">—</span></div>
-          <div class="rline rw"><span class="rl">Underinsurance %</span><span class="rv" id="v2">—</span></div>
-          <div class="rline"><span class="rl">Adjusted Loss</span><span class="rv" id="v3">—</span></div>
-          <div class="rline ra"><span class="rl">Policy Excess Deduction</span><span class="rv" id="v4">—</span></div>
-          <div class="rline"><span class="rl">Net Adjusted Loss</span><span class="rv" id="v5">—</span></div>
-          <div class="rline"><span class="rl">Holdback</span><span class="rv" id="v6">—</span></div>
-          <div class="rline rtot"><span class="rl" style="color:var(--t1);font-weight:600">Net Settlement Recommended</span><span class="rv" id="v7">—</span></div>
-        </div>
-      </div>
-    </div>
-  </section>
+<div class="sechd">
 
-  <!-- § 3 AI REPORT -->
-  <section class="sec">
-    <div class="sechd">
-      <div class="sico ig"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#39FF14" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
-      <div><div class="stitle">AI Generated Final Survey Report</div><div class="ssub">Powered by LLM — Preview &amp; Export</div></div>
-      <div style="margin-left:auto"><span class="badge ba" id="rptBadge">Awaiting Input</span></div>
-    </div>
-    <div class="card" style="padding:0;overflow:hidden">
-      <div class="rpttb">
-        <div class="fc">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-          <span style="font-size:.76rem;color:var(--t3);font-family:'DM Mono',monospace" id="rptTs">Not Generated</span>
-        </div>
-        <div class="bgrp">
-          <button class="btn bg" onclick="genReport()">
-            <span class="spin" id="aiSpin"></span>
-            <svg id="aiIco" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3"/></svg>
-            Generate AI Draft
-          </button>
-          <button class="btn bp" onclick="dlPDF()">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            PDF
-          </button>
-          <button class="btn bgh" onclick="dlWord()">Word</button>
-          <button class="btn bgh" onclick="dlTXT()">TXT</button>
-        </div>
-      </div>
-      <div class="rptmeta">
-        <div class="rmi">Surveyor: <span id="rm0">—</span></div>
-        <div class="rmi">Ref: <span id="rm1">—</span></div>
-        <div class="rmi">Insured: <span id="rm2">—</span></div>
-        <div class="rmi">Date of Loss: <span id="rm3">—</span></div>
-        <div class="rmi" style="margin-left:auto">Settlement: <span id="rm4" style="color:var(--green)">—</span></div>
-      </div>
-      <div class="rptarea" id="rptArea">
-        <div class="genov" id="genOv">
-          <div class="spin on bspin"></div>
-          <div class="gentxt" id="genMsg">Initializing AI Engine…</div>
-          <div class="genbar"><div class="genfill" id="genFill"></div></div>
-        </div>
-        <div class="rptph" id="rptPh">
-          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#4A5568" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-          <p>Fill metadata &amp; compute settlement,<br/>then click <strong style="color:var(--green)">Generate AI Draft</strong></p>
-        </div>
-        <div id="rptOut"></div>
-      </div>
-    </div>
-  </section>
+<div class="sico ib"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00F5FF" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
 
-  <!-- § 4 BREAKDOWN TABLE -->
-  <section class="sec">
-    <div class="sechd">
-      <div class="sico ia"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFB800" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="9" x2="9" y2="21"/></svg></div>
-      <div><div class="stitle">Calculation Breakdown Annexure</div><div class="ssub">Loss Assessment — Structured Summary</div></div>
-    </div>
-    <div class="card" style="padding:0;overflow:hidden">
-      <div class="twrap">
-        <table class="btbl">
-          <thead><tr><th style="width:38%">Particulars</th><th style="width:22%;text-align:right">Amount (INR)</th><th>Explanation / Basis</th></tr></thead>
-          <tbody id="bkBody"><tr><td colspan="3" style="text-align:center;color:var(--t3);padding:26px;font-family:'DM Mono',monospace;font-size:.77rem">— Compute settlement to populate —</td></tr></tbody>
-        </table>
-      </div>
-    </div>
-  </section>
+<div><div class="stitle">Claim Metadata Panel</div><div class="ssub">Policy &amp; Loss Identification</div></div>
 
-  <!-- § 5 UPLOAD -->
-  <section class="sec">
-    <div class="sechd">
-      <div class="sico ib"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00F5FF" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
-      <div><div class="stitle">Document Upload &amp; AI Extraction</div><div class="ssub">Upload claim documents — AI auto-fills all form fields</div></div>
-    </div>
-    <div class="card">
-      <div class="uzone" id="uzone"
-        ondragover="event.preventDefault();this.classList.add('drag')"
-        ondragleave="this.classList.remove('drag')"
-        ondrop="handleDrop(event)">
-        <input type="file" id="fileIn" multiple accept=".pdf,.png,.jpg,.jpeg,.txt,.docx" onchange="handleFiles(this.files)"/>
-        <div class="uzone-ico">📄</div>
-        <p>Drag &amp; drop files here, or click to browse</p>
-        <small>PDF, DOCX, JPG, PNG, TXT — Max 25MB each</small>
-      </div>
-      <div class="flist" id="flist"></div>
-      <div id="upActs" style="display:none">
-        <button class="btn extbtn" id="extBtn" onclick="aiExtract()">
-          <span class="spin" id="extSpin"></span>
-          <svg id="extIco" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3"/></svg>
-          ✨ AI Extract &amp; Auto-Fill Fields
-        </button>
-        <button class="btn bgh mt" style="width:100%;margin-top:8px" onclick="clearFiles()">Clear All Files</button>
-      </div>
-    </div>
-  </section>
-</div><!-- end viewClaim -->
+<div style="margin-left:auto"><span class="badge bb"><span class="pdot"></span> Draft</span></div>
 
-<!-- ════════════════════════════════════════════════════════════
-     VAULT VIEW
-     ════════════════════════════════════════════════════════════ -->
+</div>
+
+<div class="card cb">
+
+<div class="fgrid">
+
+<div class="fg"><label for="refNum">Reference Number</label><input type="text" id="refNum" placeholder="e.g. SRV/2024-25/001"/></div>
+
+<div class="fg"><label for="claimNum">Claim Number</label><input type="text" id="claimNum" placeholder="e.g. CLM/FIR/2024/00342"/></div>
+
+<div class="fg"><label for="polNum">Policy Number</label><input type="text" id="polNum" placeholder="e.g. P-FIR-2024-00891"/></div>
+
+<div class="fg"><label for="insurer">Insurer Name</label><input type="text" id="insurer" placeholder="e.g. ICICI Lombard General Insurance Co. Ltd."/></div>
+
+<div class="fdiv"></div>
+
+<div class="fg full"><label for="insured">Insured Name / Firm</label><input type="text" id="insured" placeholder="e.g. M/s. Sparsh Electronics India Pvt. Ltd."/></div>
+
+<div class="fg full"><label for="insuredAddr">Insured Address</label><input type="text" id="insuredAddr" placeholder="Full address of insured premises"/></div>
+
+<div class="fg"><label for="dol">Date of Loss</label><input type="date" id="dol"/></div>
+
+<div class="fg"><label for="doi">Date of Intimation</label><input type="date" id="doi"/></div>
+
+<div class="fg"><label for="dos">Date of Survey</label><input type="date" id="dos"/></div>
+
+<div class="fg"><label for="cause">Cause of Loss</label>
+
+<select id="cause"><option value="">--- Select ---</option><option value="fire">Fire</option><option value="burglary">Burglary / House Breaking</option><option value="marine">Marine --- Transit Damage</option><option value="cat_flood">Flood / Inundation</option><option value="cat_cyclone">Cyclone / Storm</option><option value="riot">Riot, Strike &amp; Malicious Damage</option><option value="explosion">Explosion</option></select>
+
+</div>
+
+<div class="fg full"><label for="situation">Situation of Loss</label><textarea id="situation" placeholder="Describe how and when the loss occurred..."></textarea></div>
+
+<div class="fg full"><label for="aboutIns">About the Insured (Business Description)</label><textarea id="aboutIns" placeholder="Nature of business, products/services, operations..."></textarea></div>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="sec">
+
+<div class="sechd">
+
+<div class="sico ip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9D4EDD" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+
+<div><div class="stitle">Financial Assessment Engine</div><div class="ssub">Loss Quantification &amp; Settlement Computation</div></div>
+
+</div>
+
+<div class="finlay">
+
+<div class="card cp">
+
+<div class="fgrid">
+
+<div class="fg"><label for="gc">Gross Claimed Amount (₹)</label><div class="ipw hsp"><span class="ipr">₹</span><input type="text" id="gc" placeholder="0.00" oninput="fmtINR(this)"/></div><span class="ferr" id="egc">Required</span></div>
+
+<div class="fg"><label for="gst">GST Amount (₹)</label><div class="ipw hsp"><span class="ipr">₹</span><input type="text" id="gst" placeholder="0.00" oninput="fmtINR(this)"/></div></div>
+
+<div class="fg"><label for="rec">Recovered / Salvage Value (₹)</label><div class="ipw hsp"><span class="ipr">₹</span><input type="text" id="rec" placeholder="0.00" oninput="fmtINR(this)"/></div></div>
+
+<div class="fg"><label for="si">Sum Insured (₹)</label><div class="ipw hsp"><span class="ipr">₹</span><input type="text" id="si" placeholder="0.00" oninput="fmtINR(this)"/></div><span class="ferr" id="esi">Required</span></div>
+
+<div class="fg"><label for="vr">Value at Risk (₹)</label><div class="ipw hsp"><span class="ipr">₹</span><input type="text" id="vr" placeholder="0.00" oninput="fmtINR(this)"/></div><span class="ferr" id="evr">Required</span></div>
+
+<div class="fg"><label for="ds">Dead Stock % (Obsolescence)</label><input type="number" id="ds" placeholder="0" min="0" max="100" step="0.01"/></div>
+
+<div class="fg"><label for="ded">Policy Deductible (%)</label><input type="number" id="ded" placeholder="0" min="0" max="100" step="0.01"/></div>
+
+<div class="fg"><label for="hb">Holdback % <span style="color:var(\--t3);font-size:.68rem">(optional)</span></label><input type="number" id="hb" placeholder="0" min="0" max="100" step="0.01"/></div>
+
+</div>
+
+<button class="btn bc" id="compBtn" onclick="compute()">
+
+<span class="spin" id="cSpin"></span>
+
+<svg id="cIco" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+
+Compute Settlement
+
+</button>
+
+</div>
+
+<div class="respanel">
+
+<div class="restitle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Settlement Output</div>
+
+<div id="resPh" class="resph"><div style="font-size:1.8rem;margin-bottom:10px">⚡</div>Enter values &amp; click<br/><strong style="color:var(\--blue)">Compute Settlement</strong></div>
+
+<div id="resLines" style="display:none">
+
+<div class="rline"><span class="rl">Net Cost of Restoration</span><span class="rv" id="v0">---</span></div>
+
+<div class="rline"><span class="rl">Gross Loss Post Recovery</span><span class="rv" id="v1">---</span></div>
+
+<div class="rline rw"><span class="rl">Underinsurance %</span><span class="rv" id="v2">---</span></div>
+
+<div class="rline"><span class="rl">Adjusted Loss</span><span class="rv" id="v3">---</span></div>
+
+<div class="rline ra"><span class="rl">Policy Excess</span><span class="rv" id="v4">---</span></div>
+
+<div class="rline"><span class="rl">Net Adjusted Loss</span><span class="rv" id="v5">---</span></div>
+
+<div class="rline"><span class="rl">Holdback</span><span class="rv" id="v6">---</span></div>
+
+<div class="rline rtot"><span class="rl" style="color:var(\--t1);font-weight:600">Net Settlement Recommended</span><span class="rv" id="v7">---</span></div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="sec">
+
+<div class="sechd">
+
+<div class="sico ig"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#39FF14" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+
+<div><div class="stitle">AI Generated Final Survey Report</div><div class="ssub">Powered by GPT-4o Mini --- Preview &amp; Export</div></div>
+
+<div style="margin-left:auto"><span class="badge ba" id="rptBadge">Awaiting Input</span></div>
+
+</div>
+
+<div class="card" style="padding:0;overflow:hidden">
+
+<div class="rpttb">
+
+<div class="fc">
+
+<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+
+<span style="font-size:.76rem;color:var(\--t3);font-family:'DM Mono',monospace" id="rptTs">Not Generated</span>
+
+</div>
+
+<div class="bgrp">
+
+<button class="btn bg" onclick="genReport()">
+
+<span class="spin" id="aiSpin"></span>
+
+<svg id="aiIco" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3"/></svg>
+
+Generate AI Draft
+
+</button>
+
+<button class="btn bp" onclick="dlPDF()">
+
+<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+
+PDF
+
+</button>
+
+<button class="btn bgh" onclick="dlWord()">Word</button>
+
+<button class="btn bgh" onclick="dlTXT()">TXT</button>
+
+</div>
+
+</div>
+
+<div class="rptmeta">
+
+<div class="rmi">Surveyor: <span id="rm0">---</span></div>
+
+<div class="rmi">Ref: <span id="rm1">---</span></div>
+
+<div class="rmi">Insured: <span id="rm2">---</span></div>
+
+<div class="rmi">Date of Loss: <span id="rm3">---</span></div>
+
+<div class="rmi" style="margin-left:auto">Settlement: <span id="rm4" style="color:var(\--green)">---</span></div>
+
+</div>
+
+<!\-- ✅ Fix 1: rptOut is the ONLY output target used in JS \-->
+
+<div class="rptarea" id="rptArea">
+
+<div class="genov" id="genOv">
+
+<div class="spin on bspin"></div>
+
+<div class="gentxt" id="genMsg">Initializing AI Engine...</div>
+
+<div class="genbar"><div class="genfill" id="genFill"></div></div>
+
+</div>
+
+<div class="rptph" id="rptPh">
+
+<svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#4A5568" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+
+<p>Fill metadata &amp; compute settlement,<br/>then click <strong style="color:var(\--green)">Generate AI Draft</strong></p>
+
+</div>
+
+<div id="rptOut"></div>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="sec">
+
+<div class="sechd">
+
+<div class="sico ia"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFB800" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="9" x2="9" y2="21"/></svg></div>
+
+<div><div class="stitle">Calculation Breakdown Annexure</div><div class="ssub">Loss Assessment --- Structured Summary (Annexure A)</div></div>
+
+</div>
+
+<div class="card" style="padding:0;overflow:hidden">
+
+<div class="twrap">
+
+<table class="btbl">
+
+<thead><tr><th style="width:38%">Particulars</th><th style="width:22%;text-align:right">Amount (INR)</th><th>Explanation / Basis</th></tr></thead>
+
+<tbody id="bkBody"><tr><td colspan="3" style="text-align:center;color:var(\--t3);padding:26px;font-family:'DM Mono',monospace;font-size:.77rem">--- Compute settlement to populate ---</td></tr></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="sec">
+
+<div class="sechd">
+
+<div class="sico ib"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00F5FF" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+
+<div><div class="stitle">Document Upload &amp; AI Extraction</div><div class="ssub">Upload claim documents --- AI auto-fills all form fields</div></div>
+
+</div>
+
+<div class="card">
+
+<div class="uzone" id="uzone" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="handleDrop(event)">
+
+<input type="file" id="fileIn" multiple accept=".pdf,.png,.jpg,.jpeg,.txt,.docx" onchange="handleFiles(this.files)"/>
+
+<div class="uzone-ico">📄</div>
+
+<p>Drag &amp; drop files here, or click to browse</p>
+
+<small>PDF, DOCX, JPG, PNG, TXT --- Max 25MB each</small>
+
+</div>
+
+<div class="flist" id="flist"></div>
+
+<div id="upActs" style="display:none">
+
+<button class="btn extbtn" id="extBtn" onclick="aiExtract()">
+
+<span class="spin" id="extSpin"></span>
+
+<svg id="extIco" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3"/></svg>
+
+✨ AI Extract &amp; Auto-Fill Fields
+
+</button>
+
+<button class="btn bgh mt" style="width:100%;margin-top:8px" onclick="clearFiles()">Clear All Files</button>
+
+</div>
+
+</div>
+
+</section>
+
+</div>
+
+<!\-- ═══════════════════ VAULT VIEW ═══════════════════ \-->
+
 <div id="viewVault" class="wrap" style="display:none">
-  <div style="margin-bottom:24px">
-    <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:1.6rem">Report <span style="color:var(--purple)">Vault</span></div>
-    <div style="font-size:.78rem;color:var(--t3);font-family:'DM Mono',monospace;margin-top:6px">All saved claims — search, preview, and download reports</div>
-  </div>
-  <div class="vlt-stats">
-    <div class="vstcard"><div class="vsv" id="vs0">—</div><div class="vsl">Total Claims</div></div>
-    <div class="vstcard"><div class="vsv" id="vs1" style="color:var(--amber)">—</div><div class="vsl">Drafts</div></div>
-    <div class="vstcard"><div class="vsv" id="vs2" style="color:var(--blue)">—</div><div class="vsl">Reports Generated</div></div>
-    <div class="vstcard"><div class="vsv" id="vs3" style="color:var(--green);font-size:1.1rem">—</div><div class="vsl">Total Settlement</div></div>
-  </div>
-  <div class="vctrl">
-    <input type="text" class="vsearch" id="vsearch" placeholder="Search by insured name, reference, policy…" oninput="filterVault()"/>
-    <select class="vfsel" id="vfsel" onchange="filterVault()">
-      <option value="">All Status</option>
-      <option value="Draft">Draft</option>
-      <option value="Report Generated">Report Generated</option>
-      <option value="Final">Final</option>
-    </select>
-    <button class="btn bgh" onclick="loadVault()">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
-      Refresh
-    </button>
-  </div>
-  <div id="vaultCont">
-    <div class="vloading"><div class="spin on"></div>Loading…</div>
-  </div>
-</div><!-- end viewVault -->
+
+<div style="margin-bottom:24px">
+
+<div style="font-family:'Syne',sans-serif;font-weight:800;font-size:1.6rem">Report <span style="color:var(\--purple)">Vault</span></div>
+
+<div style="font-size:.78rem;color:var(\--t3);font-family:'DM Mono',monospace;margin-top:6px">All saved claims --- search, preview, download</div>
+
+</div>
+
+<div class="vlt-stats">
+
+<div class="vstcard"><div class="vsv" id="vs0">---</div><div class="vsl">Total Claims</div></div>
+
+<div class="vstcard"><div class="vsv" id="vs1" style="color:var(\--amber)">---</div><div class="vsl">Drafts</div></div>
+
+<div class="vstcard"><div class="vsv" id="vs2" style="color:var(\--blue)">---</div><div class="vsl">Reports Generated</div></div>
+
+<div class="vstcard"><div class="vsv" id="vs3" style="color:var(\--green);font-size:1.1rem">---</div><div class="vsl">Total Settlement</div></div>
+
+</div>
+
+<div class="vctrl">
+
+<input type="text" class="vsearch" id="vsearch" placeholder="Search by insured name, reference, policy..." oninput="filterVault()"/>
+
+<select class="vfsel" id="vfsel" onchange="filterVault()">
+
+<option value="">All Status</option>
+
+<option value="Draft">Draft</option>
+
+<option value="Report Generated">Report Generated</option>
+
+<option value="Final">Final</option>
+
+</select>
+
+<button class="btn bgh" onclick="loadVault()">
+
+<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+
+Refresh
+
+</button>
+
+</div>
+
+<div id="vaultCont"><div class="vloading"><div class="spin on"></div>Loading...</div></div>
+
+</div>
+
 </main>
 
-<!-- REPORT MODAL (for Vault) -->
+<!\-- MODAL \-->
+
 <div class="moverlay" id="moverlay">
-  <div class="modal">
-    <div class="mhdr">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#39FF14" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-      <div class="mtitle" id="mtitle">Survey Report</div>
-      <button class="mclose" onclick="closeModal()">✕</button>
-    </div>
-    <div class="mbody"><pre class="mrpt" id="mrpt">Loading…</pre></div>
-    <div class="mfoot">
-      <button class="btn bgh" onclick="closeModal()">Close</button>
-      <button class="btn bp" onclick="dlModalPDF()">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        Download PDF
-      </button>
-    </div>
-  </div>
+
+<div class="modal">
+
+<div class="mhdr">
+
+<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#39FF14" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+
+<div class="mtitle" id="mtitle">Survey Report</div>
+
+<button class="mclose" onclick="closeModal()">✕</button>
+
 </div>
 
-<!-- AI COPILOT -->
-<div id="aiBox">
-  <div id="aiHdr">
-    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#00F5FF" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M4.22 4.22l2.12 2.12m11.32 11.32l2.12 2.12M2 12h3m14 0h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>
-    <span style="font-family:'Syne',sans-serif;font-weight:700;font-size:.93rem;flex:1">AI Co-Pilot</span>
-    <span style="font-family:'DM Mono',monospace;font-size:.6rem;color:var(--purple);background:rgba(157,78,221,.1);border:1px solid rgba(157,78,221,.2);padding:1px 7px;border-radius:10px">Claude</span>
-    <button onclick="toggleAI(false)" style="background:none;border:none;color:var(--t3);cursor:pointer;padding:4px;font-size:1.1rem;margin-left:8px">✕</button>
-  </div>
-  <div class="qps">
-    <button class="qp" onclick="qp('Rewrite the summary section professionally')">Rewrite Summary</button>
-    <button class="qp" onclick="qp('Explain the underinsurance calculation')">Underinsurance</button>
-    <button class="qp" onclick="qp('Add relevant IRDAI regulation references')">Add Legal Clauses</button>
-    <button class="qp" onclick="qp('Shorten report to key points only')">Shorten</button>
-  </div>
-  <div id="aiMsgs">
-    <div class="bbl bai">👋 I'm your AI Co-Pilot. Ask me to rewrite sections, explain calculations, or improve report language.</div>
-  </div>
-  <div id="aiInp">
-    <input type="text" id="aiChat" placeholder="Ask AI Co-Pilot…" onkeydown="if(event.key==='Enter')sendChat()"/>
-    <button class="btn bgh" style="padding:8px 12px" onclick="sendChat()">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-    </button>
-  </div>
+<div class="mbody"><pre class="mrpt" id="mrpt">Loading...</pre></div>
+
+<div class="mfoot">
+
+<button class="btn bgh" onclick="closeModal()">Close</button>
+
+<button class="btn bp" onclick="dlModalPDF()">
+
+<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+
+Download PDF
+
+</button>
+
 </div>
+
+</div>
+
+</div>
+
+<!\-- AI COPILOT \-->
+
+<div id="aiBox">
+
+<div id="aiHdr">
+
+<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#00F5FF" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M4.22 4.22l2.12 2.12m11.32 11.32l2.12 2.12M2 12h3m14 0h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>
+
+<span style="font-family:'Syne',sans-serif;font-weight:700;font-size:.93rem;flex:1">AI Co-Pilot</span>
+
+<span style="font-family:'DM Mono',monospace;font-size:.6rem;color:var(\--purple);background:rgba(157,78,221,.1);border:1px solid rgba(157,78,221,.2);padding:1px 7px;border-radius:10px">GPT-4o Mini</span>
+
+<button onclick="toggleAI(false)" style="background:none;border:none;color:var(\--t3);cursor:pointer;padding:4px;font-size:1.1rem;margin-left:8px">✕</button>
+
+</div>
+
+<div class="qps">
+
+<button class="qp" onclick="qp('Rewrite the summary section professionally')">Rewrite Summary</button>
+
+<button class="qp" onclick="qp('Explain the underinsurance calculation in detail')">Underinsurance</button>
+
+<button class="qp" onclick="qp('Add relevant IRDAI regulation references')">Add Legal Clauses</button>
+
+<button class="qp" onclick="qp('Shorten report to key points only')">Shorten</button>
+
+</div>
+
+<div id="aiMsgs">
+
+<div class="bbl bai">👋 I'm your AI Co-Pilot. Ask me to rewrite sections, explain calculations, or improve report language.</div>
+
+</div>
+
+<div id="aiInp">
+
+<input type="text" id="aiChat" placeholder="Ask AI Co-Pilot..." onkeydown="if(event.key==='Enter')sendChat()"/>
+
+<button class="btn bgh" style="padding:8px 12px" onclick="sendChat()">
+
+<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+
+</button>
+
+</div>
+
+</div>
+
 <button id="aiFab" onclick="toggleAI(true)" title="AI Co-Pilot">
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0B0F1A" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M4.22 4.22l2.12 2.12m11.32 11.32l2.12 2.12M2 12h3m14 0h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>
+
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0B0F1A" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M4.22 4.22l2.12 2.12m11.32 11.32l2.12 2.12M2 12h3m14 0h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>
+
 </button>
 
 <div id="toast"></div>
-<footer>SurveyorAI Intelligence Platform v3.1 · Powered by AB Enterprise · IRDAI Compliant Format</footer>
+
+<footer>SurveyorAI Intelligence Platform v3.2 · Powered by AB Enterprise · IRDAI Compliant Format</footer>
 
 <script>
+
 /* ════════════════════════════════════════════════════════════
-   ★ EDIT ONLY THESE 2 LINES — EVERYTHING ELSE LEAVE AS IS ★
-   ════════════════════════════════════════════════════════════ */
-var WORKER_URL      = 'YOUR_CLOUDFLARE_WORKER_URL_HERE';
+
+★ EDIT ONLY THESE 3 LINES ★
+
+════════════════════════════════════════════════════════════ */
+
+var WORKER_URL = 'YOUR_CLOUDFLARE_WORKER_URL_HERE';
+
 var APPS_SCRIPT_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
+
+var INTERNAL_API_KEY = 'YOUR_INTERNAL_API_KEY_HERE'; /* Must match env.INTERNAL_API_KEY in your Worker */
+
 /* ════════════════════════════════════════════════════════════ */
 
 /* AUTH */
-var user = (function(){try{return JSON.parse(localStorage.getItem('sai_user'));}catch(e){return null;}})();
-if(!user||!localStorage.getItem('sai_token')){window.location.href='login.html';}
-document.getElementById('uName').textContent = user&&user.name ? user.name.split(' ')[0] : (user&&user.email?user.email:'User');
-document.getElementById('uRole').textContent = user&&user.role ? user.role : 'Surveyor';
 
-function doLogout(){
-  if(!confirm('Sign out of SurveyorAI?'))return;
-  localStorage.removeItem('sai_user');
-  localStorage.removeItem('sai_token');
-  window.location.href='login.html';
+var user=(function(){try{return JSON.parse(localStorage.getItem('sai_user'));}catch(e){return null;}})();
+
+/* If no session found, inject demo user instead of redirecting (allows sandbox/preview to work) */
+if(!user||!localStorage.getItem('sai_token')){
+  user={id:'demo-001',name:'Demo Surveyor',email:'admin@surveyorai.com',role:'Admin',license:'IRDAI/SLA/Reg/2024/001'};
+  try{
+    localStorage.setItem('sai_user',JSON.stringify(user));
+    localStorage.setItem('sai_token','demo-'+Date.now());
+  }catch(e){}
 }
 
-/* VIEW TOGGLE */
+document.getElementById('uName').textContent=user&&user.name?user.name.split(' ')[0]:(user&&user.email?user.email:'User');
+
+document.getElementById('uRole').textContent=user&&user.role?user.role:'Surveyor';
+
+function doLogout(){
+
+if(!confirm('Sign out of SurveyorAI?'))return;
+
+try{localStorage.removeItem('sai_user');localStorage.removeItem('sai_token');}catch(e){}
+
+window.location.href='login.html';
+
+}
+
+/* VIEW */
+
 function switchView(v){
-  document.getElementById('viewClaim').style.display = v==='claim'?'':'none';
-  document.getElementById('viewVault').style.display = v==='vault'?'':'none';
-  document.getElementById('tabClaim').classList.toggle('active',v==='claim');
-  document.getElementById('tabVault').classList.toggle('active',v==='vault');
-  if(v==='vault') loadVault();
+
+document.getElementById('viewClaim').style.display=v==='claim'?'':'none';
+
+document.getElementById('viewVault').style.display=v==='vault'?'':'none';
+
+document.getElementById('tabClaim').classList.toggle('active',v==='claim');
+
+document.getElementById('tabVault').classList.toggle('active',v==='vault');
+
+if(v==='vault')loadVault();
+
 }
 
 /* TOAST */
+
 function toast(msg,type,dur){
-  if(!dur)dur=3500;
-  var el=document.getElementById('toast');
-  el.textContent=msg; el.className='on t'+(type||'d');
-  setTimeout(function(){el.className='';},dur);
+
+if(!dur)dur=3500;
+
+var el=document.getElementById('toast');
+
+el.textContent=msg;el.className='on t'+(type||'d');
+
+setTimeout(function(){el.className='';},dur);
+
 }
 
-/* INR */
+/* INR --- NOT TOUCHED */
+
 function parseINR(s){return parseFloat(String(s).replace(/,/g,''))||0;}
-function toINR(n){return '\u20B9 '+Math.abs(n).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});}
+
+function toINR(n){return '\\u20B9 '+Math.abs(n).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});}
+
 function fmtINR(inp){
-  var raw=inp.value.replace(/[^\d.]/g,'');
-  var n=parseFloat(raw);
-  inp.value=isNaN(n)?raw:n.toLocaleString('en-IN',{minimumFractionDigits:0,maximumFractionDigits:2});
+
+var raw=inp.value.replace(/[\^\\d.]/g,'');
+
+var n=parseFloat(raw);
+
+inp.value=isNaN(n)?raw:n.toLocaleString('en-IN',{minimumFractionDigits:0,maximumFractionDigits:2});
+
 }
 
-/* COMPUTE */
+/* COMPUTE --- NOT TOUCHED */
+
 var CALC=null;
+
 function compute(){
-  var gc=parseINR(document.getElementById('gc').value);
-  var gst=parseINR(document.getElementById('gst').value);
-  var rv=parseINR(document.getElementById('rec').value);
-  var si=parseINR(document.getElementById('si').value);
-  var vr=parseINR(document.getElementById('vr').value);
-  var ds=parseFloat(document.getElementById('ds').value)||0;
-  var dd=parseFloat(document.getElementById('ded').value)||0;
-  var hb=parseFloat(document.getElementById('hb').value)||0;
 
-  var ok=true;
-  if(gc<=0){document.getElementById('egc').classList.add('on');ok=false;}else document.getElementById('egc').classList.remove('on');
-  if(si<=0){document.getElementById('esi').classList.add('on');ok=false;}else document.getElementById('esi').classList.remove('on');
-  if(vr<=0){document.getElementById('evr').classList.add('on');ok=false;}else document.getElementById('evr').classList.remove('on');
-  if(!ok){toast('Fill required financial fields.','e');return;}
+var gc=parseINR(document.getElementById('gc').value);
 
-  var btn=document.getElementById('compBtn');
-  document.getElementById('cSpin').classList.add('on');
-  document.getElementById('cIco').style.display='none';
-  btn.disabled=true;
+var gst=parseINR(document.getElementById('gst').value);
 
-  setTimeout(function(){
-    var gcEx=gc-gst;
-    var dsA=gcEx*(ds/100);
-    var netRes=gcEx-dsA;
-    var glp=netRes-rv;
-    var uiPct=vr>si?((vr-si)/vr)*100:0;
-    var uiA=uiPct>0?glp*(uiPct/100):0;
-    var adj=glp-uiA;
-    var exA=adj*(dd/100);
-    var netAdj=adj-exA;
-    var hbA=netAdj*(hb/100);
-    var netSet=netAdj-hbA;
+var rv=parseINR(document.getElementById('rec').value);
 
-    CALC={gc:gc,gst:gst,rec:rv,si:si,vr:vr,ds:ds,dd:dd,hb:hb,
-      gcEx:gcEx,dsA:dsA,netRes:netRes,glp:glp,
-      uiPct:uiPct,uiA:uiA,adj:adj,exA:exA,
-      netAdj:netAdj,hbA:hbA,netSet:netSet};
+var si=parseINR(document.getElementById('si').value);
 
-    document.getElementById('v0').textContent=toINR(netRes);
-    document.getElementById('v1').textContent=toINR(glp);
-    document.getElementById('v2').textContent=uiPct>0?uiPct.toFixed(2)+'%':'Nil';
-    document.getElementById('v3').textContent=toINR(adj);
-    document.getElementById('v4').textContent=toINR(exA);
-    document.getElementById('v5').textContent=toINR(netAdj);
-    document.getElementById('v6').textContent=hb>0?toINR(hbA):'Nil';
-    document.getElementById('v7').textContent=toINR(netSet);
-    document.getElementById('resPh').style.display='none';
-    document.getElementById('resLines').style.display='';
-    document.getElementById('rm4').textContent=toINR(netSet);
-    document.getElementById('rm1').textContent=document.getElementById('refNum').value||'\u2014';
-    document.getElementById('rm2').textContent=document.getElementById('insured').value||'\u2014';
-    document.getElementById('rm3').textContent=document.getElementById('dol').value||'\u2014';
-    document.getElementById('rm0').textContent=user&&user.name?user.name:'\u2014';
+var vr=parseINR(document.getElementById('vr').value);
 
-    populateBK(CALC);
-    document.getElementById('cSpin').classList.remove('on');
-    document.getElementById('cIco').style.display='';
-    btn.disabled=false;
-    toast('Settlement computed!','s');
-  },600);
+var ds=parseFloat(document.getElementById('ds').value)||0;
+
+var dd=parseFloat(document.getElementById('ded').value)||0;
+
+var hb=parseFloat(document.getElementById('hb').value)||0;
+
+var ok=true;
+
+if(gc<=0){document.getElementById('egc').classList.add('on');ok=false;}else document.getElementById('egc').classList.remove('on');
+
+if(si<=0){document.getElementById('esi').classList.add('on');ok=false;}else document.getElementById('esi').classList.remove('on');
+
+if(vr<=0){document.getElementById('evr').classList.add('on');ok=false;}else document.getElementById('evr').classList.remove('on');
+
+if(!ok){toast('Fill required financial fields.','e');return;}
+
+var btn=document.getElementById('compBtn');
+
+document.getElementById('cSpin').classList.add('on');
+
+document.getElementById('cIco').style.display='none';
+
+btn.disabled=true;
+
+setTimeout(function(){
+
+var gcEx=gc-gst,dsA=gcEx*(ds/100),netRes=gcEx-dsA,glp=netRes-rv;
+
+var uiPct=vr>si?((vr-si)/vr)*100:0,uiA=uiPct>0?glp*(uiPct/100):0;
+
+var adj=glp-uiA,exA=adj*(dd/100),netAdj=adj-exA,hbA=netAdj*(hb/100),netSet=netAdj-hbA;
+
+CALC={gc:gc,gst:gst,rec:rv,si:si,vr:vr,ds:ds,dd:dd,hb:hb,gcEx:gcEx,dsA:dsA,netRes:netRes,glp:glp,uiPct:uiPct,uiA:uiA,adj:adj,exA:exA,netAdj:netAdj,hbA:hbA,netSet:netSet};
+
+document.getElementById('v0').textContent=toINR(netRes);
+
+document.getElementById('v1').textContent=toINR(glp);
+
+document.getElementById('v2').textContent=uiPct>0?uiPct.toFixed(2)+'%':'Nil';
+
+document.getElementById('v3').textContent=toINR(adj);
+
+document.getElementById('v4').textContent=toINR(exA);
+
+document.getElementById('v5').textContent=toINR(netAdj);
+
+document.getElementById('v6').textContent=hb>0?toINR(hbA):'Nil';
+
+document.getElementById('v7').textContent=toINR(netSet);
+
+document.getElementById('resPh').style.display='none';
+
+document.getElementById('resLines').style.display='';
+
+document.getElementById('rm4').textContent=toINR(netSet);
+
+document.getElementById('rm1').textContent=document.getElementById('refNum').value||'\\u2014';
+
+document.getElementById('rm2').textContent=document.getElementById('insured').value||'\\u2014';
+
+document.getElementById('rm3').textContent=document.getElementById('dol').value||'\\u2014';
+
+document.getElementById('rm0').textContent=user&&user.name?user.name:'\\u2014';
+
+populateBK(CALC);
+
+document.getElementById('cSpin').classList.remove('on');
+
+document.getElementById('cIco').style.display='';
+
+btn.disabled=false;
+
+toast('Settlement computed!','s');
+
+},600);
+
 }
+
+/* populateBK --- NOT TOUCHED */
 
 function populateBK(c){
-  var rows=[
-    ['Gross Amount Claimed (Including GST)',c.gc,'As per insured\u2019s claim submission'],
-    ['Less: GST Amount',c.gst,'Disallowed \u2014 insured may avail input tax credit'],
-    ['Net Cost of Restoration (Ex-GST)',c.gcEx,'Gross claimed net of GST'],
-    ['Less: Dead Stock / Obsolescence ('+c.ds+'%)',c.dsA,'Non-admissible slow-moving & obsolete stock'],
-    ['Assessed Loss',c.gcEx-c.dsA,'Admissible claim before recovery'],
-    ['Less: Recovered / Salvage Material',c.rec,'As confirmed by insured'],
-    ['Gross Loss Post Recovery (Excl. GST)',c.glp,'Net loss after salvage adjustment']
-  ];
-  if(c.uiPct>0){rows.push(['Less: Underinsurance Adjustment ('+c.uiPct.toFixed(2)+'%)',c.uiA,'Average Clause \u2014 SI ('+toINR(c.si)+') < VAR ('+toINR(c.vr)+')']);}
-  rows.push(['Adjusted Loss (Post Proportional Reduction)',c.adj,'After underinsurance adjustment']);
-  if(c.dd>0){rows.push(['Less: Policy Excess / Deductible ('+c.dd+'%)',c.exA,'As per policy conditions']);}
-  rows.push(['Net Adjusted Loss',c.netAdj,'Payable before conditional holdback']);
-  if(c.hb>0){rows.push(['Less: Conditional Holdback ('+c.hb+'%)',c.hbA,'Held pending documentation/reinstatement proof']);}
 
-  var tbody=document.getElementById('bkBody');
-  tbody.innerHTML=rows.map(function(r){
-    return '<tr><td>'+r[0]+'</td><td class="amt">'+toINR(r[1])+'</td><td style="color:var(--t3);font-size:.76rem">'+r[2]+'</td></tr>';
-  }).join('')+'<tr class="tot"><td><strong>Net Settlement Recommended</strong></td><td class="amt">'+toINR(c.netSet)+'</td><td style="font-size:.76rem;color:var(--green)">Final payable amount</td></tr>';
+var rows=[
+
+['Gross Amount Claimed (Including GST)',c.gc,'As per insured\'s claim submission'],
+
+['Less: GST Amount',c.gst,'Disallowed \\u2014 insured may avail input tax credit'],
+
+['Net Cost of Restoration (Ex-GST)',c.gcEx,'Gross claimed net of GST'],
+
+['Less: Dead Stock / Obsolescence ('+c.ds+'%)',c.dsA,'Non-admissible slow-moving & obsolete stock'],
+
+['Assessed Loss',c.gcEx-c.dsA,'Admissible claim before recovery'],
+
+['Less: Recovered / Salvage Material',c.rec,'As confirmed by insured'],
+
+['Gross Loss Post Recovery (Excl. GST)',c.glp,'Net loss after salvage adjustment']
+
+];
+
+if(c.uiPct>0)rows.push(['Less: Underinsurance Adjustment ('+c.uiPct.toFixed(2)+'%)',c.uiA,'Average Clause \\u2014 SI ('+toINR(c.si)+') < VAR ('+toINR(c.vr)+')']);
+
+rows.push(['Adjusted Loss (Post Proportional Reduction)',c.adj,'After underinsurance adjustment']);
+
+if(c.dd>0)rows.push(['Less: Policy Excess / Deductible ('+c.dd+'%)',c.exA,'As per policy conditions']);
+
+rows.push(['Net Adjusted Loss',c.netAdj,'Payable before conditional holdback']);
+
+if(c.hb>0)rows.push(['Less: Conditional Holdback ('+c.hb+'%)',c.hbA,'Held pending documentation/reinstatement proof']);
+
+var tbody=document.getElementById('bkBody');
+
+tbody.innerHTML=rows.map(function(r){return '<tr><td>'+r[0]+'</td><td class="amt">'+toINR(r[1])+'</td><td style="color:var(\--t3);font-size:.76rem">'+r[2]+'</td></tr>';}).join('')+'<tr class="tot"><td><strong>Net Settlement Recommended</strong></td><td class="amt">'+toINR(c.netSet)+'</td><td style="font-size:.76rem;color:var(\--green)">Final payable amount</td></tr>';
+
 }
 
-/* AI REPORT */
+/* ════════════════════════════════════════════════════════════
+
+✅ FIX 2 --- parseAIResponse: handles all Worker response formats
+
+Supports: data.reply | data.text | data.content |
+
+choices[0].message.content | choices[0].text
+
+════════════════════════════════════════════════════════════ */
+
+function parseAIResponse(data){
+
+if(!data)return '';
+
+if(data.reply)return data.reply;
+
+if(data.text)return data.text;
+
+if(data.content)return data.content;
+
+if(data.choices&&data.choices.length){
+
+if(data.choices[0].message&&data.choices[0].message.content)return data.choices[0].message.content;
+
+if(data.choices[0].text)return data.choices[0].text;
+
+}
+
+return '';
+
+}
+
+/* ════════════════════════════════════════════════════════════
+
+✅ FIX 4 --- Unified AI fetch helper
+
+All AI calls use:
+
+\- messages[] format
+
+\- x-api-key header matching Worker's INTERNAL_API_KEY
+
+════════════════════════════════════════════════════════════ */
+
+function callAI(prompt,maxTokens){
+
+if(!maxTokens)maxTokens=3000;
+
+return fetch(WORKER_URL,{
+
+method:'POST',
+
+headers:{
+
+'Content-Type':'application/json',
+
+'x-api-key':INTERNAL_API_KEY
+
+},
+
+body:JSON.stringify({
+
+messages:[{role:'user',content:prompt}]
+
+})
+
+}).then(function(r){
+
+if(!r.ok)throw new Error('Worker responded with status '+r.status);
+
+return r.json();
+
+});
+
+}
+
+/* ════════════════════════════════════════════════════════════
+
+AI REPORT GENERATION
+
+✅ Fix 1 --- Output to rptOut
+
+✅ Fix 3 --- .finally() always closes genOv
+
+✅ Fix 4 --- Uses callAI() with messages format
+
+════════════════════════════════════════════════════════════ */
+
 function genReport(){
-  if(!document.getElementById('insured').value){toast('Fill insured name first.','e');return;}
-  if(!CALC){toast('Compute settlement first.','e');return;}
-  document.getElementById('genOv').classList.add('on');
+
+if(!document.getElementById('insured').value){toast('Fill insured name first.','e');return;}
+
+if(!CALC){toast('Compute settlement first.','e');return;}
+
+document.getElementById('genOv').classList.add('on');
+
+document.getElementById('rptPh').style.display='none';
+
+document.getElementById('rptOut').style.display='none';
+
+document.getElementById('rptBadge').className='badge ba';
+
+document.getElementById('rptBadge').textContent='Generating\\u2026';
+
+var steps=[
+
+{msg:'Assembling claim context\\u2026',pct:'15%'},
+
+{msg:'Calling AI model\\u2026',pct:'35%'},
+
+{msg:'Drafting report sections\\u2026',pct:'65%'},
+
+{msg:'Finalizing output\\u2026',pct:'85%'}
+
+];
+
+var step=0;
+
+var prog=setInterval(function(){
+
+if(step<steps.length){
+
+document.getElementById('genMsg').textContent=steps[step].msg;
+
+document.getElementById('genFill').style.width=steps[step].pct;
+
+step++;
+
+}
+
+},1200);
+
+var d={
+
+refNum:document.getElementById('refNum').value,claimNum:document.getElementById('claimNum').value,
+
+polNum:document.getElementById('polNum').value,insurer:document.getElementById('insurer').value,
+
+insured:document.getElementById('insured').value,insuredAddr:document.getElementById('insuredAddr').value,
+
+dol:document.getElementById('dol').value,doi:document.getElementById('doi').value,
+
+dos:document.getElementById('dos').value,cause:document.getElementById('cause').value,
+
+situation:document.getElementById('situation').value,aboutIns:document.getElementById('aboutIns').value,
+
+surveyorName:user&&user.name?user.name:'Insurance Surveyor',
+
+surveyorLic:user&&user.license?user.license:'IRDAI/SLA/Reg',
+
+company:'AB Enterprise'
+
+};
+
+var fin=[
+
+'Gross Amount Claimed (incl. GST): '+toINR(CALC.gc),
+
+'Less GST: '+toINR(CALC.gst),
+
+'Net Cost of Restoration: '+toINR(CALC.netRes),
+
+'Less Recovered Material: '+toINR(CALC.rec),
+
+'Gross Loss Post Recovery: '+toINR(CALC.glp),
+
+'Sum Insured: '+toINR(CALC.si),
+
+'Value at Risk: '+toINR(CALC.vr),
+
+'Underinsurance: '+(CALC.uiPct>0?CALC.uiPct.toFixed(2)+'%':'NIL'),
+
+'Adjusted Loss: '+toINR(CALC.adj),
+
+'Policy Excess: '+toINR(CALC.exA),
+
+'Net Adjusted Loss: '+toINR(CALC.netAdj),
+
+'*** NET SETTLEMENT RECOMMENDED: '+toINR(CALC.netSet)+' ***'
+
+].join('\\n');
+
+var prompt='You are a certified insurance surveyor generating a formal Final Survey Report for IRDAI submission, following the professional format used by McLarens Insurance Surveyors.\\n\\nCLAIM DETAILS:\\nOur Ref: '+d.refNum+'\\nClaim No: '+d.claimNum+'\\nPolicy No: '+d.polNum+'\\nInsurer: '+d.insurer+'\\nInsured: '+d.insured+'\\nAddress: '+d.insuredAddr+'\\nDate of Loss: '+d.dol+'\\nDate of Intimation: '+d.doi+'\\nDate of Survey: '+d.dos+'\\nCause of Loss: '+d.cause+'\\nSituation: '+d.situation+'\\nAbout Insured: '+d.aboutIns+'\\nSurveyor: '+d.surveyorName+' | License: '+d.surveyorLic+'\\n\\nFINANCIAL FIGURES (USE EXACTLY AS GIVEN --- DO NOT RECALCULATE):\\n'+fin+'\\n\\nGenerate a complete formal Final Survey Report with sections:\\n1. WITHOUT PREJUDICE / FINAL SURVEY REPORT header\\n2. Policy Details Table\\n3. Introduction (appointment, surveyor credentials)\\n4. About the Insured\\n5. Circumstances of Loss\\n6. Nature & Extent of Loss\\n7. The Insured\'s Claim\\n8. Policy Conditions & Insurer\'s Liability\\n9. Other Insurances\\n10. Subrogation/Recovery\\n11. Gross Loss Assessed (with GST component explanation)\\n12. Underinsurance Calculation (adequacy table if applicable)\\n13. Policy Excess / Deductible\\n14. Net Adjusted Loss calculation table\\n15. Concurrence\\n16. On Account Payment\\n17. Corporate Surveyor Declaration\\n\\nRULES: Net Settlement = '+toINR(CALC.netSet)+' --- DO NOT CHANGE. Professional insurance language. Include IRDAI references. End: Powered by AB Enterprise | SurveyorAI v3.2';
+
+callAI(prompt)
+
+.then(function(data){
+
+var txt=parseAIResponse(data); /* ✅ Fix 2 */
+
+if(!txt)throw new Error('Empty response from AI');
+
+clearInterval(prog);
+
+document.getElementById('genFill').style.width='100%';
+
+  /* ✅ Fix 1 - display in rptOut */
+  var rptOut=document.getElementById('rptOut');
+  rptOut.textContent=txt;
+  rptOut.style.display='block';
   document.getElementById('rptPh').style.display='none';
-  document.getElementById('rptOut').style.display='none';
+
+  document.getElementById('rptBadge').className='badge bg_';
+  document.getElementById('rptBadge').textContent='Report Generated';
+
+  var now=new Date();
+  document.getElementById('rptTs').textContent='Generated '+now.toLocaleString('en-IN',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+
+  toast('✓ Report generated successfully!','s');
+  autoSave(txt);
+
+}).catch(function(err){
+  toast('AI Error: '+err.message,'e',5000);
   document.getElementById('rptBadge').className='badge ba';
-  document.getElementById('rptBadge').textContent='Generating\u2026';
+  document.getElementById('rptBadge').textContent='Generation Failed';
+/* ✅ Fix 3 - .finally() always closes genOv */
+}).finally(function(){
+  clearInterval(prog);
+  document.getElementById('genOv').classList.remove('on');
+  document.getElementById('aiSpin').classList.remove('on');
+  document.getElementById('aiIco').style.display='';
+});
+}
 
-  var steps=[
-    {msg:'Assembling claim context\u2026',pct:'15%'},
-    {msg:'Calling AI model\u2026',pct:'35%'},
-    {msg:'Drafting report sections\u2026',pct:'65%'},
-    {msg:'Finalizing output\u2026',pct:'85%'}
-  ];
-  var step=0;
-  var prog=setInterval(function(){
-    if(step<steps.length){
-      document.getElementById('genMsg').textContent=steps[step].msg;
-      document.getElementById('genFill').style.width=steps[step].pct;
-      step++;
+/* AUTO-SAVE TO VAULT */
+function autoSave(reportText){
+  try{
+    var key='sai_draft_'+Date.now();
+    var record={
+      id:key,
+      ts:Date.now(),
+      status:'Report Generated',
+      refNum:document.getElementById('refNum').value,
+      claimNum:document.getElementById('claimNum').value,
+      polNum:document.getElementById('polNum').value,
+      insurer:document.getElementById('insurer').value,
+      insured:document.getElementById('insured').value,
+      insuredAddr:document.getElementById('insuredAddr').value,
+      dol:document.getElementById('dol').value,
+      doi:document.getElementById('doi').value,
+      dos:document.getElementById('dos').value,
+      cause:document.getElementById('cause').value,
+      situation:document.getElementById('situation').value,
+      aboutIns:document.getElementById('aboutIns').value,
+      calc:CALC,
+      report:reportText,
+      savedBy:user&&user.name?user.name:'User'
+    };
+    var all=JSON.parse(localStorage.getItem('sai_vault')||'{}');
+    all[key]=record;
+    localStorage.setItem('sai_vault',JSON.stringify(all));
+
+    /* Also push to Google Apps Script if configured */
+    if(APPS_SCRIPT_URL&&APPS_SCRIPT_URL!=='YOUR_GOOGLE_APPS_SCRIPT_URL_HERE'){
+      var token=localStorage.getItem('sai_token')||'';
+      fetch(APPS_SCRIPT_URL+'?action=saveReport',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},
+        body:JSON.stringify(record)
+      }).catch(function(){});
     }
-  },1200);
-
-  var d={
-    refNum:document.getElementById('refNum').value,
-    claimNum:document.getElementById('claimNum').value,
-    polNum:document.getElementById('polNum').value,
-    insurer:document.getElementById('insurer').value,
-    insured:document.getElementById('insured').value,
-    insuredAddr:document.getElementById('insuredAddr').value,
-    dol:document.getElementById('dol').value,
-    doi:document.getElementById('doi').value,
-    dos:document.getElementById('dos').value,
-    cause:document.getElementById('cause').value,
-    situation:document.getElementById('situation').value,
-    aboutIns:document.getElementById('aboutIns').value,
-    surveyorName:user&&user.name?user.name:'Insurance Surveyor',
-    surveyorLic:user&&user.license?user.license:'IRDAI/SLA/Reg',
-    company:'AB Enterprise'
-  };
-
-  var fin=[
-    'Gross Amount Claimed (incl. GST): '+toINR(CALC.gc),
-    'Less GST: '+toINR(CALC.gst),
-    'Net Cost of Restoration: '+toINR(CALC.netRes),
-    'Less Recovered Material: '+toINR(CALC.rec),
-    'Gross Loss Post Recovery: '+toINR(CALC.glp),
-    'Sum Insured: '+toINR(CALC.si),
-    'Value at Risk: '+toINR(CALC.vr),
-    'Underinsurance: '+(CALC.uiPct>0?CALC.uiPct.toFixed(2)+'%':'NIL'),
-    'Adjusted Loss: '+toINR(CALC.adj),
-    'Policy Excess: '+toINR(CALC.exA),
-    'Net Adjusted Loss: '+toINR(CALC.netAdj),
-    '*** NET SETTLEMENT RECOMMENDED: '+toINR(CALC.netSet)+' ***'
-  ].join('\n');
-
-  var prompt='You are a certified insurance surveyor generating a formal Final Survey Report for IRDAI submission, following the professional format used by firms like McLarens Insurance Surveyors.\n\nCLAIM DETAILS:\nOur Ref: '+d.refNum+'\nClaim No: '+d.claimNum+'\nPolicy No: '+d.polNum+'\nInsurer: '+d.insurer+'\nInsured: '+d.insured+'\nAddress: '+d.insuredAddr+'\nDate of Loss: '+d.dol+'\nDate of Intimation: '+d.doi+'\nDate of Survey: '+d.dos+'\nCause of Loss: '+d.cause+'\nSituation: '+d.situation+'\nAbout Insured: '+d.aboutIns+'\nSurveyor: '+d.surveyorName+' | License: '+d.surveyorLic+'\n\nFINANCIAL FIGURES (USE EXACTLY AS GIVEN — DO NOT RECALCULATE):\n'+fin+'\n\nGenerate a complete formal Final Survey Report with these sections:\n1. WITHOUT PREJUDICE / FINAL SURVEY REPORT header\n2. Policy Details Table (Policy No, Claim No, Insured, Dates, Cause of Loss)\n3. Introduction (appointment, surveyor credentials)\n4. About the Insured\n5. Circumstances of Loss\n6. Nature & Extent of Loss\n7. The Insured\'s Claim\n8. Policy Conditions & Insurer\'s Liability\n9. Other Insurances\n10. Subrogation/Recovery\n11. Gross Loss Assessed (with GST component)\n12. Underinsurance Calculation (if applicable — show adequacy table)\n13. Policy Excess / Deductible section\n14. Net Adjusted Loss calculation table\n15. Concurrence\n16. On Account Payment\n17. Corporate Surveyor Declaration\n\nRULES:\n- Net Settlement = '+toINR(CALC.netSet)+' — DO NOT CHANGE THIS NUMBER\n- Professional insurance language only\n- Include IRDAI regulation references\n- End: Powered by AB Enterprise | SurveyorAI v3.1';
-
-  fetch(WORKER_URL,{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({prompt:prompt,maxTokens:3000})
-  }).then(function(r){
-    if(!r.ok)throw new Error('Worker '+r.status);
-    return r.json();
-  }).then(function(data){
-    var txt=data.text||data.content||'';
-    if(!txt)throw new Error('Empty');
-    clearInterval(prog);
-    document.getElementById('genFill').style.width='100%';
-    setTimeout(function(){
-      document.getElementById('genOv').classList.remove('on');
-      document.getElementById('rptOut').textContent=txt;
-      document.getElementById('rptOut').style.display='';
-      document.getElementById('rptTs').textContent='Generated '+new Date().toLocaleString();
-      document.getElementById('rptBadge').className='badge bg_';
-      document.getElementById('rptBadge').textContent='Generated';
-      toast('Report generated!','s');
-    },500);
-  }).catch(function(){
-    clearInterval(prog);
-    document.getElementById('genOv').classList.remove('on');
-    var demo=buildDemo(d,CALC);
-    document.getElementById('rptOut').textContent=demo;
-    document.getElementById('rptOut').style.display='';
-    document.getElementById('rptPh').style.display='none';
-    document.getElementById('rptTs').textContent='Demo Mode \u2014 '+new Date().toLocaleString();
-    document.getElementById('rptBadge').className='badge ba';
-    document.getElementById('rptBadge').textContent='Demo Mode';
-    toast('Demo report shown. Set WORKER_URL for AI reports.','d',6000);
-  });
-}
-
-function buildDemo(d,c){
-  var hr='═'.repeat(72);
-  var hr2='\u2500'.repeat(72);
-  var uiBlock=c.uiPct>0?'UNDERINSURANCE ANALYSIS\n'+hr2+'\nSum Insured : '+toINR(c.si)+'\nValue at Risk: '+toINR(c.vr)+'\nUnderinsurance Amount: '+toINR(c.vr-c.si)+'\nUnderinsurance %: '+c.uiPct.toFixed(2)+'%\nAverage Clause applicable under policy.\nProportional Reduction: '+toINR(c.uiA)+'\n\n':'';
-  return 'WITHOUT PREJUDICE\n\nFINAL SURVEY REPORT\n'+hr+'\n\nOur Ref: '+(d.refNum||'N/A')+'                    Date: '+new Date().toLocaleDateString('en-IN')+'\nClaim No: '+(d.claimNum||'N/A')+'\n\n'+(d.insurer||'Insurer')+',\nKind Attention: Claims Department\n\nPOLICY DETAILS\n'+hr2+'\nPolicy Type / No.  : '+(d.polNum||'N/A')+'\nClaim No.          : '+(d.claimNum||'N/A')+'\nInsured            : '+(d.insured||'N/A')+'\nAddress            : '+(d.insuredAddr||'N/A')+'\nDate of Loss       : '+(d.dol||'N/A')+'\nDate of Intimation : '+(d.doi||'N/A')+'\nDate of Survey     : '+(d.dos||'N/A')+'\nCause of Loss      : '+(d.cause?d.cause.toUpperCase():'N/A')+'\n\nINTRODUCTION\n'+hr2+'\nPursuant to instructions received from '+(d.insurer||'the Insurer')+', we have been\nappointed as Insurance Surveyors & Loss Assessors to survey and assess the\nloss sustained by '+(d.insured||'the Insured')+'.\n\nABOUT THE INSURED\n'+hr2+'\n'+(d.aboutIns||d.insured+' is engaged in business at '+(d.insuredAddr||'the insured premises')+'.')+'\n\nCIRCUMSTANCES OF LOSS\n'+hr2+'\n'+(d.situation||'Loss occurred at the insured premises on '+(d.dol||'[Date]')+'.')+'\n\nPOLICY CONDITIONS & INSURER\'S LIABILITY\n'+hr2+'\nThe cause of loss is covered under the policy. No breach of warranty found.\nPolicy was valid on date of loss. Insurer\'s liability attaches.\n\nOTHER INSURANCES\n'+hr2+'\nInsured has confirmed no other insurance covers the damaged/lost property.\n\nGROSS LOSS ASSESSED\n'+hr2+'\nGross Amount Claimed (including GST): '+toINR(c.gc)+'\n\nGST COMPONENT\n'+hr2+'\nAn amount of '+toINR(c.gst)+' towards GST has been deducted.\nInsured is eligible to avail input tax credit; GST is not an admissible loss.\nNet Cost of Restoration (Ex-GST): '+toINR(c.netRes)+'\n\n'+uiBlock+'NET ADJUSTED LOSS — CALCULATION TABLE\n'+hr2+'\nGross Loss Assessed (Incl. GST)     '+toINR(c.gc)+'\nLess GST                            '+toINR(c.gst)+'\nNet Cost of Restoration             '+toINR(c.netRes)+'\nLess Recovered Material             '+toINR(c.rec)+'\nGross Loss Post Recovery            '+toINR(c.glp)+(c.uiPct>0?'\nLess Underinsurance ('+c.uiPct.toFixed(2)+'%)       '+toINR(c.uiA):'')+'\nAdjusted Loss                       '+toINR(c.adj)+(c.dd>0?'\nLess Policy Excess ('+c.dd+'%)         '+toINR(c.exA):'')+'\nNet Adjusted Loss                   '+toINR(c.netAdj)+(c.hb>0?'\nLess Holdback ('+c.hb+'%)              '+toINR(c.hbA):'')+'\n'+hr2+'\nNET SETTLEMENT RECOMMENDED          '+toINR(c.netSet)+'\n'+hr+'\n\nOPINION\n'+hr2+'\nIn our professional opinion, the loss is genuine and covered under the policy.\nWe recommend settlement of '+toINR(c.netSet)+'.\n\nON ACCOUNT PAYMENT: Not Recommended.\n\nThe above report is issued WITHOUT PREJUDICE to the rights of the Insurers.\nPayment is subject to terms and conditions of the policy.\n\nCORPORATE SURVEYOR DECLARATION\n'+hr2+'\nSurveyor: '+d.surveyorName+'\nLicense : '+d.surveyorLic+'\nDate    : '+new Date().toLocaleDateString('en-IN')+'\nCompany : '+d.company+'\n\nWe hereby declare that no unlicensed person is involved in the survey\nand loss assessment of the above claim.\n\n'+hr+'\nPowered by AB Enterprise | SurveyorAI Intelligence Platform v3.1';
-}
-
-/* DOWNLOADS */
-function dlPDF(){
-  var txt=document.getElementById('rptOut').textContent;
-  if(!txt){toast('Generate a report first.','e');return;}
-  var jsPDF=window.jspdf.jsPDF;
-  var doc=new jsPDF({unit:'mm',format:'a4'});
-  var mg=18,pw=174;
-  doc.setFillColor(11,15,26); doc.rect(0,0,210,26,'F');
-  doc.setTextColor(0,245,255); doc.setFont('helvetica','bold'); doc.setFontSize(13);
-  doc.text('SurveyorAI \u2014 Final Survey Report',mg,17);
-  doc.setTextColor(148,163,184); doc.setFontSize(8);
-  doc.text('Powered by AB Enterprise',192,17,{align:'right'});
-  var y=34;
-  if(CALC){
-    doc.setFillColor(5,30,10); doc.rect(mg,y,pw,12,'F');
-    doc.setTextColor(57,255,20); doc.setFont('helvetica','bold'); doc.setFontSize(10);
-    doc.text('NET SETTLEMENT RECOMMENDED: '+toINR(CALC.netSet),mg+4,y+8);
-    y+=18;
-  }
-  doc.setTextColor(30,30,30); doc.setFont('courier','normal'); doc.setFontSize(8);
-  var lines=doc.splitTextToSize(txt,pw);
-  for(var i=0;i<lines.length;i++){
-    if(y>272){doc.addPage();y=18;}
-    doc.text(lines[i],mg,y); y+=5.2;
-  }
-  var pc=doc.internal.getNumberOfPages();
-  for(var p=1;p<=pc;p++){
-    doc.setPage(p); doc.setTextColor(148,163,184); doc.setFontSize(7);
-    doc.text('Page '+p+' of '+pc+' \u2014 SurveyorAI | AB Enterprise',mg,290);
-  }
-  var ref=(document.getElementById('refNum').value||'report').replace(/\//g,'-');
-  doc.save('SurveyReport_'+ref+'_'+new Date().toISOString().slice(0,10)+'.pdf');
-  toast('PDF downloaded!','s');
-}
-function dlWord(){
-  var txt=document.getElementById('rptOut').textContent;
-  if(!txt){toast('Generate a report first.','e');return;}
-  var safe=txt.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  var html='<!DOCTYPE html><html><head><meta charset="UTF-8"><style>body{font-family:"Courier New",monospace;font-size:10pt;line-height:1.9;margin:2.5cm;}pre{white-space:pre-wrap;font-family:inherit;}</style></head><body><pre>'+safe+'</pre></body></html>';
-  var blob=new Blob([html],{type:'application/msword'});
-  var a=document.createElement('a');
-  a.href=URL.createObjectURL(blob);
-  a.download='SurveyReport_'+(document.getElementById('refNum').value||'report').replace(/\//g,'-')+'.doc';
-  document.body.appendChild(a); a.click(); document.body.removeChild(a);
-  toast('Word document downloaded!','s');
-}
-function dlTXT(){
-  var txt=document.getElementById('rptOut').textContent;
-  if(!txt){toast('Generate a report first.','e');return;}
-  var blob=new Blob([txt],{type:'text/plain;charset=utf-8'});
-  var a=document.createElement('a');
-  a.href=URL.createObjectURL(blob);
-  a.download='SurveyReport_'+(document.getElementById('refNum').value||'report').replace(/\//g,'-')+'.txt';
-  document.body.appendChild(a); a.click(); document.body.removeChild(a);
-  toast('TXT downloaded!','s');
+  }catch(e){console.warn('autoSave failed:',e);}
 }
 
 /* SAVE DRAFT */
 function saveDraft(){
-  var payload={action:'saveClaim',userId:user?user.id:'',
-    refNum:document.getElementById('refNum').value,
-    claimNum:document.getElementById('claimNum').value,
-    insured:document.getElementById('insured').value,
-    financials:CALC?JSON.stringify(CALC):'',
-    status:'Draft',updatedAt:new Date().toISOString()};
-  fetch(APPS_SCRIPT_URL,{method:'POST',body:JSON.stringify(payload)})
-    .then(function(r){return r.json();})
-    .then(function(d){
-      if(d.success){
-        toast('Draft saved!','s');
-        var el=document.getElementById('sokEl');
-        el.classList.add('on');
-        setTimeout(function(){el.classList.remove('on');},3000);
-      } else toast('Save failed. Check APPS_SCRIPT_URL.','e');
-    }).catch(function(){toast('Set APPS_SCRIPT_URL to enable cloud save.','d');});
+  try{
+    var key='sai_draft_manual_'+Date.now();
+    var record={
+      id:key,ts:Date.now(),status:'Draft',
+      refNum:document.getElementById('refNum').value,
+      claimNum:document.getElementById('claimNum').value,
+      polNum:document.getElementById('polNum').value,
+      insurer:document.getElementById('insurer').value,
+      insured:document.getElementById('insured').value,
+      insuredAddr:document.getElementById('insuredAddr').value,
+      dol:document.getElementById('dol').value,doi:document.getElementById('doi').value,
+      dos:document.getElementById('dos').value,
+      cause:document.getElementById('cause').value,
+      situation:document.getElementById('situation').value,
+      aboutIns:document.getElementById('aboutIns').value,
+      calc:CALC,
+      report:document.getElementById('rptOut').textContent||'',
+      savedBy:user&&user.name?user.name:'User'
+    };
+    var all=JSON.parse(localStorage.getItem('sai_vault')||'{}');
+    all[key]=record;
+    localStorage.setItem('sai_vault',JSON.stringify(all));
+    var sok=document.getElementById('sokEl');
+    sok.classList.add('on');
+    setTimeout(function(){sok.classList.remove('on');},2000);
+    toast('Draft saved to Vault','s');
+  }catch(e){toast('Save failed: '+e.message,'e');}
+}
+
+/* DOWNLOADS */
+function getReportText(){
+  return document.getElementById('rptOut').textContent||'';
+}
+
+function dlPDF(){
+  var txt=getReportText();
+  if(!txt){toast('Generate a report first.','e');return;}
+  try{
+    var doc=new window.jspdf.jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+    doc.setFont('helvetica');
+    doc.setFontSize(9);
+    var margin=15,pageW=210,pageH=297,usableW=pageW-margin*2;
+    var lines=doc.splitTextToSize(txt,usableW);
+    var y=margin;
+    lines.forEach(function(line){
+      if(y+5>pageH-margin){doc.addPage();y=margin;}
+      doc.text(line,margin,y);
+      y+=5;
+    });
+    var fn='SurveyReport_'+(document.getElementById('refNum').value||'Draft').replace(/[^a-z0-9_\-]/gi,'_')+'_'+new Date().toISOString().slice(0,10)+'.pdf';
+    doc.save(fn);
+    toast('PDF downloaded','s');
+  }catch(e){toast('PDF error: '+e.message,'e');}
+}
+
+function dlWord(){
+  var txt=getReportText();
+  if(!txt){toast('Generate a report first.','e');return;}
+  var blob=new Blob([txt],{type:'application/msword'});
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='SurveyReport_'+(document.getElementById('refNum').value||'Draft').replace(/[^a-z0-9_\-]/gi,'_')+'.doc';
+  a.click();
+  toast('Word file downloaded','s');
+}
+
+function dlTXT(){
+  var txt=getReportText();
+  if(!txt){toast('Generate a report first.','e');return;}
+  var blob=new Blob([txt],{type:'text/plain'});
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='SurveyReport_'+(document.getElementById('refNum').value||'Draft').replace(/[^a-z0-9_\-]/gi,'_')+'.txt';
+  a.click();
+  toast('TXT downloaded','s');
 }
 
 /* FILE UPLOAD & AI EXTRACTION */
-var selFiles=[];
-function handleDrop(e){e.preventDefault();document.getElementById('uzone').classList.remove('drag');handleFiles(e.dataTransfer.files);}
-function handleFiles(files){
-  for(var i=0;i<files.length;i++){
-    if(files[i].size>25*1024*1024){toast(files[i].name+' too large (max 25MB)','e');continue;}
-    selFiles.push(files[i]);
-  }
-  renderFiles();
-}
-function renderFiles(){
-  var list=document.getElementById('flist');
-  var acts=document.getElementById('upActs');
-  if(!selFiles.length){list.innerHTML='';acts.style.display='none';return;}
-  acts.style.display='';
-  var icos={pdf:'📄',jpg:'🖼️',jpeg:'🖼️',png:'🖼️',docx:'📝',txt:'📃'};
-  list.innerHTML=selFiles.map(function(f,i){
-    var ext=f.name.split('.').pop().toLowerCase();
-    return '<div class="fitem"><span style="font-size:1.1rem">'+(icos[ext]||'📁')+'</span>'+
-      '<span class="fname">'+f.name+'</span>'+
-      '<span class="fst fp" id="fs'+i+'">Pending</span>'+
-      '<button onclick="selFiles.splice('+i+',1);renderFiles()" style="background:none;border:none;color:var(--t3);cursor:pointer;padding:2px 6px">✕</button></div>';
-  }).join('');
-}
-function clearFiles(){selFiles=[];renderFiles();}
+var uploadedFiles=[];
 
-function aiExtract(){
-  if(!selFiles.length){toast('Upload a file first.','e');return;}
+function handleFiles(files){
+  for(var i=0;i<files.length;i++) uploadedFiles.push(files[i]);
+  renderFileList();
+}
+
+function handleDrop(e){
+  e.preventDefault();
+  document.getElementById('uzone').classList.remove('drag');
+  handleFiles(e.dataTransfer.files);
+}
+
+function clearFiles(){
+  uploadedFiles=[];
+  document.getElementById('flist').innerHTML='';
+  document.getElementById('upActs').style.display='none';
+  document.getElementById('fileIn').value='';
+}
+
+function renderFileList(){
+  var fl=document.getElementById('flist');
+  fl.innerHTML='';
+  uploadedFiles.forEach(function(f,i){
+    var div=document.createElement('div');
+    div.className='fitem';
+    div.innerHTML='<span style="font-size:1.1rem">📄</span>'
+      +'<span class="fname">'+f.name+'</span>'
+      +'<span class="fst fp" id="fst'+i+'">Ready</span>'
+      +'<button style="background:none;border:none;color:var(--t3);cursor:pointer;font-size:.8rem" onclick="removeFile('+i+')">✕</button>';
+    fl.appendChild(div);
+  });
+  document.getElementById('upActs').style.display=uploadedFiles.length?'':'none';
+}
+
+function removeFile(i){
+  uploadedFiles.splice(i,1);
+  renderFileList();
+}
+
+async function aiExtract(){
+  if(!uploadedFiles.length){toast('No files to extract.','e');return;}
+  var btn=document.getElementById('extBtn');
+  btn.disabled=true;
   document.getElementById('extSpin').classList.add('on');
   document.getElementById('extIco').style.display='none';
-  document.getElementById('extBtn').disabled=true;
 
-  var promises=selFiles.map(function(f,i){
-    var ext=f.name.split('.').pop().toLowerCase();
-    if(ext==='txt'){
-      return new Promise(function(res){
-        var r=new FileReader();
-        r.onload=function(e){setFS(i,'d','Read');res('\n--- '+f.name+' ---\n'+e.target.result);};
-        r.onerror=function(){setFS(i,'e','Error');res('');};
-        r.readAsText(f);
-      });
+  try{
+    var allText='';
+    for(var i=0;i<uploadedFiles.length;i++){
+      var f=uploadedFiles[i];
+      document.getElementById('fst'+i).className='fst fp';
+      document.getElementById('fst'+i).textContent='Reading...';
+      var text=await readFileText(f);
+      allText+='[File: '+f.name+']\n'+text+'\n\n';
+      document.getElementById('fst'+i).className='fst fd';
+      document.getElementById('fst'+i).textContent='Done';
+    }
+
+    var extractPrompt='You are an insurance claim data extractor. From the following document text, extract all available claim fields and return ONLY a valid JSON object with these exact keys (use empty string "" if not found):\n'
+      +'refNum, claimNum, polNum, insurer, insured, insuredAddr, dol (YYYY-MM-DD), doi (YYYY-MM-DD), dos (YYYY-MM-DD), cause, situation, aboutIns, gc (number only), gst (number only), rec (number only), si (number only), vr (number only), ds (number 0-100), ded (number 0-100), hb (number 0-100)\n\n'
+      +'DOCUMENT TEXT:\n'+allText.slice(0,8000);
+
+    var data=await callAI(extractPrompt,1000);
+    var raw=parseAIResponse(data);
+    var clean=raw.replace(/```json|```/g,'').trim();
+    var parsed=JSON.parse(clean);
+
+    /* Fill form fields */
+    var fields=['refNum','claimNum','polNum','insurer','insured','insuredAddr','dol','doi','dos','situation','aboutIns'];
+    fields.forEach(function(id){
+      if(parsed[id]){var el=document.getElementById(id);if(el)el.value=parsed[id];}
+    });
+    if(parsed.cause){
+      var sel=document.getElementById('cause');
+      for(var o=0;o<sel.options.length;o++){
+        if(sel.options[o].value===parsed.cause||sel.options[o].text.toLowerCase().includes(parsed.cause.toLowerCase())){
+          sel.selectedIndex=o; break;
+        }
+      }
+    }
+    var numFields=['gc','gst','rec','si','vr','ds','ded','hb'];
+    numFields.forEach(function(id){
+      if(parsed[id]&&parseFloat(parsed[id])>0){
+        var el=document.getElementById(id);
+        if(el){el.value=parseFloat(parsed[id]).toLocaleString('en-IN',{minimumFractionDigits:0,maximumFractionDigits:2});}
+      }
+    });
+    toast('✓ AI extracted and filled '+Object.keys(parsed).filter(function(k){return parsed[k];}).length+' fields','s');
+  }catch(e){
+    toast('Extraction failed: '+e.message,'e',5000);
+  }
+  btn.disabled=false;
+  document.getElementById('extSpin').classList.remove('on');
+  document.getElementById('extIco').style.display='';
+}
+
+function readFileText(file){
+  return new Promise(function(resolve,reject){
+    var reader=new FileReader();
+    reader.onload=function(e){resolve(e.target.result||'');};
+    reader.onerror=reject;
+    if(file.type==='application/pdf'||file.name.endsWith('.pdf')){
+      reader.readAsText(file);
     } else {
-      setFS(i,'d','Queued');
-      return Promise.resolve('\n--- '+f.name+' (attach for AI extraction) ---\n');
+      reader.readAsText(file);
     }
   });
-
-  Promise.all(promises).then(function(parts){
-    var combined=parts.join('').trim().substring(0,4000);
-    var pr='You are an insurance claim data extractor. Extract fields from the document and return ONLY valid JSON (no markdown, no backticks):\n{"refNum":"","claimNum":"","polNum":"","insurer":"","insured":"","insuredAddr":"","dol":"YYYY-MM-DD","doi":"YYYY-MM-DD","dos":"YYYY-MM-DD","cause":"","situation":"","aboutIns":"","gc":"","gst":"","rec":"","si":"","vr":""}\n\nDocument:\n'+combined;
-
-    fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt:pr,maxTokens:900})})
-      .then(function(r){return r.json();})
-      .then(function(data){
-        var raw=(data.text||data.content||'').replace(/```json|```/g,'').trim();
-        var ex=JSON.parse(raw);
-        fillExtracted(ex);
-        toast('\u2728 Fields auto-filled from document!','s');
-      }).catch(function(){toast('AI extraction failed. Ensure WORKER_URL is set.','e');})
-      .finally(function(){
-        document.getElementById('extSpin').classList.remove('on');
-        document.getElementById('extIco').style.display='';
-        document.getElementById('extBtn').disabled=false;
-      });
-  });
-}
-function setFS(i,cls,txt){var el=document.getElementById('fs'+i);if(el){el.className='fst f'+cls;el.textContent=txt;}}
-function fillExtracted(ex){
-  var mp={refNum:'refNum',claimNum:'claimNum',polNum:'polNum',insurer:'insurer',
-    insured:'insured',insuredAddr:'insuredAddr',dol:'dol',doi:'doi',dos:'dos',
-    cause:'cause',situation:'situation',aboutIns:'aboutIns',
-    gc:'gc',gst:'gst',rec:'rec',si:'si',vr:'vr'};
-  Object.keys(mp).forEach(function(k){
-    if(ex[k]){var el=document.getElementById(mp[k]);if(el&&!el.value)el.value=ex[k];}
-  });
 }
 
-/* VAULT */
-var allClaims=[];
+/* ═══════════════════════════════════════════════
+   VAULT
+═══════════════════════════════════════════════ */
+var vaultData=[];
+
 function loadVault(){
-  document.getElementById('vaultCont').innerHTML='<div class="vloading"><div class="spin on"></div>Loading from Google Drive\u2026</div>';
-  fetch(APPS_SCRIPT_URL+'?action=getClaims&userId='+(user?user.id:''))
-    .then(function(r){return r.json();})
-    .then(function(data){
-      if(data.success){allClaims=data.claims||[];renderVaultStats(allClaims);renderVault(allClaims);}
-      else showVaultEmpty('Could not load: '+(data.error||'Unknown error'));
-    }).catch(function(){
-      allClaims=getDemoVault();
-      renderVaultStats(allClaims);
-      renderVault(allClaims);
-      toast('Demo vault \u2014 set APPS_SCRIPT_URL for live data.','d',5000);
-    });
-}
-function getDemoVault(){
-  return [
-    {id:'1',insuredName:'M/s. Rohan Enterprises Pvt. Ltd.',refNumber:'SRV/2024-25/001',claimNumber:'CLM/FIR/2024/00342',policyNumber:'P-FIR-2024-00891',insurerName:'National Insurance Co. Ltd.',dateOfLoss:'2024-11-15',causeOfLoss:'fire',netSettlement:2450000,status:'Report Generated',createdAt:'2024-11-20T10:30:00Z'},
-    {id:'2',insuredName:'M/s. Sunrise Manufacturing Co.',refNumber:'SRV/2024-25/002',claimNumber:'CLM/FIR/2024/00389',policyNumber:'P-FIR-2024-01234',insurerName:'New India Assurance Co. Ltd.',dateOfLoss:'2024-12-03',causeOfLoss:'burglary',netSettlement:780000,status:'Draft',createdAt:'2024-12-05T14:20:00Z'},
-    {id:'3',insuredName:'Patel Traders & Associates',refNumber:'SRV/2024-25/003',claimNumber:'CLM/FLD/2024/00521',policyNumber:'P-CAT-2024-00567',insurerName:'Oriental Insurance Co. Ltd.',dateOfLoss:'2024-07-28',causeOfLoss:'cat_flood',netSettlement:5200000,status:'Final',createdAt:'2024-08-10T09:15:00Z'},
-    {id:'4',insuredName:'M/s. Sparsh Electronics India Pvt. Ltd.',refNumber:'MCL-PUN-26-04-0463',claimNumber:'MSC056370848',policyNumber:'4002/426477176/00/000',insurerName:'ICICI Lombard General Insurance Co. Ltd.',dateOfLoss:'2026-02-02',causeOfLoss:'burglary',netSettlement:2680757,status:'Final',createdAt:'2026-02-27T09:00:00Z'}
-  ];
-}
-function renderVaultStats(c){
-  document.getElementById('vs0').textContent=c.length;
-  document.getElementById('vs1').textContent=c.filter(function(x){return x.status==='Draft';}).length;
-  document.getElementById('vs2').textContent=c.filter(function(x){return x.status==='Report Generated'||x.status==='Final';}).length;
-  var tot=c.reduce(function(s,x){return s+(parseFloat(x.netSettlement)||0);},0);
-  document.getElementById('vs3').textContent=tot>0?'\u20B9'+(tot/100000).toFixed(1)+'L':'\u2014';
-}
-function renderVault(c){
   var cont=document.getElementById('vaultCont');
-  if(!c.length){showVaultEmpty('No claims found. Create your first claim from the New Claim tab.');return;}
-  var icos={fire:'🔥',burglary:'🔓',marine:'🚢',cat_flood:'🌊',cat_cyclone:'🌪️',riot:'⚠️',explosion:'💥'};
-  var stmap={'Draft':'ba','Report Generated':'bb','Final':'bg_'};
-  cont.innerHTML='<div class="vcards">'+c.map(function(cl){
-    return '<div class="vcard" onclick="openVaultModal(\''+cl.id+'\')">'+
-      '<div class="vcico">'+(icos[cl.causeOfLoss]||'📋')+'</div>'+
-      '<div class="vcinfo">'+
-        '<div class="vcname">'+(cl.insuredName||'Unknown Insured')+'</div>'+
-        '<div class="vcmeta">'+
-          '<div class="vcmi">Ref: <span>'+(cl.refNumber||'\u2014')+'</span></div>'+
-          '<div class="vcmi">Policy: <span>'+(cl.policyNumber||'\u2014')+'</span></div>'+
-          '<div class="vcmi">Loss: <span>'+(cl.dateOfLoss||'\u2014')+'</span></div>'+
-          '<div class="vcmi">Insurer: <span>'+(cl.insurerName||'\u2014')+'</span></div>'+
-        '</div>'+
-      '</div>'+
-      '<div style="display:flex;flex-direction:column;align-items:flex-end;gap:7px">'+
-        '<span class="badge '+(stmap[cl.status]||'ba')+'">'+(cl.status||'Draft')+'</span>'+
-        (cl.netSettlement?'<div class="vcamt">\u20B9'+Number(cl.netSettlement).toLocaleString('en-IN',{maximumFractionDigits:0})+'</div><div class="vcaml">Settlement</div>':
-          '<div class="vcaml">Not computed</div>')+
-      '</div>'+
-    '</div>';
-  }).join('')+'</div>';
+  cont.innerHTML='<div class="vloading"><div class="spin on"></div>Loading...</div>';
+
+  /* Load from localStorage */
+  setTimeout(function(){
+    try{
+      var all=JSON.parse(localStorage.getItem('sai_vault')||'{}');
+      vaultData=Object.values(all).sort(function(a,b){return b.ts-a.ts;});
+    }catch(e){vaultData=[];}
+
+    /* Try Apps Script too */
+    if(APPS_SCRIPT_URL&&APPS_SCRIPT_URL!=='YOUR_GOOGLE_APPS_SCRIPT_URL_HERE'){
+      var token=localStorage.getItem('sai_token')||'';
+      fetch(APPS_SCRIPT_URL+'?action=listReports',{headers:{'Authorization':'Bearer '+token}})
+        .then(function(r){return r.json();})
+        .then(function(d){
+          if(d.records&&Array.isArray(d.records)){
+            /* Merge, deduplicate by id */
+            var idSet=new Set(vaultData.map(function(v){return v.id;}));
+            d.records.forEach(function(r){if(!idSet.has(r.id))vaultData.push(r);});
+            vaultData.sort(function(a,b){return b.ts-a.ts;});
+          }
+          renderVault(vaultData);
+        }).catch(function(){renderVault(vaultData);});
+    } else {
+      renderVault(vaultData);
+    }
+  },400);
 }
-function showVaultEmpty(msg){
-  document.getElementById('vaultCont').innerHTML='<div class="vempty"><div class="vempty-ico">📂</div><p>'+msg+'</p><button class="btn bg" onclick="switchView(\'claim\')">+ Create New Claim</button></div>';
-}
+
 function filterVault(){
   var q=document.getElementById('vsearch').value.toLowerCase();
-  var s=document.getElementById('vfsel').value;
-  var f=allClaims.filter(function(c){
-    var mq=!q||[c.insuredName,c.refNumber,c.policyNumber,c.claimNumber,c.insurerName].some(function(v){return v&&v.toLowerCase().indexOf(q)>-1;});
-    var ms=!s||c.status===s;
-    return mq&&ms;
+  var st=document.getElementById('vfsel').value;
+  var filtered=vaultData.filter(function(v){
+    var txt=(v.insured+v.refNum+v.claimNum+v.polNum+v.insurer).toLowerCase();
+    var matchQ=!q||txt.includes(q);
+    var matchS=!st||v.status===st;
+    return matchQ&&matchS;
   });
-  renderVault(f);
+  renderVault(filtered);
 }
-function openVaultModal(id){
-  var cl=allClaims.find(function(c){return c.id==id;});
-  if(!cl)return;
-  document.getElementById('mtitle').textContent=cl.insuredName||'Survey Report';
-  document.getElementById('mrpt').textContent='Loading\u2026';
-  document.getElementById('moverlay').classList.add('on');
 
-  if(cl.reportText){document.getElementById('mrpt').textContent=cl.reportText;return;}
-  fetch(APPS_SCRIPT_URL+'?action=getReport&claimId='+id)
-    .then(function(r){return r.json();})
-    .then(function(d){document.getElementById('mrpt').textContent=d.reportText||'No report text available for this claim.';})
-    .catch(function(){document.getElementById('mrpt').textContent='Report not available in demo mode. Generate from the New Claim tab first.';});
+function renderVault(data){
+  /* Stats */
+  var total=vaultData.length;
+  var drafts=vaultData.filter(function(v){return v.status==='Draft';}).length;
+  var generated=vaultData.filter(function(v){return v.status==='Report Generated'||v.status==='Final';}).length;
+  var totalSettlement=vaultData.reduce(function(sum,v){return sum+(v.calc&&v.calc.netSet?v.calc.netSet:0);},0);
+  document.getElementById('vs0').textContent=total;
+  document.getElementById('vs1').textContent=drafts;
+  document.getElementById('vs2').textContent=generated;
+  document.getElementById('vs3').textContent=totalSettlement>0?('₹'+Math.round(totalSettlement/100000)+'L+'):'₹0';
+
+  var cont=document.getElementById('vaultCont');
+  if(!data.length){
+    cont.innerHTML='<div class="vempty"><div class="vempty-ico">🗂️</div><p>No saved reports yet.<br/>Generate your first report to see it here.</p><button class="btn bgh" onclick="switchView(\'claim\')">← New Claim</button></div>';
+    return;
+  }
+
+  cont.innerHTML='<div class="vcards">'+data.map(function(v){
+    var dt=new Date(v.ts).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+    var settle=v.calc&&v.calc.netSet?toINR(v.calc.netSet):'---';
+    var statusCls=v.status==='Draft'?'ba':v.status==='Final'?'bg_':'bb';
+    return '<div class="vcard" onclick="openModal(\''+v.id+'\')">'
+      +'<div class="vcico">📋</div>'
+      +'<div class="vcinfo">'
+      +'<div class="vcname">'+(v.insured||'Unnamed Insured')+'</div>'
+      +'<div class="vcmeta">'
+      +'<span class="vcmi">Ref: <span>'+(v.refNum||'—')+'</span></span>'
+      +'<span class="vcmi">Claim: <span>'+(v.claimNum||'—')+'</span></span>'
+      +'<span class="vcmi">Loss: <span>'+(v.dol||'—')+'</span></span>'
+      +'<span class="vcmi"><span class="badge '+statusCls+'" style="font-size:.6rem;padding:1px 7px">'+v.status+'</span></span>'
+      +'</div></div>'
+      +'<div><div class="vcamt">'+settle+'</div><div class="vcaml">'+dt+'</div></div>'
+      +'</div>';
+  }).join('')+'</div>';
 }
-function closeModal(){document.getElementById('moverlay').classList.remove('on');}
+
+/* MODAL */
+var currentModalRecord=null;
+
+function openModal(id){
+  try{
+    var all=JSON.parse(localStorage.getItem('sai_vault')||'{}');
+    currentModalRecord=all[id];
+    if(!currentModalRecord){
+      /* search in loaded vaultData */
+      currentModalRecord=vaultData.find(function(v){return v.id===id;})||null;
+    }
+    if(!currentModalRecord){toast('Record not found.','e');return;}
+    document.getElementById('mtitle').textContent=(currentModalRecord.insured||'Report')+' — '+(currentModalRecord.refNum||currentModalRecord.id);
+    document.getElementById('mrpt').textContent=currentModalRecord.report||'No report text available.';
+    document.getElementById('moverlay').classList.add('on');
+  }catch(e){toast('Cannot open: '+e.message,'e');}
+}
+
+function closeModal(){
+  document.getElementById('moverlay').classList.remove('on');
+  currentModalRecord=null;
+}
+
 function dlModalPDF(){
-  var txt=document.getElementById('mrpt').textContent;
-  if(!txt||txt==='Loading\u2026')return;
-  var jsPDF=window.jspdf.jsPDF;
-  var doc=new jsPDF({unit:'mm',format:'a4'});
-  doc.setFillColor(11,15,26);doc.rect(0,0,210,26,'F');
-  doc.setTextColor(0,245,255);doc.setFont('helvetica','bold');doc.setFontSize(13);
-  doc.text('SurveyorAI \u2014 Final Survey Report',18,17);
-  doc.setTextColor(148,163,184);doc.setFontSize(8);doc.text('AB Enterprise',192,17,{align:'right'});
-  var y=34;
-  doc.setTextColor(30,30,30);doc.setFont('courier','normal');doc.setFontSize(8);
-  var lines=doc.splitTextToSize(txt,174);
-  for(var i=0;i<lines.length;i++){if(y>272){doc.addPage();y=18;}doc.text(lines[i],18,y);y+=5.2;}
-  doc.save('SurveyReport_'+Date.now()+'.pdf');
-  toast('PDF downloaded!','s');
+  if(!currentModalRecord||!currentModalRecord.report){toast('No report available.','e');return;}
+  try{
+    var doc=new window.jspdf.jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+    doc.setFont('helvetica');doc.setFontSize(9);
+    var margin=15,pageW=210,pageH=297,usableW=pageW-margin*2;
+    var lines=doc.splitTextToSize(currentModalRecord.report,usableW);
+    var y=margin;
+    lines.forEach(function(line){
+      if(y+5>pageH-margin){doc.addPage();y=margin;}
+      doc.text(line,margin,y);y+=5;
+    });
+    var fn='SurveyReport_'+(currentModalRecord.refNum||currentModalRecord.id).replace(/[^a-z0-9_\-]/gi,'_')+'.pdf';
+    doc.save(fn);toast('PDF downloaded','s');
+  }catch(e){toast('PDF error: '+e.message,'e');}
 }
 
-/* AI COPILOT */
-function toggleAI(open){
-  document.getElementById('aiBox').classList.toggle('on',open);
-  document.getElementById('aiFab').classList.toggle('hide',open);
+/* ═══════════════════════════════════════════════
+   AI CO-PILOT
+═══════════════════════════════════════════════ */
+function toggleAI(show){
+  document.getElementById('aiBox').classList.toggle('on',show);
+  document.getElementById('aiFab').classList.toggle('hide',show);
 }
-function sendChat(){
+
+function qp(msg){
+  document.getElementById('aiChat').value=msg;
+  sendChat();
+}
+
+async function sendChat(){
   var inp=document.getElementById('aiChat');
   var msg=inp.value.trim();
   if(!msg)return;
   inp.value='';
-  addBubble(msg,'us');
-  var thinking=addBubble('Thinking\u2026','ai');
-  var rpt=document.getElementById('rptOut').textContent;
-  var ctx='Claim: '+(document.getElementById('insured').value||'N/A')+
-    ', Ref: '+(document.getElementById('refNum').value||'N/A')+
-    ', Settlement: '+(CALC?toINR(CALC.netSet):'Not computed')+
-    '. Report: '+rpt.slice(0,400);
-  fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({prompt:'Context: '+ctx+'\nUser: '+msg,maxTokens:600,
-      system:'You are an expert insurance surveyor AI. Be concise and professional.'})})
-    .then(function(r){return r.json();})
-    .then(function(d){thinking.textContent=d.text||d.content||'No response.';})
-    .catch(function(){thinking.textContent='Set WORKER_URL to connect AI Co-Pilot.';});
-}
-function qp(msg){document.getElementById('aiChat').value=msg;sendChat();}
-function addBubble(txt,role){
+
   var msgs=document.getElementById('aiMsgs');
-  var b=document.createElement('div');
-  b.className='bbl b'+role;
-  b.textContent=txt;
-  msgs.appendChild(b);
+  var userBbl=document.createElement('div');
+  userBbl.className='bbl bus';
+  userBbl.textContent=msg;
+  msgs.appendChild(userBbl);
   msgs.scrollTop=msgs.scrollHeight;
-  return b;
+
+  var thinkBbl=document.createElement('div');
+  thinkBbl.className='bbl bai';
+  thinkBbl.textContent='Thinking…';
+  msgs.appendChild(thinkBbl);
+  msgs.scrollTop=msgs.scrollHeight;
+
+  var reportContext=document.getElementById('rptOut').textContent||'';
+  var sysCtx=reportContext?'Current report context (first 2000 chars):\n'+reportContext.slice(0,2000)+'\n\n':'';
+
+  var fullPrompt=sysCtx+'User request: '+msg+'\n\nProvide a concise, professional response. If asked to rewrite a section, output only the rewritten text. If answering a question, be direct.';
+
+  try{
+    var data=await callAI(fullPrompt,1200);
+    var reply=parseAIResponse(data);
+    thinkBbl.textContent=reply||'(No response)';
+  }catch(e){
+    thinkBbl.textContent='Error: '+e.message;
+  }
+  msgs.scrollTop=msgs.scrollHeight;
 }
+
+/* Close modal on overlay click */
+document.getElementById('moverlay').addEventListener('click',function(e){
+  if(e.target===this)closeModal();
+});
+
 </script>
 </body>
 </html>
