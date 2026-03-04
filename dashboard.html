@@ -980,11 +980,7 @@ Download PDF
 
 <footer>SurveyorAI Intelligence Platform v3.2 · Powered by AB Enterprise · IRDAI Compliant Format</footer>
 
-  <script>
-if(!localStorage.getItem('sai_token')){
-  window.location.href = 'login.html';
-}
-</script>
+<script>
 
 /* ════════════════════════════════════════════════════════════
 
@@ -992,25 +988,20 @@ if(!localStorage.getItem('sai_token')){
 
 ════════════════════════════════════════════════════════════ */
 
-var WORKER_URL = 'https://surveyorai-api.amitbhawik.workers.dev';
+var WORKER_URL = 'YOUR_CLOUDFLARE_WORKER_URL_HERE';
 
 var APPS_SCRIPT_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
 
-var INTERNAL_API_KEY = 'surveyorai-secure-2026'; /* Must match env.INTERNAL_API_KEY in your Worker */
+var INTERNAL_API_KEY = 'YOUR_INTERNAL_API_KEY_HERE'; /* Must match env.INTERNAL_API_KEY in your Worker */
 
 /* ════════════════════════════════════════════════════════════ */
 
-/* AUTH */
+/* AUTH — redirect to login if no valid session */
 
 var user=(function(){try{return JSON.parse(localStorage.getItem('sai_user'));}catch(e){return null;}})();
 
-/* If no session found, inject demo user instead of redirecting (allows sandbox/preview to work) */
 if(!user||!localStorage.getItem('sai_token')){
-  user={id:'demo-001',name:'Demo Surveyor',email:'admin@surveyorai.com',role:'Admin',license:'IRDAI/SLA/Reg/2024/001'};
-  try{
-    localStorage.setItem('sai_user',JSON.stringify(user));
-    localStorage.setItem('sai_token','demo-'+Date.now());
-  }catch(e){}
+  window.location.href='login.html';
 }
 
 document.getElementById('uName').textContent=user&&user.name?user.name.split(' ')[0]:(user&&user.email?user.email:'User');
@@ -1838,5 +1829,3 @@ document.getElementById('moverlay').addEventListener('click',function(e){
 </script>
 </body>
 </html>
-
-
