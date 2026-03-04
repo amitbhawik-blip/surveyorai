@@ -178,7 +178,7 @@ margin-bottom:4px;cursor:pointer;transition:all .3s;display:flex;align-items:cen
 
 .dp-slide{position:absolute;inset:20px;opacity:0;transform:translateY(10px);
 
-transition:all .6s cubic-bezier(.4,0,.2,1);}
+transition:opacity .5s ease, transform .5s ease;}
 
 .dp-slide.active{opacity:1;transform:translateY(0);}
 
@@ -551,17 +551,17 @@ AI-Powered · IRDAI Compliant · McLarens Standard Format
 
 </div>
 
-<!\-- Slide 3: Export \-->
+<!-- Slide 3: Export -->
 
 <div class="dp-slide" id="slide3">
 
-<div class="dp-slide-title">Report Ready --- Export <span class="dp-stag">Step 4 / 4</span></div>
+<div class="dp-slide-title">Report Ready — Export <span class="dp-stag">Step 4 / 5</span></div>
 
 <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;">
 
 <span class="dp-badge gen">✓ Report Generated</span>
 
-<span style="font-size:.72rem;color:var(\--t3);font-family:'DM Mono',monospace">Generated 27 Feb 2026 09:42 AM</span>
+<span style="font-size:.72rem;color:var(--t3);font-family:'DM Mono',monospace">Generated 27 Feb 2026 09:42 AM</span>
 
 </div>
 
@@ -583,11 +583,79 @@ AI-Powered · IRDAI Compliant · McLarens Standard Format
 
 <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;">
 
-<div style="padding:6px 12px;border-radius:6px;background:rgba(157,78,221,.12);border:1px solid rgba(157,78,221,.3);color:var(\--purple);font-size:.72rem">📄 Download PDF</div>
+<div style="padding:6px 12px;border-radius:6px;background:rgba(157,78,221,.12);border:1px solid rgba(157,78,221,.3);color:var(--purple);font-size:.72rem">📄 Download PDF</div>
 
-<div style="padding:6px 12px;border-radius:6px;background:rgba(0,245,255,.06);border:1px solid var(\--border);color:var(\--t2);font-size:.72rem">📝 Word (.doc)</div>
+<div style="padding:6px 12px;border-radius:6px;background:rgba(0,245,255,.06);border:1px solid var(--border);color:var(--t2);font-size:.72rem">📝 Word (.doc)</div>
 
-<div style="padding:6px 12px;border-radius:6px;background:rgba(0,245,255,.06);border:1px solid var(\--border);color:var(\--t2);font-size:.72rem">📃 TXT</div>
+<div style="padding:6px 12px;border-radius:6px;background:rgba(0,245,255,.06);border:1px solid var(--border);color:var(--t2);font-size:.72rem">📃 TXT</div>
+
+</div>
+
+</div>
+
+<!-- Slide 4: Vault -->
+
+<div class="dp-slide" id="slide4">
+
+<div class="dp-slide-title">Report Vault <span class="dp-stag">Step 5 / 5</span></div>
+
+<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:10px;">
+
+<div style="background:rgba(0,245,255,.06);border:1px solid rgba(0,245,255,.15);border-radius:8px;padding:12px;">
+
+<div style="font-family:'DM Mono',monospace;font-size:1.3rem;font-weight:700;color:var(--blue)">12</div>
+
+<div style="font-size:.68rem;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-top:2px">Total Claims</div>
+
+</div>
+
+<div style="background:rgba(57,255,20,.05);border:1px solid rgba(57,255,20,.15);border-radius:8px;padding:12px;">
+
+<div style="font-family:'DM Mono',monospace;font-size:1.1rem;font-weight:700;color:var(--green)">₹2.4Cr+</div>
+
+<div style="font-size:.68rem;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-top:2px">Total Settlement</div>
+
+</div>
+
+</div>
+
+<div style="display:flex;flex-direction:column;gap:6px;">
+
+<div style="display:flex;align-items:center;gap:10px;padding:9px 12px;background:rgba(15,22,40,.8);border:1px solid rgba(0,245,255,.1);border-radius:8px;cursor:pointer;">
+
+<span style="font-size:1.1rem">📋</span>
+
+<div style="flex:1;min-width:0;">
+
+<div style="font-size:.78rem;font-weight:600;color:var(--t1)">M/s. Sparsh Electronics</div>
+
+<div style="font-size:.68rem;color:var(--t3);font-family:'DM Mono',monospace">MCL-PUN-26-04-0463 · Fire</div>
+
+</div>
+
+<span style="font-size:.65rem;padding:2px 7px;border-radius:10px;background:rgba(0,245,255,.1);color:var(--blue);border:1px solid rgba(0,245,255,.2)">Generated</span>
+
+<span style="font-family:'DM Mono',monospace;font-size:.75rem;color:var(--green)">₹26.8L</span>
+
+</div>
+
+<div style="display:flex;align-items:center;gap:10px;padding:9px 12px;background:rgba(15,22,40,.8);border:1px solid rgba(0,245,255,.1);border-radius:8px;cursor:pointer;">
+
+<span style="font-size:1.1rem">📋</span>
+
+<div style="flex:1;min-width:0;">
+
+<div style="font-size:.78rem;font-weight:600;color:var(--t1)">Krishna Agro Industries</div>
+
+<div style="font-size:.68rem;color:var(--t3);font-family:'DM Mono',monospace">MCL-MUM-26-03-0391 · Flood</div>
+
+</div>
+
+<span style="font-size:.65rem;padding:2px 7px;border-radius:10px;background:rgba(255,184,0,.1);color:var(--amber);border:1px solid rgba(255,184,0,.2)">Draft</span>
+
+<span style="font-family:'DM Mono',monospace;font-size:.75rem;color:var(--green)">₹41.2L</span>
+
+</div>
 
 </div>
 
@@ -622,6 +690,8 @@ AI-Powered · IRDAI Compliant · McLarens Standard Format
 <div class="dp-sdot" id="dot2" onclick="jumpStep(2)"></div>
 
 <div class="dp-sdot" id="dot3" onclick="jumpStep(3)"></div>
+
+<div class="dp-sdot" id="dot4" onclick="jumpStep(4)"></div>
 
 </div>
 
@@ -713,15 +783,15 @@ window.speechSynthesis&&window.speechSynthesis.addEventListener&&window.speechSy
 
 var demoPlaying=false,demoStep=0,demoTimer=null,demoSecs=0,demoInterval=null;
 
-var totalSteps=4;
+var totalSteps=5;
 
 var stepData=[
 
 {
 
-duration:8000,
+duration:12000,
 
-caption:'Step 1: Fill claim metadata --- Reference No, Insured Name, Cause of Loss, Dates.',
+caption:'Step 1. Fill in the claim details. Reference number, insured name, cause of loss, and survey dates are entered in seconds.',
 
 sbi:0,
 
@@ -731,9 +801,9 @@ onEnter:function(){typeFields();}
 
 {
 
-duration:7000,
+duration:11000,
 
-caption:'Step 2: Financial engine computes 9-step settlement --- GST, underinsurance, policy excess.',
+caption:'Step 2. The financial engine calculates the full 9-step settlement. GST deduction, underinsurance average clause, and policy excess are all computed automatically.',
 
 sbi:1,
 
@@ -743,9 +813,9 @@ onEnter:function(){fillCalc();}
 
 {
 
-duration:7000,
+duration:11000,
 
-caption:'Step 3: AI generates a complete Final Survey Report in McLarens format --- all 17 sections.',
+caption:'Step 3. Artificial intelligence generates a complete final survey report. All 17 sections, in the professional McLarens format, ready for submission.',
 
 sbi:2,
 
@@ -755,11 +825,23 @@ onEnter:function(){animateReport();}
 
 {
 
-duration:6000,
+duration:10000,
 
-caption:'Step 4: Report is ready. Download as PDF, Word or TXT --- IRDAI compliant, without prejudice.',
+caption:'Step 4. The report is ready. Download as a PDF, Word document, or plain text. Fully IRDAI compliant, without prejudice.',
 
 sbi:3,
+
+onEnter:function(){}
+
+},
+
+{
+
+duration:10000,
+
+caption:'Step 5. Every report is saved in your Vault. Search, filter, and re-download any claim from any device, at any time.',
+
+sbi:4,
 
 onEnter:function(){}
 
@@ -787,27 +869,55 @@ runStep(demoStep);
 
 }
 
-/* ── VOICEOVER ENGINE ── */
+/* ── VOICEOVER ENGINE — speech drives slide timing ── */
 
-function speak(text){
+var _voiceKeepAlive=null;
 
-if(!window.speechSynthesis)return;
+function speak(text, onDone){
 
+if(!window.speechSynthesis){
+  /* No speech support — fall back to fixed 8s delay */
+  if(onDone)demoTimer=setTimeout(onDone, 8000);
+  return;
+}
+
+/* Cancel current speech */
 window.speechSynthesis.cancel();
+if(_voiceKeepAlive){clearInterval(_voiceKeepAlive);_voiceKeepAlive=null;}
 
-var utt=new SpeechSynthesisUtterance(text);
+var spokenText=text.replace(/---/g,'. ').trim();
 
-utt.rate=0.92;utt.pitch=1.05;utt.volume=1;
+var utt=new SpeechSynthesisUtterance(spokenText);
+utt.rate=1.05;utt.pitch=1.1;utt.volume=1;
 
-/* Prefer a natural English voice if available */
-
+/* Prefer a natural English voice */
 var voices=window.speechSynthesis.getVoices();
-
 var preferred=voices.find(function(v){return v.lang==='en-US'&&v.localService;})
+  ||voices.find(function(v){return v.lang==='en-GB'&&v.localService;})
   ||voices.find(function(v){return v.lang==='en-IN';})
   ||voices.find(function(v){return v.lang.startsWith('en');});
-
 if(preferred)utt.voice=preferred;
+
+/* Chrome keep-alive: pause+resume every 10s to prevent silent kill */
+utt.onstart=function(){
+  _voiceKeepAlive=setInterval(function(){
+    if(!window.speechSynthesis.speaking){clearInterval(_voiceKeepAlive);_voiceKeepAlive=null;return;}
+    window.speechSynthesis.pause();
+    window.speechSynthesis.resume();
+  },10000);
+};
+
+/* When speech finishes: clear keep-alive, wait 1.5s, then call onDone */
+utt.onend=function(){
+  if(_voiceKeepAlive){clearInterval(_voiceKeepAlive);_voiceKeepAlive=null;}
+  if(onDone && demoPlaying)demoTimer=setTimeout(onDone, 1500);
+};
+
+utt.onerror=function(){
+  if(_voiceKeepAlive){clearInterval(_voiceKeepAlive);_voiceKeepAlive=null;}
+  /* On error fall back to fixed duration so demo doesn't freeze */
+  if(onDone && demoPlaying)demoTimer=setTimeout(onDone, 6000);
+};
 
 window.speechSynthesis.speak(utt);
 
@@ -822,6 +932,8 @@ document.getElementById('dpPlayIco').innerHTML='<polygon points="5 3 19 12 5 21 
 clearTimeout(demoTimer);
 
 clearInterval(demoInterval);
+
+if(_voiceKeepAlive){clearInterval(_voiceKeepAlive);_voiceKeepAlive=null;}
 
 if(window.speechSynthesis)window.speechSynthesis.cancel();
 
@@ -843,11 +955,13 @@ function jumpStep(n){
 
 demoStep=n;
 
-if(demoPlaying){clearTimeout(demoTimer);}
+clearTimeout(demoTimer);
+if(window.speechSynthesis)window.speechSynthesis.cancel();
+if(_voiceKeepAlive){clearInterval(_voiceKeepAlive);_voiceKeepAlive=null;}
 
 showStep(n);
 
-if(demoPlaying)scheduleNext(stepData[n].duration);
+if(demoPlaying){speak(stepData[n].caption, advanceStep);}
 
 }
 
@@ -855,33 +969,46 @@ function runStep(n){
 
 showStep(n);
 
-scheduleNext(stepData[n].duration);
+/* speak() will call advanceStep when voice finishes */
+if(demoPlaying){
+  speak(stepData[n].caption, advanceStep);
+}
 
 }
 
-function scheduleNext(dur){
+function advanceStep(){
 
-clearTimeout(demoTimer);
+if(!demoPlaying)return;
 
-demoTimer=setTimeout(function(){
+if(demoStep>=totalSteps-1){
 
-demoStep=(demoStep+1)%totalSteps;
+  /* Last step done — stop cleanly */
+  pauseDemo();
+  document.getElementById('dpPlayIco').innerHTML='<polygon points="5 3 19 12 5 21 5 3" fill="#0B0F1A"/>';
+  document.getElementById('dpCaption').textContent='Demo complete. Click ▶ to watch again.';
+  demoStep=0;
 
-runStep(demoStep);
+}else{
 
-},dur);
+  demoStep++;
+  runStep(demoStep);
 
 }
+
+}
+
+/* scheduleNext removed — speak() onend now drives timing */
 
 function showStep(n){
 
 for(var i=0;i<totalSteps;i++){
 
-document.getElementById('slide'+i).classList.toggle('active',i===n);
-
-document.getElementById('dot'+i).classList.toggle('act',i===n);
-
-document.getElementById('sbi'+i).classList.toggle('act',i===n);
+var sl=document.getElementById('slide'+i);
+var dt=document.getElementById('dot'+i);
+var sb=document.getElementById('sbi'+i);
+if(sl)sl.classList.toggle('active',i===n);
+if(dt)dt.classList.toggle('act',i===n);
+if(sb)sb.classList.toggle('act',i===n);
 
 }
 
@@ -889,7 +1016,7 @@ document.getElementById('dpCaption').textContent=stepData[n].caption;
 
 document.getElementById('dpFill').style.width=((n/(totalSteps-1))*100)+'%';
 
-if(demoPlaying)speak(stepData[n].caption);
+/* speak() called by runStep/jumpStep with advanceStep callback */
 
 if(stepData[n].onEnter)stepData[n].onEnter();
 
