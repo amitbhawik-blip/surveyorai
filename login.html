@@ -236,18 +236,16 @@ try{
 
 var hash=await hashPwd(pwd);
 
-var resp = await fetch(APPS_SCRIPT_URL,{
+var resp = await fetch(APPS_SCRIPT_URL+'?action=login',{
 method:"POST",
 headers:{
 "Content-Type":"application/json"
 },
 body:JSON.stringify({
-action:"login",
 email:email,
-hash:hash
+password:pwd
 })
 });
-
 var data=await resp.json();
 
 if(data.success){
@@ -368,4 +366,5 @@ document.getElementById('rSpin').classList.remove('on');
 </script>
 </body>
 </html>
+
 
