@@ -703,6 +703,12 @@ AI-Powered · IRDAI Compliant · McLarens Standard Format
 
 <script>
 
+/* ── VOICE PRELOAD (Chrome requires voices to be loaded before speaking) ── */
+
+if(window.speechSynthesis){window.speechSynthesis.getVoices();}
+
+window.speechSynthesis&&window.speechSynthesis.addEventListener&&window.speechSynthesis.addEventListener('voiceschanged',function(){window.speechSynthesis.getVoices();});
+
 /* ── DEMO PLAYER ENGINE ── */
 
 var demoPlaying=false,demoStep=0,demoTimer=null,demoSecs=0,demoInterval=null;
@@ -781,6 +787,32 @@ runStep(demoStep);
 
 }
 
+/* ── VOICEOVER ENGINE ── */
+
+function speak(text){
+
+if(!window.speechSynthesis)return;
+
+window.speechSynthesis.cancel();
+
+var utt=new SpeechSynthesisUtterance(text);
+
+utt.rate=0.92;utt.pitch=1.05;utt.volume=1;
+
+/* Prefer a natural English voice if available */
+
+var voices=window.speechSynthesis.getVoices();
+
+var preferred=voices.find(function(v){return v.lang==='en-US'&&v.localService;})
+  ||voices.find(function(v){return v.lang==='en-IN';})
+  ||voices.find(function(v){return v.lang.startsWith('en');});
+
+if(preferred)utt.voice=preferred;
+
+window.speechSynthesis.speak(utt);
+
+}
+
 function pauseDemo(){
 
 demoPlaying=false;
@@ -790,6 +822,8 @@ document.getElementById('dpPlayIco').innerHTML='<polygon points="5 3 19 12 5 21 
 clearTimeout(demoTimer);
 
 clearInterval(demoInterval);
+
+if(window.speechSynthesis)window.speechSynthesis.cancel();
 
 }
 
@@ -854,6 +888,8 @@ document.getElementById('sbi'+i).classList.toggle('act',i===n);
 document.getElementById('dpCaption').textContent=stepData[n].caption;
 
 document.getElementById('dpFill').style.width=((n/(totalSteps-1))*100)+'%';
+
+if(demoPlaying)speak(stepData[n].caption);
 
 if(stepData[n].onEnter)stepData[n].onEnter();
 
