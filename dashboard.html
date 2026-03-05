@@ -258,9 +258,13 @@ select option{background:#0F1628;color:var(\--t1);}
 
 .rptph{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:40px;color:var(\--t3);text-align:center;font-size:.88rem;line-height:1.8;}
 
-.genov{display:none;position:absolute;inset:0;background:rgba(11,15,26,.93);align-items:center;justify-content:center;flex-direction:column;gap:14px;z-index:10;border-radius:inherit;}
+.genov{display:none;position:absolute;inset:0;background:rgba(11,15,26,.96);align-items:center;justify-content:center;flex-direction:column;gap:12px;z-index:10;border-radius:inherit;backdrop-filter:blur(2px);}
 
 .genov.on{display:flex;}
+
+.genov-spinner{width:38px;height:38px;border:3px solid rgba(0,245,255,.15);border-top-color:var(\--blue);border-radius:50%;animation:rot .9s linear infinite;margin-bottom:4px;}
+.genov-title{font-size:.92rem;font-weight:700;color:var(\--blue);font-family:'Outfit',sans-serif;}
+.genov-sub{font-size:.7rem;color:var(\--t3);font-family:'DM Mono',monospace;}
 
 .gentxt{font-family:'DM Mono',monospace;font-size:.78rem;color:var(\--blue);letter-spacing:.08em;}
 
@@ -270,7 +274,21 @@ select option{background:#0F1628;color:var(\--t1);}
 
 /* ✅ Fix 1: rptOut is the correct target element */
 
-#rptOut{white-space:pre-wrap;color:var(\--t2);font-family:'DM Mono',monospace;font-size:.79rem;line-height:1.9;display:none;}
+#rptOut{display:none;color:var(\--t1);font-family:'Inter','Outfit',sans-serif;font-size:.83rem;line-height:1.75;padding:4px 0;}
+#rptOut .rpt-section{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:14px 18px;margin-bottom:12px;}
+#rptOut .rpt-section-title{font-size:.78rem;font-weight:800;text-decoration:underline;text-underline-offset:3px;text-transform:uppercase;letter-spacing:.06em;color:var(\--blue);margin-bottom:10px;display:block;}
+#rptOut .rpt-p{margin:0 0 8px;line-height:1.8;color:var(\--t2);}
+#rptOut .rpt-table{width:100%;border-collapse:collapse;margin:8px 0 4px;font-size:.78rem;}
+#rptOut .rpt-table th{background:rgba(0,245,255,.07);color:var(\--blue);font-weight:700;text-align:left;padding:7px 12px;border:1px solid rgba(0,245,255,.15);font-size:.75rem;text-transform:uppercase;letter-spacing:.04em;}
+#rptOut .rpt-table td{padding:6px 12px;border:1px solid rgba(255,255,255,.07);vertical-align:top;color:var(\--t2);}
+#rptOut .rpt-table tr:nth-child(even) td{background:rgba(255,255,255,.02);}
+#rptOut .rpt-table .rpt-amt{text-align:right;font-family:'DM Mono',monospace;font-weight:600;color:var(\--t1);}
+#rptOut .rpt-table .rpt-tot td{border-top:2px solid rgba(0,245,255,.3);font-weight:700;color:var(\--blue);background:rgba(0,245,255,.04);}
+#rptOut .rpt-bold{font-weight:700;color:var(\--t1);}
+#rptOut .rpt-footer{text-align:center;font-size:.7rem;color:var(\--t3);font-family:'DM Mono',monospace;margin-top:20px;padding-top:12px;border-top:1px solid rgba(255,255,255,.06);}
+#rptOut .rpt-header{background:rgba(0,245,255,.04);border:1px solid rgba(0,245,255,.12);border-radius:8px;padding:14px 18px;margin-bottom:12px;}
+#rptOut .rpt-header-title{font-size:.95rem;font-weight:800;color:var(\--blue);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px;}
+#rptOut .rpt-header-sub{font-size:.75rem;color:var(\--t3);font-family:'DM Mono',monospace;}
 
 .twrap{overflow-x:auto;}
 
@@ -288,7 +306,7 @@ select option{background:#0F1628;color:var(\--t1);}
 
 .btbl .tot td.amt{font-size:.95rem;}
 
-.uzone{border:2px dashed var(\--border);border-radius:var(\--r);padding:34px;text-align:center;cursor:pointer;transition:var(\--ease);color:var(\--t3);position:relative;}
+.uzone{border:2px dashed var(\--border);border-radius:var(\--r);padding:34px;text-align:center;cursor:pointer;transition:var(\--ease);color:var(\--t3);position:relative;overflow:hidden;isolation:isolate;}
 
 .uzone:hover,.uzone.drag{border-color:var(\--blue);background:rgba(0,245,255,.03);color:var(\--t2);}
 
@@ -301,6 +319,12 @@ select option{background:#0F1628;color:var(\--t1);}
 .uzone small{font-size:.73rem;color:var(\--t3);font-family:'DM Mono',monospace;}
 
 .flist{display:flex;flex-direction:column;gap:7px;margin-top:12px;}
+.fitem{display:flex;align-items:center;gap:10px;padding:9px 12px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:8px;transition:var(--ease);}
+.fitem:hover{border-color:rgba(0,245,255,.3);}
+.fname{flex:1;font-size:.82rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.fst{font-size:.7rem;font-family:'DM Mono',monospace;padding:2px 7px;border-radius:4px;}
+.fp{color:var(--amber);}
+.fd{color:var(--green);background:rgba(57,255,20,.08);}
 
 .fitem{display:flex;align-items:center;gap:10px;padding:9px 13px;background:rgba(0,245,255,.04);border:1px solid var(\--border);border-radius:8px;font-size:.81rem;}
 
@@ -388,7 +412,7 @@ select option{background:#0F1628;color:var(\--t1);}
 
 .mfoot{padding:14px 22px;border-top:1px solid var(\--border);display:flex;gap:9px;justify-content:flex-end;}
 
-.mrpt{white-space:pre-wrap;font-family:'DM Mono',monospace;font-size:.79rem;line-height:1.9;color:var(\--t2);}
+.mrpt{font-family:'Inter','Outfit',sans-serif;font-size:.82rem;line-height:1.75;color:var(\--t2);}
 
 #aiBox{position:fixed;bottom:24px;right:24px;width:340px;background:rgba(11,15,26,.98);border:1px solid rgba(0,245,255,.2);border-radius:var(\--r);box-shadow:0 0 40px rgba(0,245,255,.1),0 20px 60px rgba(0,0,0,.5);z-index:201;display:none;flex-direction:column;max-height:520px;backdrop-filter:blur(20px);}
 
@@ -440,6 +464,9 @@ footer{position:relative;z-index:1;text-align:center;padding:20px 0 16px;border-
 
 <body>
 
+
+
+
 <div class="deco"></div>
 
 <nav>
@@ -488,6 +515,11 @@ Vault
 
 <span class="sok" id="sokEl">✓ Saved</span>
 
+<div id="fillBadge" title="Fields filled" style="display:none;align-items:center;gap:5px;background:rgba(0,245,255,.07);border:1px solid rgba(0,245,255,.15);border-radius:20px;padding:3px 10px;font-size:.72rem;font-family:'DM Mono',monospace;color:var(--t2)">
+  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+  <span id="fillCount">0</span>/<span id="fillTotal">0</span> filled
+</div>
+
 <button class="nbtn n-gh" onclick="saveDraft()">
 
 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13"/><polyline points="7 3 7 8 15 8"/></svg>
@@ -496,10 +528,9 @@ Save
 
 </button>
 
-<button class="nbtn n-pr" onclick="genReport()">
-
-<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-
+<button class="nbtn n-pr" id="navGenBtn" onclick="genReport()">
+<span class="spin" id="navGenSpin"></span>
+<svg id="navGenIco" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
 Generate Report
 
 </button>
@@ -528,304 +559,746 @@ Sign Out
 
 <div id="viewClaim" class="wrap">
 
+<!-- ════ REPORT HEADER ════ -->
 <section class="sec">
-
 <div class="sechd">
-
 <div class="sico ib"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00F5FF" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
-
-<div><div class="stitle">Claim Metadata Panel</div><div class="ssub">Policy &amp; Loss Identification</div></div>
-
+<div><div class="stitle">Report Header</div><div class="ssub">Surveyor office · reference · date · addressee</div></div>
 <div style="margin-left:auto"><span class="badge bb"><span class="pdot"></span> Draft</span></div>
-
 </div>
-
 <div class="card cb">
-
 <div class="fgrid">
-
-<div class="fg"><label for="refNum">Reference Number</label><input type="text" id="refNum" placeholder="e.g. SRV/2024-25/001"/></div>
-
-<div class="fg"><label for="claimNum">Claim Number</label><input type="text" id="claimNum" placeholder="e.g. CLM/FIR/2024/00342"/></div>
-
-<div class="fg"><label for="polNum">Policy Number</label><input type="text" id="polNum" placeholder="e.g. P-FIR-2024-00891"/></div>
-
-<div class="fg"><label for="insurer">Insurer Name</label><input type="text" id="insurer" placeholder="e.g. ICICI Lombard General Insurance Co. Ltd."/></div>
-
-<div class="fdiv"></div>
-
-<div class="fg full"><label for="insured">Insured Name / Firm</label><input type="text" id="insured" placeholder="e.g. M/s. Sparsh Electronics India Pvt. Ltd."/></div>
-
-<div class="fg full"><label for="insuredAddr">Insured Address</label><input type="text" id="insuredAddr" placeholder="Full address of insured premises"/></div>
-
-<div class="fg"><label for="dol">Date of Loss</label><input type="date" id="dol"/></div>
-
-<div class="fg"><label for="doi">Date of Intimation</label><input type="date" id="doi"/></div>
-
-<div class="fg"><label for="dos">Date of Survey</label><input type="date" id="dos"/></div>
-
-<div class="fg"><label for="cause">Cause of Loss</label>
-
-<select id="cause"><option value="">--- Select ---</option><option value="fire">Fire</option><option value="burglary">Burglary / House Breaking</option><option value="marine">Marine --- Transit Damage</option><option value="cat_flood">Flood / Inundation</option><option value="cat_cyclone">Cyclone / Storm</option><option value="riot">Riot, Strike &amp; Malicious Damage</option><option value="explosion">Explosion</option></select>
-
+<div class="fg"><label>Our Ref</label><input type="text" id="refNum" placeholder="e.g. MCL-PUN-26-04-0463"/></div>
+<div class="fg"><label>Date of Report</label><input type="date" id="reportDate"/></div>
+<div class="fg full"><label>Surveyor / Office Name &amp; Address</label><textarea id="surveyorOfficeAddr" rows="2" placeholder="e.g. McLarens Insurance Surveyors &amp; Loss Assessors India Pvt Ltd, Metro House, 3rd Floor, Block no. 5, Mangaldas Road, Pune 411 001 Maharashtra"></textarea></div>
+<div class="fg"><label>Surveyor GSTIN</label><input type="text" id="surveyorGSTIN" placeholder="e.g. 27AAGCM4241E1ZP"/></div>
+<div class="fg"><label>Surveyor License No.</label><input type="text" id="surveyorLic2" placeholder="e.g. Corp SLA No 72502 valid up to 13/03/2028"/></div>
+<div class="fg full"><label>To: Insurer Name &amp; Address</label><textarea id="insurerToAddr" rows="2" placeholder="e.g. ICICI Lombard General Insurance Co. Ltd., 3rd Floor C Wing, Manikchand Icon, Bund Garden, Pune - 411001"></textarea></div>
+<div class="fg"><label>Kind Attention</label><input type="text" id="kindAttention" placeholder="e.g. Mr. Saurabh Gundawar"/></div>
 </div>
-
-<div class="fg full"><label for="situation">Situation of Loss</label><textarea id="situation" placeholder="Describe how and when the loss occurred..."></textarea></div>
-
-<div class="fg full"><label for="aboutIns">About the Insured (Business Description)</label><textarea id="aboutIns" placeholder="Nature of business, products/services, operations..."></textarea></div>
-
 </div>
-
-</div>
-
 </section>
 
+<!-- ════ WITHOUT PREJUDICE — FINAL SURVEY REPORT ════ -->
 <section class="sec">
-
 <div class="sechd">
+<div class="sico ib"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00F5FF" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+<div><div class="stitle">WITHOUT PREJUDICE — FINAL SURVEY REPORT</div><div class="ssub">Claim summary table — as appears on page 1 of every FSR</div></div>
+</div>
+<div class="card cb" style="padding:0;overflow:hidden">
 
+<div style="display:grid;grid-template-columns:230px 1fr">
+<div style="background:rgba(0,245,255,.05);padding:10px 14px;font-weight:700;font-size:.78rem;border-bottom:1px solid var(--border);border-right:1px solid var(--border)">POLICY TYPE/NO.</div>
+<div style="padding:8px 12px;border-bottom:1px solid var(--border)"><input type="text" id="polNum" placeholder="Policy Name – Burglary Insurance Policy / Policy No. - 4002/426477176/00/000" style="background:transparent;border:none;outline:none;width:100%;color:var(--t1);font-size:.82rem"/></div>
+</div>
+
+<div style="display:grid;grid-template-columns:230px 1fr">
+<div style="background:rgba(0,245,255,.05);padding:10px 14px;font-weight:700;font-size:.78rem;border-bottom:1px solid var(--border);border-right:1px solid var(--border)">CLAIM NO.</div>
+<div style="padding:8px 12px;border-bottom:1px solid var(--border)"><input type="text" id="claimNum" placeholder="e.g. MSC056370848" style="background:transparent;border:none;outline:none;width:100%;color:var(--t1);font-size:.82rem"/></div>
+</div>
+
+<div style="display:grid;grid-template-columns:230px 1fr">
+<div style="background:rgba(0,245,255,.05);padding:10px 14px;font-weight:700;font-size:.78rem;border-bottom:1px solid var(--border);border-right:1px solid var(--border)">INSURED</div>
+<div style="padding:8px 12px;border-bottom:1px solid var(--border)"><textarea id="insured" rows="2" placeholder="M/s. Sparsh Electronics India Pvt. Ltd., Ground Floor, Godown No. 1, Gat No. 496, Near Apcrotex Costings Pvt. Ltd., Pune – Nagar Road, Ranjangaon Ganpati, Pune – 412 209" style="background:transparent;border:none;outline:none;width:100%;color:var(--t1);font-size:.82rem;resize:vertical"></textarea></div>
+</div>
+
+<div style="display:grid;grid-template-columns:230px 1fr">
+<div style="background:rgba(0,245,255,.05);padding:10px 14px;font-weight:700;font-size:.78rem;border-bottom:1px solid var(--border);border-right:1px solid var(--border)">DATE &amp; TIME OF LOSS</div>
+<div style="padding:8px 12px;border-bottom:1px solid var(--border)"><input type="text" id="dol" placeholder="e.g. On midnight and early morning of February 1st and 2nd, 2026, between approximately 01:00 AM and 03:45 AM" style="background:transparent;border:none;outline:none;width:100%;color:var(--t1);font-size:.82rem"/></div>
+</div>
+
+<div style="display:grid;grid-template-columns:230px 1fr">
+<div style="background:rgba(0,245,255,.05);padding:10px 14px;font-weight:700;font-size:.78rem;border-bottom:1px solid var(--border);border-right:1px solid var(--border)">DATE &amp; TIME OF INTIMATION</div>
+<div style="padding:8px 12px;border-bottom:1px solid var(--border)"><input type="text" id="doi" placeholder="e.g. On Monday, February 2, 2026 11:26:52 AM" style="background:transparent;border:none;outline:none;width:100%;color:var(--t1);font-size:.82rem"/></div>
+</div>
+
+<div style="display:grid;grid-template-columns:230px 1fr">
+<div style="background:rgba(0,245,255,.05);padding:10px 14px;font-weight:700;font-size:.78rem;border-bottom:1px solid var(--border);border-right:1px solid var(--border)">DATE OF SURVEY</div>
+<div style="padding:8px 12px;border-bottom:1px solid var(--border)"><input type="text" id="dos" placeholder="e.g. On Monday, February 2, 2026 subsequent visit on 06th Feb 2026" style="background:transparent;border:none;outline:none;width:100%;color:var(--t1);font-size:.82rem"/></div>
+</div>
+
+<div style="display:grid;grid-template-columns:230px 1fr">
+<div style="background:rgba(0,245,255,.05);padding:10px 14px;font-weight:700;font-size:.78rem;border-bottom:1px solid var(--border);border-right:1px solid var(--border)">DELAY IN INTIMATION</div>
+<div style="padding:8px 12px;border-bottom:1px solid var(--border)"><select id="delayIntimation" style="background:transparent;border:none;outline:none;color:var(--t1);font-size:.82rem;width:100%"><option value="No delay">No delay</option><option value="Delayed — reasons provided">Delayed — reasons provided</option></select></div>
+</div>
+
+<div style="display:grid;grid-template-columns:230px 1fr">
+<div style="background:rgba(0,245,255,.05);padding:10px 14px;font-weight:700;font-size:.78rem;border-bottom:1px solid var(--border);border-right:1px solid var(--border)">LOSS LOCATION</div>
+<div style="padding:8px 12px;border-bottom:1px solid var(--border)"><textarea id="lossLocation" rows="2" placeholder="M/s. Sparsh Electronics India Pvt. Ltd., Ground Floor, Godown No. 1, Gat No. 496, Pune – Nagar Road, Ranjangaon Ganpati, Pune – 412 209" style="background:transparent;border:none;outline:none;width:100%;color:var(--t1);font-size:.82rem;resize:vertical"></textarea></div>
+</div>
+
+<div style="display:grid;grid-template-columns:230px 1fr">
+<div style="background:rgba(0,245,255,.05);padding:10px 14px;font-weight:700;font-size:.78rem;border-bottom:1px solid var(--border);border-right:1px solid var(--border)">SITUATION OF LOSS</div>
+<div style="padding:8px 12px;border-bottom:1px solid var(--border)"><textarea id="situation" rows="4" placeholder="As informed by the Insured — describe how the loss occurred, when it was discovered, by whom, and immediate steps taken..." style="background:transparent;border:none;outline:none;width:100%;color:var(--t1);font-size:.82rem;resize:vertical"></textarea></div>
+</div>
+
+<div style="display:grid;grid-template-columns:230px 1fr">
+<div style="background:rgba(0,245,255,.05);padding:10px 14px;font-weight:700;font-size:.78rem;border-bottom:1px solid var(--border);border-right:1px solid var(--border)">CAUSE OF LOSS</div>
+<div style="padding:8px 12px;border-bottom:1px solid var(--border)">
+<select id="cause" style="background:transparent;border:none;outline:none;color:var(--t1);font-size:.82rem;width:100%;margin-bottom:8px"><option value="">— Select Cause —</option><option>Fire</option><option>Burglary / House Breaking</option><option>Theft / Burglary</option><option>Marine — Transit Damage</option><option>Flood / Inundation</option><option>Cyclone / Storm</option><option>Riot, Strike &amp; Malicious Damage</option><option>Explosion</option><option>Machinery Breakdown</option><option>Other</option></select>
+<input type="text" id="firNumber" placeholder="FIR No. &amp; Date — e.g. FIR No. 006 dated 02 Feb 2026" style="background:transparent;border:none;border-top:1px solid var(--border);outline:none;width:100%;color:var(--t1);font-size:.82rem;padding:6px 0;display:block"/>
+<input type="text" id="firSection" placeholder="Legal section — e.g. BNS 2023 – 303(2), Bharatiya Nyaya Sanhita 2023" style="background:transparent;border:none;border-top:1px solid var(--border);outline:none;width:100%;color:var(--t1);font-size:.82rem;padding:6px 0;display:block;margin-top:4px"/>
+</div>
+</div>
+
+<div style="display:grid;grid-template-columns:230px 1fr">
+<div style="background:rgba(0,245,255,.05);padding:10px 14px;font-weight:700;font-size:.78rem;border-bottom:1px solid var(--border);border-right:1px solid var(--border)">CIRCUMSTANCES OF LOSS</div>
+<div style="padding:8px 12px;border-bottom:1px solid var(--border)"><textarea id="circumstances" rows="5" placeholder="Reportedly, the incident of loss at [insured] occurred during the early morning hours of [date], between [time], while the facility was closed for its weekly Sunday holiday. The perpetrators gained unauthorized access by forcefully prying open the back-side shop floor shutter gate. The breach was discovered at approximately [time] by the night shift security guard..." style="background:transparent;border:none;outline:none;width:100%;color:var(--t1);font-size:.82rem;resize:vertical"></textarea></div>
+</div>
+
+<div style="display:grid;grid-template-columns:230px 1fr">
+<div style="background:rgba(0,245,255,.05);padding:10px 14px;font-weight:700;font-size:.78rem;border-bottom:1px solid var(--border);border-right:1px solid var(--border)">LOSS RESERVE RECOMMENDED EARLIER</div>
+<div style="padding:8px 12px;border-bottom:1px solid var(--border)"><div style="display:flex;align-items:center;gap:8px"><span style="color:var(--t3)">₹</span><input type="text" id="lossReserve" placeholder="e.g. 38,00,000" oninput="fmtINR(this)" style="background:transparent;border:none;outline:none;color:var(--t1);font-size:.82rem;flex:1"/></div></div>
+</div>
+
+<div style="display:grid;grid-template-columns:230px 1fr">
+<div style="background:rgba(0,245,255,.05);padding:10px 14px;font-weight:700;font-size:.78rem;border-bottom:1px solid var(--border);border-right:1px solid var(--border)">GROSS ASSESSED LOSS</div>
+<div style="padding:8px 12px;border-bottom:1px solid var(--border)"><div style="display:flex;align-items:center;gap:8px"><span style="color:var(--t3)">₹</span><input type="text" id="grossAssessedLoss" placeholder="e.g. 60,26,495.82" oninput="fmtINR(this)" style="background:transparent;border:none;outline:none;color:var(--t1);font-size:.82rem;flex:1"/></div></div>
+</div>
+
+<div style="display:grid;grid-template-columns:230px 1fr">
+<div style="background:rgba(0,245,255,.05);padding:10px 14px;font-weight:700;font-size:.78rem;border-bottom:1px solid var(--border);border-right:1px solid var(--border)">NET ADJUSTED LOSS / SETTLEMENT AVAILABLE</div>
+<div style="padding:8px 12px;border-bottom:1px solid var(--border);color:var(--t3);font-size:.78rem">Auto-calculated by Financial Engine ↓</div>
+</div>
+
+<div style="display:grid;grid-template-columns:230px 1fr">
+<div style="background:rgba(0,245,255,.05);padding:10px 14px;font-weight:700;font-size:.78rem;border-bottom:1px solid var(--border);border-right:1px solid var(--border)">LESS: % In Absence of Police FR</div>
+<div style="padding:8px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px">
+<input type="number" id="hb" placeholder="e.g. 25" min="0" max="100" step="0.01" style="background:transparent;border:none;border-bottom:1px solid var(--border);outline:none;color:var(--t1);font-size:.82rem;width:70px"/>
+<span style="color:var(--t3);font-size:.78rem">%</span>
+<input type="text" id="holdbackReason" placeholder="Reason — e.g. Final Police Report pending" style="background:transparent;border:none;border-bottom:1px solid var(--border);outline:none;color:var(--t1);font-size:.82rem;flex:1"/>
+</div>
+</div>
+
+<div style="display:grid;grid-template-columns:230px 1fr">
+<div style="background:rgba(0,245,255,.08);padding:10px 14px;font-weight:700;font-size:.78rem;color:var(--blue);border-right:1px solid var(--border)">SETTLEMENT AVAILABLE</div>
+<div style="padding:8px 12px;color:var(--t3);font-size:.78rem">Computed automatically below after you click Compute Settlement</div>
+</div>
+
+</div>
+</section>
+
+<!-- ════ POLICY DETAILS ════ -->
+<section class="sec">
+<div class="sechd">
+<div class="sico ib"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00F5FF" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+<div><div class="stitle">POLICY DETAILS</div><div class="ssub">Complete policy &amp; insured particulars table</div></div>
+</div>
+<div class="card cb" style="padding:0;overflow:hidden">
+
+<div style="display:grid;grid-template-columns:230px 1fr">
+<div style="background:rgba(0,245,255,.05);padding:10px 14px;font-weight:700;font-size:.78rem;border-bottom:1px solid var(--border);border-right:1px solid var(--border)">POLICY TYPE/NO</div>
+<div style="padding:8px 12px;border-bottom:1px solid var(--border)"><input type="text" id="polType" placeholder="Policy Name – Burglary Insurance Policy / Policy No. - 4002/426477176/00/000" style="background:transparent;border:none;outline:none;width:100%;color:var(--t1);font-size:.82rem"/></div>
+</div>
+
+<div style="display:grid;grid-template-columns:230px 1fr">
+<div style="background:rgba(0,245,255,.05);padding:10px 14px;font-weight:700;font-size:.78rem;border-bottom:1px solid var(--border);border-right:1px solid var(--border)">INSURERS</div>
+<div style="padding:8px 12px;border-bottom:1px solid var(--border)"><input type="text" id="insurer" placeholder="e.g. ICICI Lombard General Insurance Co. Ltd." style="background:transparent;border:none;outline:none;width:100%;color:var(--t1);font-size:.82rem"/></div>
+</div>
+
+<div style="display:grid;grid-template-columns:230px 1fr">
+<div style="background:rgba(0,245,255,.05);padding:10px 14px;font-weight:700;font-size:.78rem;border-bottom:1px solid var(--border);border-right:1px solid var(--border)">NAME &amp; ADDRESS OF INSURED</div>
+<div style="padding:8px 12px;border-bottom:1px solid var(--border)"><textarea id="insuredAddr" rows="2" placeholder="M/s. Sparsh Electronics India Pvt. Ltd., Ground Floor, Godown No. 1, Gat No. 496, Near Apcrotex Costings Pvt. Ltd. Pune – Nagar Road, Ranjangaon Ganpati, Pune – 412 209" style="background:transparent;border:none;outline:none;width:100%;color:var(--t1);font-size:.82rem;resize:vertical"></textarea></div>
+</div>
+
+<div style="display:grid;grid-template-columns:230px 1fr">
+<div style="background:rgba(0,245,255,.05);padding:10px 14px;font-weight:700;font-size:.78rem;border-bottom:1px solid var(--border);border-right:1px solid var(--border)">BANK/FINANCIERS</div>
+<div style="padding:8px 12px;border-bottom:1px solid var(--border)"><input type="text" id="bankFinancier" placeholder="e.g. Cosmos Bank Ltd." style="background:transparent;border:none;outline:none;width:100%;color:var(--t1);font-size:.82rem"/></div>
+</div>
+
+<div style="display:grid;grid-template-columns:230px 1fr">
+<div style="background:rgba(0,245,255,.05);padding:10px 14px;font-weight:700;font-size:.78rem;border-bottom:1px solid var(--border);border-right:1px solid var(--border)">OCCUPATION</div>
+<div style="padding:8px 12px;border-bottom:1px solid var(--border)"><textarea id="occupation" rows="2" placeholder="Others – As per Policy. Insured is engaged in assembling of harness system for various automobiles make to order basis." style="background:transparent;border:none;outline:none;width:100%;color:var(--t1);font-size:.82rem;resize:vertical"></textarea></div>
+</div>
+
+<div style="display:grid;grid-template-columns:230px 1fr">
+<div style="background:rgba(0,245,255,.05);padding:10px 14px;font-weight:700;font-size:.78rem;border-bottom:1px solid var(--border);border-right:1px solid var(--border)">LOCATION OF LOSS AFFECTED</div>
+<div style="padding:8px 12px;border-bottom:1px solid var(--border)"><textarea id="lossLocationFull" rows="2" placeholder="M/s. Sparsh Electronics India Pvt. Ltd., Ground Floor, Godown No. 1, Gat No. 496, Near Apcrotex Costings Pvt. Ltd., Pune – Nagar Road, Ranjangaon Ganpati, Pune – 412 209" style="background:transparent;border:none;outline:none;width:100%;color:var(--t1);font-size:.82rem;resize:vertical"></textarea></div>
+</div>
+
+<div style="display:grid;grid-template-columns:230px 1fr">
+<div style="background:rgba(0,245,255,.05);padding:10px 14px;font-weight:700;font-size:.78rem;border-bottom:1px solid var(--border);border-right:1px solid var(--border)">PERIOD OF INSURANCE</div>
+<div style="padding:8px 12px;border-bottom:1px solid var(--border)"><input type="text" id="polPeriod" placeholder="From 00:00 hours of January 22, 2026, to the midnight of January 21, 2027" style="background:transparent;border:none;outline:none;width:100%;color:var(--t1);font-size:.82rem"/></div>
+</div>
+
+<div style="display:grid;grid-template-columns:230px 1fr">
+<div style="background:rgba(0,245,255,.05);padding:10px 14px;font-weight:700;font-size:.78rem;border-bottom:1px solid var(--border);border-right:1px solid var(--border)">CLAUSES</div>
+<div style="padding:8px 12px;border-bottom:1px solid var(--border)"><textarea id="clauses" rows="2" placeholder="Inclusion of Theft Peril (BP 3): This endorsement extends the policy to cover losses due to theft without actual forcible and violent entry or exit from the premises." style="background:transparent;border:none;outline:none;width:100%;color:var(--t1);font-size:.82rem;resize:vertical"></textarea></div>
+</div>
+
+<div style="display:grid;grid-template-columns:230px 1fr">
+<div style="background:rgba(0,245,255,.05);padding:10px 14px;font-weight:700;font-size:.78rem;border-bottom:1px solid var(--border);border-right:1px solid var(--border)">WARRANTIES/CONDITIONS</div>
+<div style="padding:8px 12px;border-bottom:1px solid var(--border)"><input type="text" id="warranties" placeholder="As per policy." style="background:transparent;border:none;outline:none;width:100%;color:var(--t1);font-size:.82rem"/></div>
+</div>
+
+<div style="display:grid;grid-template-columns:230px 1fr">
+<div style="background:rgba(0,245,255,.05);padding:10px 14px;font-weight:700;font-size:.78rem;border-right:1px solid var(--border)">DEDUCTIBLE</div>
+<div style="padding:8px 12px"><textarea id="deductibleDesc" rows="2" placeholder="The Burglary Deductible for this policy is 5% of the claim amount, subject to a minimum of INR 10,000 on each and every claim" style="background:transparent;border:none;outline:none;width:100%;color:var(--t1);font-size:.82rem;resize:vertical"></textarea></div>
+</div>
+
+</div>
+</section>
+
+<!-- ════ INTRODUCTION ════ -->
+<section class="sec">
+<div class="sechd">
+<div class="sico ib"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00F5FF" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+<div><div class="stitle">INTRODUCTION</div><div class="ssub">Survey appointment, inspection account &amp; documents verified</div></div>
+</div>
+<div class="card cb">
+<div class="fgrid">
+<div class="fg full"><label>Introduction</label><textarea id="introduction" rows="4" placeholder="Pursuant to the instructions received from insurers on [date/time], we have contacted the concerned person and scheduled our survey inspection as per the appointment given by the concerned. During our initial visit at the Insured location on [date], we had a discussion with the concerned person in respect of the reported loss, wherein we understand the circumstance of loss and cause of loss and extent of loss.&#10;&#10;We also confirm that we have verified the CCTV footage and obtained copy of same depicting the coverage of entire incident occurred. We also have collected statement from Security guard and other officials."></textarea></div>
+</div>
+</div>
+</section>
+
+<!-- ════ ABOUT THE INSURED ════ -->
+<section class="sec">
+<div class="sechd">
+<div class="sico ib"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00F5FF" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+<div><div class="stitle">ABOUT THE INSURED</div><div class="ssub">Business background, ISO certifications, products, markets</div></div>
+</div>
+<div class="card cb">
+<div class="fgrid">
+<div class="fg full"><label>About the Insured</label><textarea id="aboutIns" rows="4" placeholder="Automotive and Consumer Product Wiring Harness Manufacturer. ISO 9001:2015 certified. Operating in India for 10+ years. Products: wiring harnesses, electrical connecting assemblies. Exports to USA and European countries..."></textarea></div>
+</div>
+</div>
+</section>
+
+<!-- ════ NATURE & EXTENT OF LOSS ════ -->
+<section class="sec">
+<div class="sechd">
+<div class="sico ib"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00F5FF" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg></div>
+<div><div class="stitle">NATURE &amp; EXTENT OF LOSS</div><div class="ssub">Survey inspection visit account &amp; discussion with insured</div></div>
+</div>
+<div class="card cb">
+<div class="fgrid">
+<div class="fg full"><label>Nature &amp; Extent of Loss</label><textarea id="natureExtentLoss" rows="3" placeholder="Pursuant to the instructions received from [Insurer] dated [date], we had established our contact with the concerned person and the appointment was fixed for [date] as per the availability of the Insured. At the time of our survey visit, we had a chance to discuss the loss scenario with [Name, Designation] of the Insured premises. Based on such inspection and our physical inspection..."></textarea></div>
+<div class="fg"><label>Survey Contact Person &amp; Designation</label><input type="text" id="surveyContact" placeholder="e.g. Mr. Sandip Shinde, Manager"/></div>
+</div>
+</div>
+</section>
+
+<!-- ════ NATURE & EXTENT OF DAMAGE / LOSS ════ -->
+<section class="sec">
+<div class="sechd">
+<div class="sico ib"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00F5FF" stroke-width="2"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+<div><div class="stitle">NATURE &amp; EXTENT OF DAMAGE / LOSS</div><div class="ssub">Detailed physical findings &amp; key observations from survey</div></div>
+</div>
+<div class="card cb">
+<div class="fgrid">
+<div class="fg full"><label>Nature &amp; Extent of Damage / Loss <span style="color:var(--t3);font-size:.68rem">(each finding on new line — AI will format as bullets)</span></label><textarea id="natureExtent" rows="6" placeholder="During our survey inspection we have noted the premises was covered with suitable compound wall and having RCC walls with industrial shed. As we understand the loss was occurred the following observations:&#10;&#10;A comprehensive review of the incident documentation reveals a critical security vulnerability that facilitated the burglary.&#10;The factory was vacated by staff and laborers on January 31, 2026, for the scheduled weekly Sunday holiday.&#10;This lapse in active surveillance provided an uninterrupted window for unauthorized individuals to forcefully pry open the rear shop floor shutter gate.&#10;The targeted theft of high-value inventory, including imported cables, suggests the perpetrators may have possessed prior knowledge of the facility's high-value stock locations.&#10;The breach was eventually discovered at 05:30 AM and promptly reported to the Ranjangaon MIDC Police."></textarea></div>
+</div>
+</div>
+</section>
+
+<!-- ════ THE INSURED'S CLAIM ════ -->
+<section class="sec">
+<div class="sechd">
+<div class="sico ib"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00F5FF" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+<div><div class="stitle">THE INSURED'S CLAIM</div><div class="ssub">Claim bill submitted, stock register verification, material values</div></div>
+</div>
+<div class="card cb">
+<div class="fgrid">
+<div class="fg full"><label>The Insured's Claim (Narrative)</label><textarea id="insuredClaim" rows="3" placeholder="Insured has submitted a claim bill, indicated their loss to the extent of ₹[amount] also provided the cost supporting invoices against the items claimed. The Insured's claim follows — For details please refer loss assessment sheet enclosed with this report as annexure - 1.&#10;&#10;At the time of our survey visit, we were furnished with the stock register for our review. Initially, we had undertaken the quantification exercise, on a sampling basis. As per the claimed asset list provided by the Insured, we have verified the actual stock present inside the shop, in accordance with the stock register."></textarea></div>
+</div>
+<div class="card cb" style="padding:0;overflow:hidden;margin-top:12px">
+<div style="display:grid;grid-template-columns:230px 1fr">
+<div style="background:rgba(0,245,255,.05);padding:10px 14px;font-weight:700;font-size:.78rem;border-bottom:1px solid var(--border);border-right:1px solid var(--border)">Material Stolen</div>
+<div style="padding:8px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px"><span style="color:var(--t3)">₹</span><input type="text" id="materialStolen" placeholder="e.g. 51,07,199.85" oninput="fmtINR(this)" style="background:transparent;border:none;outline:none;color:var(--t1);font-size:.82rem;flex:1"/></div>
+</div>
+<div style="display:grid;grid-template-columns:230px 1fr">
+<div style="background:rgba(0,245,255,.05);padding:10px 14px;font-weight:700;font-size:.78rem;border-bottom:1px solid var(--border);border-right:1px solid var(--border)">Recovery</div>
+<div style="padding:8px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px"><span style="color:var(--t3)">₹</span><input type="text" id="materialRecovery" placeholder="e.g. 6,82,947.75" oninput="fmtINR(this)" style="background:transparent;border:none;outline:none;color:var(--t1);font-size:.82rem;flex:1"/></div>
+</div>
+<div style="display:grid;grid-template-columns:230px 1fr">
+<div style="background:rgba(0,245,255,.05);padding:10px 14px;font-weight:700;font-size:.78rem;border-right:1px solid var(--border)">Balance</div>
+<div style="padding:8px 12px;display:flex;align-items:center;gap:8px"><span style="color:var(--t3)">₹</span><input type="text" id="materialBalance" placeholder="e.g. 44,24,252.10" oninput="fmtINR(this)" style="background:transparent;border:none;outline:none;color:var(--t1);font-size:.82rem;flex:1"/></div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ════ THIRD PARTY ════ -->
+<section class="sec">
+<div class="sechd">
+<div class="sico ib"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00F5FF" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+<div><div class="stitle">THIRD PARTY</div><div class="ssub">Third-party property or material loss/damage</div></div>
+</div>
+<div class="card cb">
+<div class="fgrid">
+<div class="fg"><label>Third Party Loss / Damage</label><select id="thirdParty"><option value="None">None — There is no loss/damage caused to any third-party property and/or material</option><option value="Yes">Yes — details below</option></select></div>
+<div class="fg full"><label>Third Party Details <span style="color:var(--t3);font-size:.68rem">(leave blank if none)</span></label><input type="text" id="thirdPartyDetails" placeholder="Describe if applicable"/></div>
+</div>
+</div>
+</section>
+
+<!-- ════ POLICY CONDITIONS & WARRANTIES AND THE INSURER'S LIABILITY UNDER POLICY ════ -->
+<section class="sec">
+<div class="sechd">
+<div class="sico ib"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00F5FF" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+<div><div class="stitle">POLICY CONDITIONS &amp; WARRANTIES AND THE INSURER'S LIABILITY UNDER POLICY</div><div class="ssub">Coverage confirmation, warranty compliance, breach assessment</div></div>
+</div>
+<div class="card cb">
+<div class="fgrid">
+<div class="fg full"><label>Policy Conditions, Warranties &amp; Insurer's Liability</label><textarea id="insurerLiability" rows="3" placeholder="The loss to the subject stock of various cables was occurred due to theft / burglary which is sudden, accidental, and unforeseen in nature. The cause of loss is deemed covered under the Policy. We have not found any breach of warranty as per the policy terms and conditions. We have gone through the Policy wordings and to the scrutiny of all we hereby confirm that all the warranties / conditions under the policy is compiled herewith."></textarea></div>
+</div>
+</div>
+</section>
+
+<!-- ════ OTHER INSURANCES ════ -->
+<section class="sec">
+<div class="sechd">
+<div class="sico ib"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00F5FF" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></div>
+<div><div class="stitle">OTHER INSURANCES</div><div class="ssub">Concurrent / double insurance confirmation</div></div>
+</div>
+<div class="card cb">
+<div class="fgrid">
+<div class="fg"><label>Other Insurances</label><select id="otherInsurances"><option value="None">None — The Insured has confirmed that they do not have any other insurance covering the damaged / lost property</option><option value="Yes">Yes — details below</option></select></div>
+<div class="fg full"><label>Other Insurance Details <span style="color:var(--t3);font-size:.68rem">(if applicable)</span></label><input type="text" id="otherInsuranceDetails" placeholder="Leave blank if none"/></div>
+</div>
+</div>
+</section>
+
+<!-- ════ INSURERS' LIABILITY ════ -->
+<section class="sec">
+<div class="sechd">
+<div class="sico ib"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00F5FF" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div>
+<div><div class="stitle">INSURERS' LIABILITY</div><div class="ssub">Liability attachment confirmation</div></div>
+</div>
+<div class="card cb">
+<div class="fgrid">
+<div class="fg full"><label>Insurers' Liability</label><textarea id="insurersLiability" rows="2" placeholder="The damage to insured stock is occurred due to theft / burglary which is covered under the Policy. The loss took place during current policy period. The risk location is found covered. Hence insurer's liability will attach."></textarea></div>
+</div>
+</div>
+</section>
+
+<!-- ════ SUBROGATION/RECOVERY ════ -->
+<section class="sec">
+<div class="sechd">
+<div class="sico ib"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00F5FF" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></div>
+<div><div class="stitle">SUBROGATION/RECOVERY</div><div class="ssub">Recovery status, police investigation &amp; insured's consent</div></div>
+</div>
+<div class="card cb">
+<div class="fgrid">
+<div class="fg full"><label>Subrogation / Recovery</label><textarea id="subrogation" rows="3" placeholder="Stolen material is yet not recovered by Police and Police investigation is still under process. Although insured have provided their consent after adjustment from Net Adjusted Loss i.e. ₹[amount] which was adjusted in absence of Final police report and or waiver of recovery details. Insurers are requested to obtain suitable documents in context of same, required if any prior to settle the claim."></textarea></div>
+</div>
+</div>
+</section>
+
+<!-- ════ 1. GROSS LOSS ASSESSED ════ -->
+<section class="sec">
+<div class="sechd">
 <div class="sico ip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9D4EDD" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
-
-<div><div class="stitle">Financial Assessment Engine</div><div class="ssub">Loss Quantification &amp; Settlement Computation</div></div>
-
+<div><div class="stitle">GROSS LOSS ASSESSED</div><div class="ssub">Total gross loss including GST as assessed by surveyor</div></div>
 </div>
-
-<div class="finlay">
-
 <div class="card cp">
-
 <div class="fgrid">
-
-<div class="fg"><label for="gc">Gross Claimed Amount (₹)</label><div class="ipw hsp"><span class="ipr">₹</span><input type="text" id="gc" placeholder="0.00" oninput="fmtINR(this)"/></div><span class="ferr" id="egc">Required</span></div>
-
-<div class="fg"><label for="gst">GST Amount (₹)</label><div class="ipw hsp"><span class="ipr">₹</span><input type="text" id="gst" placeholder="0.00" oninput="fmtINR(this)"/></div></div>
-
-<div class="fg"><label for="rec">Recovered / Salvage Value (₹)</label><div class="ipw hsp"><span class="ipr">₹</span><input type="text" id="rec" placeholder="0.00" oninput="fmtINR(this)"/></div></div>
-
-<div class="fg"><label for="si">Sum Insured (₹)</label><div class="ipw hsp"><span class="ipr">₹</span><input type="text" id="si" placeholder="0.00" oninput="fmtINR(this)"/></div><span class="ferr" id="esi">Required</span></div>
-
-<div class="fg"><label for="vr">Value at Risk (₹)</label><div class="ipw hsp"><span class="ipr">₹</span><input type="text" id="vr" placeholder="0.00" oninput="fmtINR(this)"/></div><span class="ferr" id="evr">Required</span></div>
-
-<div class="fg"><label for="ds">Dead Stock % (Obsolescence)</label><input type="number" id="ds" placeholder="0" min="0" max="100" step="0.01"/></div>
-
-<div class="fg"><label for="ded">Policy Deductible (%)</label><input type="number" id="ded" placeholder="0" min="0" max="100" step="0.01"/></div>
-
-<div class="fg"><label for="hb">Holdback % <span style="color:var(\--t3);font-size:.68rem">(optional)</span></label><input type="number" id="hb" placeholder="0" min="0" max="100" step="0.01"/></div>
-
+<div class="fg"><label style="font-weight:700">Gross Loss Assessed (Including GST) ₹</label><div class="ipw hsp"><span class="ipr">₹</span><input type="text" id="gc" placeholder="e.g. 60,26,495.82" oninput="fmtINR(this)"/></div><span class="ferr" id="egc">Required</span></div>
+<div class="fg full"><label>Basis of Assessment</label><textarea id="grossLossBasis" rows="2" placeholder="e.g. Based on the stock register, purchase invoices and physical verification of stolen/damaged material, the gross loss is assessed as under..."></textarea></div>
 </div>
-
-<button class="btn bc" id="compBtn" onclick="compute()">
-
-<span class="spin" id="cSpin"></span>
-
-<svg id="cIco" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-
-Compute Settlement
-
-</button>
-
 </div>
-
-<div class="respanel">
-
-<div class="restitle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Settlement Output</div>
-
-<div id="resPh" class="resph"><div style="font-size:1.8rem;margin-bottom:10px">⚡</div>Enter values &amp; click<br/><strong style="color:var(\--blue)">Compute Settlement</strong></div>
-
-<div id="resLines" style="display:none">
-
-<div class="rline"><span class="rl">Net Cost of Restoration</span><span class="rv" id="v0">---</span></div>
-
-<div class="rline"><span class="rl">Gross Loss Post Recovery</span><span class="rv" id="v1">---</span></div>
-
-<div class="rline rw"><span class="rl">Underinsurance %</span><span class="rv" id="v2">---</span></div>
-
-<div class="rline"><span class="rl">Adjusted Loss</span><span class="rv" id="v3">---</span></div>
-
-<div class="rline ra"><span class="rl">Policy Excess</span><span class="rv" id="v4">---</span></div>
-
-<div class="rline"><span class="rl">Net Adjusted Loss</span><span class="rv" id="v5">---</span></div>
-
-<div class="rline"><span class="rl">Holdback</span><span class="rv" id="v6">---</span></div>
-
-<div class="rline rtot"><span class="rl" style="color:var(\--t1);font-weight:600">Net Settlement Recommended</span><span class="rv" id="v7">---</span></div>
-
-</div>
-
-</div>
-
-</div>
-
 </section>
 
+<!-- ════ 2. GST COMPONENT ════ -->
 <section class="sec">
-
 <div class="sechd">
-
-<div class="sico ig"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#39FF14" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
-
-<div><div class="stitle">AI Generated Final Survey Report</div><div class="ssub">Powered by GPT-4o Mini --- Preview &amp; Export</div></div>
-
-<div style="margin-left:auto"><span class="badge ba" id="rptBadge">Awaiting Input</span></div>
-
+<div class="sico ip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9D4EDD" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+<div><div class="stitle">GST COMPONENT</div><div class="ssub">GST portion disallowed — insured may avail input tax credit</div></div>
 </div>
-
-<div class="card" style="padding:0;overflow:hidden">
-
-<div class="rpttb">
-
-<div class="fc">
-
-<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-
-<span style="font-size:.76rem;color:var(\--t3);font-family:'DM Mono',monospace" id="rptTs">Not Generated</span>
-
+<div class="card cp">
+<div class="fgrid">
+<div class="fg"><label>Less: GST Component ₹</label><div class="ipw hsp"><span class="ipr">₹</span><input type="text" id="gst" placeholder="e.g. 9,19,295.97" oninput="fmtINR(this)"/></div></div>
+<div class="fg full"><label>GST Remarks</label><input type="text" id="gstRemarks" placeholder="e.g. GST component of ₹[amount] is being disallowed as the insured can avail input tax credit on the same."/></div>
 </div>
-
-<div class="bgrp">
-
-<button class="btn bg" onclick="genReport()">
-
-<span class="spin" id="aiSpin"></span>
-
-<svg id="aiIco" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3"/></svg>
-
-Generate AI Draft
-
-</button>
-
-<button class="btn bp" onclick="dlPDF()">
-
-<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-
-PDF
-
-</button>
-
-<button class="btn bgh" onclick="dlWord()">Word</button>
-
-<button class="btn bgh" onclick="dlTXT()">TXT</button>
-
 </div>
-
-</div>
-
-<div class="rptmeta">
-
-<div class="rmi">Surveyor: <span id="rm0">---</span></div>
-
-<div class="rmi">Ref: <span id="rm1">---</span></div>
-
-<div class="rmi">Insured: <span id="rm2">---</span></div>
-
-<div class="rmi">Date of Loss: <span id="rm3">---</span></div>
-
-<div class="rmi" style="margin-left:auto">Settlement: <span id="rm4" style="color:var(\--green)">---</span></div>
-
-</div>
-
-<!\-- ✅ Fix 1: rptOut is the ONLY output target used in JS \-->
-
-<div class="rptarea" id="rptArea">
-
-<div class="genov" id="genOv">
-
-<div class="spin on bspin"></div>
-
-<div class="gentxt" id="genMsg">Initializing AI Engine...</div>
-
-<div class="genbar"><div class="genfill" id="genFill"></div></div>
-
-</div>
-
-<div class="rptph" id="rptPh">
-
-<svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#4A5568" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-
-<p>Fill metadata &amp; compute settlement,<br/>then click <strong style="color:var(\--green)">Generate AI Draft</strong></p>
-
-</div>
-
-<div id="rptOut"></div>
-
-</div>
-
-</div>
-
 </section>
 
+<!-- ════ 3. DEDUCTION FOR RECOVERED MATERIAL ════ -->
 <section class="sec">
-
 <div class="sechd">
-
-<div class="sico ia"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFB800" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="9" x2="9" y2="21"/></svg></div>
-
-<div><div class="stitle">Calculation Breakdown Annexure</div><div class="ssub">Loss Assessment --- Structured Summary (Annexure A)</div></div>
-
+<div class="sico ip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9D4EDD" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+<div><div class="stitle">DEDUCTION FOR RECOVERED MATERIAL</div><div class="ssub">Material recovered / salvaged after the incident — deducted from gross loss</div></div>
 </div>
-
-<div class="card" style="padding:0;overflow:hidden">
-
-<div class="twrap">
-
-<table class="btbl">
-
-<thead><tr><th style="width:38%">Particulars</th><th style="width:22%;text-align:right">Amount (INR)</th><th>Explanation / Basis</th></tr></thead>
-
-<tbody id="bkBody"><tr><td colspan="3" style="text-align:center;color:var(\--t3);padding:26px;font-family:'DM Mono',monospace;font-size:.77rem">--- Compute settlement to populate ---</td></tr></tbody>
-
-</table>
-
+<div class="card cp">
+<div class="fgrid">
+<div class="fg"><label>Less: Recovered Material ₹ <span style="color:var(--t3);font-size:.67rem">(as confirmed by insured &amp; surveyor)</span></label><div class="ipw hsp"><span class="ipr">₹</span><input type="text" id="rec" placeholder="e.g. 6,82,947.75" oninput="fmtINR(this)"/></div></div>
+<div class="fg full"><label>Description of Recovered Material</label><textarea id="recoveredDesc" rows="2" placeholder="e.g. Material partially recovered by the insured in a damaged / burnt / wet condition. The recovered material value has been mutually agreed at ₹[amount] as confirmed by the insured vide consent letter."></textarea></div>
 </div>
-
 </div>
-
 </section>
 
+<!-- ════ 4. UPGRADATION / IMPROVEMENT ADJUSTMENT ════ -->
 <section class="sec">
-
 <div class="sechd">
-
-<div class="sico ib"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00F5FF" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
-
-<div><div class="stitle">Document Upload &amp; AI Extraction</div><div class="ssub">Upload claim documents --- AI auto-fills all form fields</div></div>
-
+<div class="sico ip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFB800" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+<div><div class="stitle">UPGRADATION / IMPROVEMENT ADJUSTMENT</div><div class="ssub">Deduction for upgrades, improvements and betterment applied to reinstated items</div></div>
 </div>
+<div class="card cp">
+<div class="fgrid">
+<div class="fg"><label>Upgradation / Improvement Deduction %</label><input type="number" id="ds" placeholder="e.g. 3" min="0" max="100" step="0.01"/></div>
+<div class="fg full"><label>Basis &amp; Justification</label><textarea id="deadStockBasis" rows="2" placeholder="e.g. During reinstatement, certain upgrades and improvements were carried out beyond like-for-like replacement. A deduction of [X]% amounting to ₹[amount] is applied towards upgradation / improvement / betterment."></textarea></div>
+</div>
+</div>
+</section>
 
+<!-- ════ 5. SALVAGE CONSIDERATION ════ -->
+<section class="sec">
+<div class="sechd">
+<div class="sico ip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFB800" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+<div><div class="stitle">SALVAGE CONSIDERATION</div><div class="ssub">Residual value of damaged property / goods after the loss event</div></div>
+</div>
+<div class="card cp">
+<div class="fgrid">
+<div class="fg"><label>Salvage Value ₹ <span style="color:var(--t3);font-size:.67rem">(leave 0 if NIL)</span></label><div class="ipw hsp"><span class="ipr">₹</span><input type="text" id="salvageValue" placeholder="e.g. 0" oninput="fmtINR(this)"/></div></div>
+<div class="fg full"><label>Salvage Remarks</label><textarea id="salvageRemarks" rows="2" placeholder="e.g. The material involved in the incident is reported to be stolen. No salvage is available for consideration. Salvage value is taken as NIL."></textarea></div>
+</div>
+</div>
+</section>
+
+<!-- ════ 6. UNDERINSURANCE CALCULATION ════ -->
+<section class="sec">
+<div class="sechd">
+<div class="sico ip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFB800" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+<div><div class="stitle">UNDERINSURANCE CALCULATION</div><div class="ssub">Average clause — if value at risk exceeds sum insured, proportionate deduction applies</div></div>
+</div>
+<div class="card cp">
+<div class="fgrid">
+<div class="fg"><label style="font-weight:700">Sum Insured ₹</label><div class="ipw hsp"><span class="ipr">₹</span><input type="text" id="si" placeholder="e.g. 4,00,00,000" oninput="fmtINR(this)"/></div><span class="ferr" id="esi">Required</span></div>
+<div class="fg"><label style="font-weight:700">Value at Risk ₹ <span style="color:var(--t3);font-size:.67rem">(Total stock value at time of loss)</span></label><div class="ipw hsp"><span class="ipr">₹</span><input type="text" id="vr" placeholder="e.g. 4,56,24,595" oninput="fmtINR(this)"/></div><span class="ferr" id="evr">Required</span></div>
+<div class="fg full"><label>Underinsurance Remarks</label><textarea id="underinsuranceRemarks" rows="2" placeholder="e.g. As per the average clause of the policy, the sum insured (₹[SI]) is less than the value at risk (₹[VAR]) at the time of loss, attracting underinsurance deduction of [X]% amounting to ₹[amount]."></textarea></div>
+</div>
+</div>
+</section>
+
+<!-- ════ 7. POLICY EXCESS / DEDUCTIBLE ════ -->
+<section class="sec">
+<div class="sechd">
+<div class="sico ip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFB800" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+<div><div class="stitle">POLICY EXCESS / DEDUCTIBLE</div><div class="ssub">Contractual deductible per policy terms — applied after underinsurance</div></div>
+</div>
+<div class="card cp">
+<div class="fgrid">
+<div class="fg"><label>Policy Excess / Deductible %</label><input type="number" id="ded" placeholder="e.g. 5" min="0" max="100" step="0.01"/></div>
+<div class="fg"><label>Minimum Deductible Amount ₹ <span style="color:var(--t3);font-size:.67rem">(whichever is higher)</span></label><div class="ipw hsp"><span class="ipr">₹</span><input type="text" id="dedMin" placeholder="e.g. 10,000" oninput="fmtINR(this)"/></div></div>
+<div class="fg full"><label>Deductible Remarks</label><input type="text" id="deductibleRemarks" placeholder="e.g. As per policy condition, 5% of claim amount subject to minimum ₹10,000 is applied as policy excess."/></div>
+</div>
+</div>
+</section>
+
+<!-- ════ 8. NET ADJUSTED LOSS ════ -->
+<section class="sec">
+<div class="sechd">
+<div class="sico ig"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#39FF14" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>
+<div><div class="stitle">NET ADJUSTED LOSS / SETTLEMENT RECOMMENDED</div><div class="ssub">Final computed settlement — click Compute Settlement to calculate</div></div>
+</div>
 <div class="card">
-
-<div class="uzone" id="uzone" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="handleDrop(event)">
-
-<input type="file" id="fileIn" multiple accept=".pdf,.png,.jpg,.jpeg,.txt,.docx" onchange="handleFiles(this.files)"/>
-
-<div class="uzone-ico">📄</div>
-
-<p>Drag &amp; drop files here, or click to browse</p>
-
-<small>PDF, DOCX, JPG, PNG, TXT --- Max 25MB each</small>
-
-</div>
-
-<div class="flist" id="flist"></div>
-
-<div id="upActs" style="display:none">
-
-<button class="btn extbtn" id="extBtn" onclick="aiExtract()">
-
-<span class="spin" id="extSpin"></span>
-
-<svg id="extIco" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3"/></svg>
-
-✨ AI Extract &amp; Auto-Fill Fields
-
+<div style="font-size:.7rem;color:var(--t3);font-family:'DM Mono',monospace;margin-bottom:16px;padding:8px 12px;background:rgba(57,255,20,.04);border-radius:6px;border-left:3px solid var(--green)">Fill all sections above then click <strong style="color:var(--green)">Compute Settlement</strong> to see the full calculation waterfall.</div>
+<button class="btn bc" id="compBtn" onclick="compute()" style="width:100%;margin-bottom:20px">
+<span class="spin" id="cSpin"></span>
+<svg id="cIco" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+Compute Settlement
 </button>
+<div id="resPh" class="resph"><div style="font-size:1.8rem;margin-bottom:10px">⚡</div>Enter values &amp; click<br/><strong style="color:var(--blue)">Compute Settlement</strong></div>
+<div id="resLines" style="display:none">
+<div class="rline" style="font-weight:600;color:var(--t1)"><span class="rl">Gross Loss Assessed (incl. GST)</span><span class="rv" id="vgross">---</span></div>
+<div class="rline"><span class="rl">Less: GST Component</span><span class="rv" id="vgst2">---</span></div>
+<div class="rline"><span class="rl">Net Cost of Restoration (Ex-GST)</span><span class="rv" id="v0">---</span></div>
+<div class="rline"><span class="rl">Less: Deduction for Recovered Material</span><span class="rv" id="vrec2">---</span></div>
+<div class="rline"><span class="rl">Gross Loss Post Recovery (excl. GST)</span><span class="rv" id="v1">---</span></div>
+<div class="rline"><span class="rl">Less: Upgradation / Improvement Adjustment</span><span class="rv" id="vds2">---</span></div>
+<div class="rline"><span class="rl">Assessed Loss</span><span class="rv" id="vassessed">---</span></div>
+<div class="rline"><span class="rl">Less: Salvage Consideration</span><span class="rv" id="vsalvage" style="color:var(--t3)">NIL</span></div>
+<div class="rline" style="font-weight:600"><span class="rl">Net Assessed Loss</span><span class="rv" id="vnetassessed">---</span></div>
+<hr style="border:none;border-top:1px solid var(--border);margin:6px 0"/>
+<div class="rline rw"><span class="rl">Underinsurance %</span><span class="rv" id="v2">---</span></div>
+<div class="rline rw"><span class="rl">Less: Underinsurance Deduction</span><span class="rv" id="vui2">---</span></div>
+<div class="rline"><span class="rl">Adjusted Loss (After Average Clause)</span><span class="rv" id="v3">---</span></div>
+<hr style="border:none;border-top:1px solid var(--border);margin:6px 0"/>
+<div class="rline ra"><span class="rl">Less: Policy Excess / Deductible</span><span class="rv" id="v4">---</span></div>
+<div class="rline" style="font-weight:600"><span class="rl">Net Adjusted Loss</span><span class="rv" id="v5">---</span></div>
+<hr style="border:none;border-top:1px solid var(--border);margin:6px 0"/>
+<div class="rline"><span class="rl">Less: Holdback % (Absent Final Police Report)</span><span class="rv" id="v6">---</span></div>
+<div class="rline rtot"><span class="rl" style="font-weight:700">NET SETTLEMENT RECOMMENDED</span><span class="rv" id="v7">---</span></div>
+</div>
+</div>
+</section>
 
-<button class="btn bgh mt" style="width:100%;margin-top:8px" onclick="clearFiles()">Clear All Files</button>
+<!-- ════ REMARKS ════ -->
+<section class="sec">
+<div class="sechd">
+<div class="sico ib"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00F5FF" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+<div><div class="stitle">REMARKS</div><div class="ssub">Non-standard adjustments &amp; surveyor instructions to insurer</div></div>
+</div>
+<div class="card cb">
+<div class="fgrid">
+<div class="fg full"><label>Remarks</label><textarea id="remarks" rows="3" placeholder="We have adjusted ₹[amount] towards non-standard i.e. [X]% of Net Adjusted Loss in absence of Final Police Report. Insurers are requested to collect necessary documentation and declaration from insured in context of this adjustment prior to settle the claim."></textarea></div>
+</div>
+</div>
+</section>
 
+<!-- ════ ANALYSIS OF GROSS PROFIT RATIO AND FINANCIAL TREND ════ -->
+<section class="sec">
+<div class="sechd">
+<div class="sico ib"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00F5FF" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+<div><div class="stitle">ANALYSIS OF GROSS PROFIT RATIO AND FINANCIAL TREND</div><div class="ssub">4-year revenue, gross profit &amp; YoY% — GP ratio auto-computed</div></div>
+</div>
+<div class="card cb">
+<div style="overflow-x:auto">
+<table style="width:100%;border-collapse:collapse;font-size:.78rem">
+<thead><tr style="background:rgba(0,245,255,.06)">
+<th style="padding:8px 10px;text-align:center;border:1px solid var(--border);color:var(--t2)">Sr. No.</th>
+<th style="padding:8px 10px;text-align:left;border:1px solid var(--border);color:var(--t2)">Particulars</th>
+<th style="padding:8px 10px;text-align:right;border:1px solid var(--border);color:var(--t2)">Revenue (₹)</th>
+<th style="padding:8px 10px;text-align:right;border:1px solid var(--border);color:var(--t2)">% Change YoY</th>
+<th style="padding:8px 10px;text-align:right;border:1px solid var(--border);color:var(--t2)">Gross Profit (₹)</th>
+<th style="padding:8px 10px;text-align:right;border:1px solid var(--border);color:var(--t2)">% Change YoY</th>
+<th style="padding:8px 10px;text-align:right;border:1px solid var(--border);color:var(--t2)">GP Ratio</th>
+</tr></thead>
+<tbody>
+<tr><td style="padding:6px 8px;border:1px solid var(--border);color:var(--t3);text-align:center">1</td>
+<td style="padding:4px 6px;border:1px solid var(--border)"><input type="text" id="gpy1" placeholder="FY 2021-22" style="background:transparent;border:none;outline:none;width:100%;color:var(--t1);font-size:.78rem"/></td>
+<td style="padding:4px 6px;border:1px solid var(--border)"><input type="text" id="gpr1" placeholder="0" oninput="calcGP(1)" style="background:transparent;border:none;outline:none;width:100%;color:var(--t1);font-size:.78rem;text-align:right"/></td>
+<td style="padding:6px 8px;border:1px solid var(--border);color:var(--t3);text-align:right;font-family:'DM Mono',monospace" id="gpryoy1">—</td>
+<td style="padding:4px 6px;border:1px solid var(--border)"><input type="text" id="gpg1" placeholder="0" oninput="calcGP(1)" style="background:transparent;border:none;outline:none;width:100%;color:var(--t1);font-size:.78rem;text-align:right"/></td>
+<td style="padding:6px 8px;border:1px solid var(--border);color:var(--t3);text-align:right;font-family:'DM Mono',monospace" id="gpgyoy1">—</td>
+<td style="padding:6px 8px;border:1px solid var(--border);color:var(--green);text-align:right;font-family:'DM Mono',monospace;font-weight:600" id="gpp1">—</td></tr>
+<tr><td style="padding:6px 8px;border:1px solid var(--border);color:var(--t3);text-align:center">2</td>
+<td style="padding:4px 6px;border:1px solid var(--border)"><input type="text" id="gpy2" placeholder="FY 2022-23" style="background:transparent;border:none;outline:none;width:100%;color:var(--t1);font-size:.78rem"/></td>
+<td style="padding:4px 6px;border:1px solid var(--border)"><input type="text" id="gpr2" placeholder="0" oninput="calcGP(2)" style="background:transparent;border:none;outline:none;width:100%;color:var(--t1);font-size:.78rem;text-align:right"/></td>
+<td style="padding:6px 8px;border:1px solid var(--border);color:var(--t3);text-align:right;font-family:'DM Mono',monospace" id="gpryoy2">—</td>
+<td style="padding:4px 6px;border:1px solid var(--border)"><input type="text" id="gpg2" placeholder="0" oninput="calcGP(2)" style="background:transparent;border:none;outline:none;width:100%;color:var(--t1);font-size:.78rem;text-align:right"/></td>
+<td style="padding:6px 8px;border:1px solid var(--border);color:var(--t3);text-align:right;font-family:'DM Mono',monospace" id="gpgyoy2">—</td>
+<td style="padding:6px 8px;border:1px solid var(--border);color:var(--green);text-align:right;font-family:'DM Mono',monospace;font-weight:600" id="gpp2">—</td></tr>
+<tr><td style="padding:6px 8px;border:1px solid var(--border);color:var(--t3);text-align:center">3</td>
+<td style="padding:4px 6px;border:1px solid var(--border)"><input type="text" id="gpy3" placeholder="FY 2023-24" style="background:transparent;border:none;outline:none;width:100%;color:var(--t1);font-size:.78rem"/></td>
+<td style="padding:4px 6px;border:1px solid var(--border)"><input type="text" id="gpr3" placeholder="0" oninput="calcGP(3)" style="background:transparent;border:none;outline:none;width:100%;color:var(--t1);font-size:.78rem;text-align:right"/></td>
+<td style="padding:6px 8px;border:1px solid var(--border);color:var(--t3);text-align:right;font-family:'DM Mono',monospace" id="gpryoy3">—</td>
+<td style="padding:4px 6px;border:1px solid var(--border)"><input type="text" id="gpg3" placeholder="0" oninput="calcGP(3)" style="background:transparent;border:none;outline:none;width:100%;color:var(--t1);font-size:.82rem;text-align:right"/></td>
+<td style="padding:6px 8px;border:1px solid var(--border);color:var(--t3);text-align:right;font-family:'DM Mono',monospace" id="gpgyoy3">—</td>
+<td style="padding:6px 8px;border:1px solid var(--border);color:var(--green);text-align:right;font-family:'DM Mono',monospace;font-weight:600" id="gpp3">—</td></tr>
+<tr><td style="padding:6px 8px;border:1px solid var(--border);color:var(--t3);text-align:center">4</td>
+<td style="padding:4px 6px;border:1px solid var(--border)"><input type="text" id="gpy4" placeholder="FY 2024-25" style="background:transparent;border:none;outline:none;width:100%;color:var(--t1);font-size:.78rem"/></td>
+<td style="padding:4px 6px;border:1px solid var(--border)"><input type="text" id="gpr4" placeholder="0" oninput="calcGP(4)" style="background:transparent;border:none;outline:none;width:100%;color:var(--t1);font-size:.82rem;text-align:right"/></td>
+<td style="padding:6px 8px;border:1px solid var(--border);color:var(--t3);text-align:right;font-family:'DM Mono',monospace" id="gpryoy4">—</td>
+<td style="padding:4px 6px;border:1px solid var(--border)"><input type="text" id="gpg4" placeholder="0" oninput="calcGP(4)" style="background:transparent;border:none;outline:none;width:100%;color:var(--t1);font-size:.82rem;text-align:right"/></td>
+<td style="padding:6px 8px;border:1px solid var(--border);color:var(--t3);text-align:right;font-family:'DM Mono',monospace" id="gpgyoy4">—</td>
+<td style="padding:6px 8px;border:1px solid var(--border);color:var(--green);text-align:right;font-family:'DM Mono',monospace;font-weight:600" id="gpp4">—</td></tr>
+<tr style="background:rgba(0,245,255,.04)">
+<td colspan="6" style="padding:8px 12px;border:1px solid var(--border);font-weight:700;color:var(--t1)">Average GP Ratio</td>
+<td style="padding:8px 12px;border:1px solid var(--border);color:var(--blue);text-align:right;font-family:'DM Mono',monospace;font-weight:700" id="gpAvg">—</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+
+<!-- ════ RECOVERED MATERIAL WITH VALUE ════ -->
+<section class="sec">
+<div class="sechd">
+<div class="sico ib"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00F5FF" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div>
+<div><div class="stitle">RECOVERED MATERIAL WITH VALUE</div><div class="ssub">Gross value · taxable amount · total recovered value</div></div>
+</div>
+<div class="card cb" style="padding:0;overflow:hidden">
+<div style="display:grid;grid-template-columns:230px 1fr">
+<div style="background:rgba(0,245,255,.05);padding:10px 14px;font-weight:700;font-size:.78rem;border-bottom:1px solid var(--border);border-right:1px solid var(--border)">Gross Material Value</div>
+<div style="padding:8px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px"><span style="color:var(--t3)">₹</span><input type="text" id="recGross" placeholder="e.g. 6,82,947.75" oninput="fmtINR(this)" style="background:transparent;border:none;outline:none;color:var(--t1);font-size:.82rem;flex:1"/></div>
+</div>
+<div style="display:grid;grid-template-columns:230px 1fr">
+<div style="background:rgba(0,245,255,.05);padding:10px 14px;font-weight:700;font-size:.78rem;border-bottom:1px solid var(--border);border-right:1px solid var(--border)">Taxable Amount</div>
+<div style="padding:8px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px"><span style="color:var(--t3)">₹</span><input type="text" id="recTax" placeholder="e.g. 1,22,930.60" oninput="fmtINR(this)" style="background:transparent;border:none;outline:none;color:var(--t1);font-size:.82rem;flex:1"/></div>
+</div>
+<div style="display:grid;grid-template-columns:230px 1fr">
+<div style="background:rgba(0,245,255,.08);padding:10px 14px;font-weight:700;font-size:.78rem;color:var(--blue);border-right:1px solid var(--border)">Total Recovered Value</div>
+<div style="padding:8px 12px;display:flex;align-items:center;gap:8px"><span style="color:var(--t3)">₹</span><input type="text" id="recTotal" placeholder="e.g. 8,05,878.35" oninput="fmtINR(this)" style="background:transparent;border:none;outline:none;color:var(--t1);font-size:.82rem;flex:1"/></div>
+</div>
+</div>
+</section>
+
+<!-- ════ CONCURRENCE ════ -->
+<section class="sec">
+<div class="sechd">
+<div class="sico ib"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00F5FF" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div>
+<div><div class="stitle">CONCURRENCE</div><div class="ssub">Insured's acceptance of the loss assessment</div></div>
+</div>
+<div class="card cb">
+<div class="fgrid">
+<div class="fg"><label>Assessment Shared with Insured On</label><input type="date" id="assessmentSharedDate"/></div>
+<div class="fg"><label>Insured Concurrence Received On</label><input type="date" id="concurrenceDate"/></div>
+<div class="fg full"><label>Concurrence Details</label><textarea id="concurrenceNotes" rows="2" placeholder="The assessment of loss was shared with the Insured vide e-mail dated [date] on seeking for their consent on the assessment of loss. Now, we have received the Insured's concurrence vide their e-mail dated [date] enclosed with the report."></textarea></div>
+</div>
+</div>
+</section>
+
+<!-- ════ ON ACCOUNT PAYMENT ════ -->
+<section class="sec">
+<div class="sechd">
+<div class="sico ib"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00F5FF" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></div>
+<div><div class="stitle">ON ACCOUNT PAYMENT</div><div class="ssub">Interim / advance payment recommendation</div></div>
+</div>
+<div class="card cb">
+<div class="fgrid">
+<div class="fg"><label>On Account Payment</label><select id="onAccountPayment"><option value="Not Recommended">Not Recommended</option><option value="Recommended">Recommended — details below</option></select></div>
+<div class="fg full"><label>On Account Payment Details <span style="color:var(--t3);font-size:.68rem">(if recommended)</span></label><input type="text" id="onAccountDetails" placeholder="Leave blank if Not Recommended"/></div>
+</div>
+</div>
+</section>
+
+<!-- ════ AI GENERATED FINAL SURVEY REPORT ════ -->
+<section class="sec" id="aiReportSec">
+<div class="sechd">
+<div class="sico ig"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#39FF14" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+<div><div class="stitle">AI Generated Final Survey Report</div><div class="ssub">Powered by GPT-4o — Preview &amp; Export</div></div>
+<div style="margin-left:auto"><span class="badge ba" id="rptBadge">Awaiting Input</span></div>
+</div>
+<div class="card" style="padding:0;overflow:hidden">
+<div class="rpttb">
+<div class="fc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span style="font-size:.76rem;color:var(--t3);font-family:'DM Mono',monospace" id="rptTs">Not Generated</span></div>
+<div class="bgrp">
+<button class="btn bg" onclick="genReport()"><span class="spin" id="aiSpin"></span><svg id="aiIco" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3"/></svg>Generate AI Draft</button>
+<button class="btn bp" onclick="dlPDF()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>PDF</button>
+<button class="btn bgh" onclick="dlWord()">Word</button>
+<button class="btn bgh" onclick="dlTXT()">TXT</button>
+<button class="btn bgh" onclick="saveToVault()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Save to Vault</button>
+</div>
+</div>
+<div class="rptmeta" id="rptMetaBar" style="display:none"><span class="rmeta" id="rmRef">---</span><span class="rmeta" id="rmIns">---</span><span class="rmeta" id="rmClaim">---</span><span class="rmeta" id="rmNet">---</span></div>
+<div class="genov" id="genOv" style="display:none">
+  <div class="genov-spinner"></div>
+  <div class="genov-title">Generating Report…</div>
+  <div class="genov-sub" id="genMsg">Initialising…</div>
+  <div class="genbar" style="margin-top:6px"><div class="genf" id="genFill"></div></div>
+</div>
+<div id="rptOut" class="rptpre" style="display:none"></div>
+<div id="rptPh" class="rptph"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="rgba(0,245,255,.3)" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><div style="margin-top:12px;color:var(--t3);font-size:.83rem">Upload documents &amp; click <strong style="color:#c4b5fd">Draft Report Now</strong> to generate a full FSR directly — or fill sections manually then click <strong style="color:var(--blue)">Generate AI Draft</strong></div></div>
+</div>
+</section>
+
+<!-- ════ CORPORATE SURVEYOR DECLARATION ════ -->
+<section class="sec">
+<div class="sechd">
+<div class="sico ib"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00F5FF" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg></div>
+<div><div class="stitle">CORPORATE SURVEYOR DECLARATION</div><div class="ssub">Surveyor details, license, signatures &amp; enclosure list</div></div>
+</div>
+<div class="card cb" style="padding:0;overflow:hidden">
+
+<div style="display:grid;grid-template-columns:230px 1fr">
+<div style="background:rgba(0,245,255,.05);padding:10px 14px;font-weight:700;font-size:.78rem;border-bottom:1px solid var(--border);border-right:1px solid var(--border)">Name of Corporate Surveyor</div>
+<div style="padding:8px 12px;border-bottom:1px solid var(--border)"><input type="text" id="corpSurveyorName" placeholder="e.g. McLarens Insurance Surveyors & Loss Assessors India Pvt Ltd" style="background:transparent;border:none;outline:none;width:100%;color:var(--t1);font-size:.82rem"/></div>
+</div>
+
+<div style="display:grid;grid-template-columns:230px 1fr">
+<div style="background:rgba(0,245,255,.05);padding:10px 14px;font-weight:700;font-size:.78rem;border-bottom:1px solid var(--border);border-right:1px solid var(--border)">License No. of Corporate Surveyor</div>
+<div style="padding:8px 12px;border-bottom:1px solid var(--border)"><input type="text" id="corpSurveyorLic" placeholder="e.g. SLA-72502/2025-28" style="background:transparent;border:none;outline:none;width:100%;color:var(--t1);font-size:.82rem"/></div>
+</div>
+
+<div style="display:grid;grid-template-columns:230px 1fr">
+<div style="background:rgba(0,245,255,.05);padding:10px 14px;font-weight:700;font-size:.78rem;border-bottom:1px solid var(--border);border-right:1px solid var(--border)">Loss Adjuster (Signatory 1)</div>
+<div style="padding:8px 12px;border-bottom:1px solid var(--border)"><input type="text" id="lossAdjuster" placeholder="e.g. Mr. Atharva A. Deshmukh, Loss Adjuster, Pune" style="background:transparent;border:none;outline:none;width:100%;color:var(--t1);font-size:.82rem"/></div>
+</div>
+
+<div style="display:grid;grid-template-columns:230px 1fr">
+<div style="background:rgba(0,245,255,.05);padding:10px 14px;font-weight:700;font-size:.78rem;border-bottom:1px solid var(--border);border-right:1px solid var(--border)">Director (Signatory 2)</div>
+<div style="padding:8px 12px;border-bottom:1px solid var(--border)"><input type="text" id="directorName" placeholder="e.g. Mr. Amarnath Maurya, Director" style="background:transparent;border:none;outline:none;width:100%;color:var(--t1);font-size:.82rem"/></div>
+</div>
+
+<div style="display:grid;grid-template-columns:230px 1fr">
+<div style="background:rgba(0,245,255,.05);padding:10px 14px;font-weight:700;font-size:.78rem;border-right:1px solid var(--border)">Enclosures</div>
+<div style="padding:8px 12px"><textarea id="enclosures" rows="5" placeholder="Loss Assessment Annexure – 1&#10;Police FIR and Panchanama&#10;Revised Police FIR Mentioning the value of stolen stock&#10;Claim bill&#10;Purchase Invoices of stolen material&#10;Stock statement&#10;Consent Email&#10;KYC Documents&#10;Photo Sheet&#10;SF Bill" style="background:transparent;border:none;outline:none;width:100%;color:var(--t1);font-size:.82rem;resize:vertical"></textarea></div>
 </div>
 
 </div>
+</section>
 
+<!-- ════ DOCUMENT UPLOAD & AI EXTRACTION ════ -->
+<section class="sec">
+<div class="sechd">
+<div class="sico ig"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#39FF14" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+<div><div class="stitle">Document Upload &amp; AI Extraction</div><div class="ssub">Upload PDFs · Images · Excel · Word — Extract fields <em>or</em> generate full report draft directly from documents</div></div>
+</div>
+<div class="card" style="padding:20px">
+
+<!-- ── INLINE API KEY PANEL ── shown when key is missing or wrong ── -->
+<div id="inlineKeyPanel" style="margin-bottom:18px;padding:16px 18px;background:rgba(255,171,0,.07);border:1px solid rgba(255,171,0,.35);border-radius:10px">
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+    <span style="font-size:.82rem;font-weight:700;color:var(--amber)" id="inlineKeyLabel">Enter your INTERNAL_API_KEY to enable AI extraction</span>
+  </div>
+  <div style="display:flex;gap:8px;align-items:stretch">
+    <div style="flex:1;position:relative;z-index:11">
+      <input type="password" id="inlineApiKey"
+        placeholder="Paste INTERNAL_API_KEY from Cloudflare Worker → Settings → Variables"
+        style="width:100%;background:rgba(255,255,255,.1);border:2px solid rgba(255,171,0,.8);border-radius:8px;padding:10px 40px 10px 14px;color:var(--t1);font-size:.82rem;font-family:'DM Mono',monospace;outline:none;box-sizing:border-box;position:relative;z-index:11;pointer-events:all;cursor:text"
+        onfocus="this.style.borderColor='var(--blue)';this.style.background='rgba(0,245,255,.06)'"
+        onblur="this.style.borderColor='rgba(255,171,0,.8)';this.style.background='rgba(255,255,255,.1)'"
+        onkeydown="if(event.key==='Enter')saveInlineKey()"/>
+      <button onclick="toggleInlineKeyVis()" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--t3);cursor:pointer;font-size:1rem;padding:2px;z-index:12;pointer-events:all">👁</button>
+    </div>
+    <button onclick="saveInlineKey()" style="padding:10px 20px;background:var(--amber);border:none;border-radius:8px;color:#000;font-weight:700;cursor:pointer;font-size:.82rem;white-space:nowrap;flex-shrink:0;position:relative;z-index:11;pointer-events:all">
+      Save Key
+    </button>
+  </div>
+  <div style="margin-top:8px;font-size:.72rem;color:var(--t3)">
+    Where to find it: <strong style="color:var(--t2)">Cloudflare Dashboard → Workers &amp; Pages → surveyorai-api → Settings → Variables → INTERNAL_API_KEY</strong>
+  </div>
+</div>
+
+<!-- Drop zone -->
+<div class="uzone" id="uzone"
+  ondragover="event.preventDefault();this.classList.add('drag')"
+  ondragleave="this.classList.remove('drag')"
+  ondrop="event.preventDefault();this.classList.remove('drag');handleFiles(event.dataTransfer.files)">
+  <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(0,245,255,.4)" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+  <div class="uzone-txt" style="margin-top:10px">Drag &amp; drop files here, or <span style="color:var(--blue);text-decoration:underline;cursor:pointer">click to browse</span></div>
+  <div class="uzone-sub" style="margin-top:4px">PDF, JPG, PNG, TXT, XLSX — Max 25MB each · Multiple files allowed · Upload notes + Excel together</div>
+  <input type="file" id="upFileIn" multiple accept=".pdf,.png,.jpg,.jpeg,.txt,.xlsx,.xls,.csv" onchange="handleFiles(this.files)" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%"/>
+</div>
+
+<!-- Uploaded files list -->
+<div id="upFileList" style="margin-top:14px;display:flex;flex-direction:column;gap:7px"></div>
+
+<!-- Action buttons — shown only when files are present -->
+<div id="upActions" style="display:none;margin-top:14px">
+  <!-- TWO-BUTTON GRID: Extract fields vs Draft directly -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+    <button class="btn bg" id="upExtractBtn" onclick="doExtract()">
+      <span class="spin" id="upExtSpin"></span>
+      <svg id="upExtIco" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      Extract &amp; Fill Fields
+    </button>
+    <button class="btn" id="upDraftBtn" onclick="draftFromDocs()" style="background:rgba(139,92,246,.15);border-color:rgba(139,92,246,.4);color:#c4b5fd">
+      <span class="spin" id="upDraftSpin"></span>
+      <svg id="upDraftIco" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+      Draft Report Now
+    </button>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px">
+    <div style="font-size:.67rem;color:var(--t3);text-align:center;font-family:'DM Mono',monospace">Fills form for manual review</div>
+    <div style="font-size:.67rem;color:rgba(196,181,253,.5);text-align:center;font-family:'DM Mono',monospace">Writes full FSR directly — no form needed</div>
+  </div>
+  <button class="btn bgh" onclick="clearFiles()" style="width:100%;margin-top:8px">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+    Clear All Files
+  </button>
+</div>
+
+<!-- Extraction status / result -->
+<div id="upExtResult" style="display:none;margin-top:12px;padding:12px 14px;background:rgba(57,255,20,.06);border:1px solid rgba(57,255,20,.2);border-radius:8px;font-size:.8rem;color:var(--green);font-family:'DM Mono',monospace"></div>
+
+<!-- Extraction progress overlay — shows while AI is working -->
+<div id="extOv" style="display:none;margin-top:12px;background:rgba(0,245,255,.04);border:1px solid rgba(0,245,255,.15);border-radius:10px;padding:18px 16px;text-align:center">
+  <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:10px">
+    <div style="width:22px;height:22px;border:2.5px solid rgba(0,245,255,.2);border-top-color:var(--blue);border-radius:50%;animation:rot .8s linear infinite;flex-shrink:0"></div>
+    <div style="font-size:.82rem;font-weight:600;color:var(--blue);font-family:'Outfit',sans-serif" id="extOvTitle">Reading documents…</div>
+  </div>
+  <div style="background:rgba(0,245,255,.08);border-radius:3px;height:4px;overflow:hidden;margin-bottom:8px">
+    <div id="extOvBar" style="height:100%;background:var(--blue);border-radius:3px;transition:width .5s ease;width:0%"></div>
+  </div>
+  <div style="font-size:.7rem;color:var(--t3);font-family:'DM Mono',monospace" id="extOvSub">Initialising…</div>
+</div>
+
+</div>
 </section>
 
 </div>
@@ -902,7 +1375,7 @@ Refresh
 
 </div>
 
-<div class="mbody"><pre class="mrpt" id="mrpt">Loading...</pre></div>
+<div class="mbody"><div class="mrpt" id="mrpt">Loading...</div></div>
 
 <div class="mfoot">
 
@@ -970,11 +1443,86 @@ Download PDF
 
 </div>
 
-<button id="aiFab" onclick="toggleAI(true)" title="AI Co-Pilot">
-
-<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0B0F1A" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M4.22 4.22l2.12 2.12m11.32 11.32l2.12 2.12M2 12h3m14 0h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>
-
+<!-- ⚙ Settings FAB -->
+<button id="settingsFab" onclick="openSettings()" title="API Settings" style="position:fixed;bottom:86px;right:24px;width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.07);border:1px solid var(--border);cursor:pointer;z-index:200;display:flex;align-items:center;justify-content:center;transition:var(--ease)" onmouseover="this.style.borderColor='var(--blue)'" onmouseout="this.style.borderColor='var(--border)'">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--t2)" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
 </button>
+
+<!-- AI Co-Pilot FAB -->
+<button id="aiFab" onclick="toggleAI(true)" title="AI Co-Pilot">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0B0F1A" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M4.22 4.22l2.12 2.12m11.32 11.32l2.12 2.12M2 12h3m14 0h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>
+</button>
+
+<!-- ⚙ SETTINGS MODAL -->
+<div id="settingsOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:900;align-items:center;justify-content:center">
+  <div style="background:#13182b;border:1px solid var(--border);border-radius:16px;padding:32px;width:min(520px,92vw);max-height:90vh;overflow-y:auto;box-shadow:0 24px 80px rgba(0,0,0,.6)">
+
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px">
+      <div style="width:38px;height:38px;border-radius:10px;background:rgba(0,245,255,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </div>
+      <div>
+        <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:1.1rem">Configuration</div>
+        <div style="font-size:.75rem;color:var(--t3);font-family:'DM Mono',monospace;margin-top:2px">API keys &amp; Worker settings — saved in browser</div>
+      </div>
+      <button onclick="closeSettings()" style="margin-left:auto;background:none;border:none;color:var(--t3);cursor:pointer;font-size:1.3rem;line-height:1;padding:4px">✕</button>
+    </div>
+
+    <!-- Worker URL -->
+    <div style="margin-bottom:18px">
+      <label style="display:block;font-size:.75rem;color:var(--t3);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Worker URL</label>
+      <input type="text" id="cfgWorkerUrl" placeholder="https://your-worker.workers.dev"
+        style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--t1);font-size:.85rem;font-family:'DM Mono',monospace;outline:none;box-sizing:border-box"
+        onfocus="this.style.borderColor='var(--blue)'" onblur="this.style.borderColor='var(--border)'"/>
+      <div style="font-size:.72rem;color:var(--t3);margin-top:4px">Your Cloudflare Worker endpoint — already set to amitbhawik.workers.dev by default</div>
+    </div>
+
+    <!-- Internal API Key -->
+    <div style="margin-bottom:18px">
+      <label style="display:block;font-size:.75rem;color:var(--t3);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">
+        Internal API Key <span style="color:var(--amber)">★ Required</span>
+      </label>
+      <div style="position:relative">
+        <input type="password" id="cfgApiKey" placeholder="Paste your INTERNAL_API_KEY here"
+          style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:10px 42px 10px 14px;color:var(--t1);font-size:.85rem;font-family:'DM Mono',monospace;outline:none;box-sizing:border-box"
+          onfocus="this.style.borderColor='var(--blue)'" onblur="this.style.borderColor='var(--border)'"/>
+        <button onclick="toggleKeyVis()" id="keyVisBtn" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--t3);cursor:pointer;font-size:.85rem;padding:4px">👁</button>
+      </div>
+      <!-- Saved key hint -->
+      <div id="savedKeyHint" style="margin-top:5px;font-size:.72rem;font-family:'DM Mono',monospace;color:var(--t3)"></div>
+      <div style="font-size:.72rem;color:var(--t3);margin-top:4px">
+        This must <strong style="color:var(--t2)">exactly match</strong> the <code style="background:rgba(255,255,255,.06);padding:1px 5px;border-radius:3px">INTERNAL_API_KEY</code> environment variable in your Cloudflare Worker.<br/>
+        <span style="color:var(--amber)">401 error?</span> The saved key doesn't match your Worker — paste the correct one and save.
+      </div>
+    </div>
+
+    <!-- Status indicator -->
+    <div id="cfgStatus" style="display:none;padding:10px 14px;border-radius:8px;font-size:.8rem;font-family:'DM Mono',monospace;margin-bottom:16px"></div>
+
+    <!-- Test connection -->
+    <div style="display:flex;gap:10px;margin-bottom:16px">
+      <button onclick="testConnection()" style="flex:1;padding:10px;background:rgba(0,245,255,.08);border:1px solid rgba(0,245,255,.2);border-radius:8px;color:var(--blue);cursor:pointer;font-size:.82rem;font-family:'DM Mono',monospace;transition:var(--ease)" onmouseover="this.style.background='rgba(0,245,255,.14)'" onmouseout="this.style.background='rgba(0,245,255,.08)'">
+        <span class="spin" id="testSpin"></span> Test Connection
+      </button>
+      <button onclick="saveSettings()" style="flex:2;padding:10px;background:var(--blue);border:none;border-radius:8px;color:#0B0F1A;font-weight:700;cursor:pointer;font-size:.85rem;transition:var(--ease)" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+        Save &amp; Apply
+      </button>
+    </div>
+
+    <div style="padding:10px 14px;background:rgba(157,78,221,.07);border:1px solid rgba(157,78,221,.2);border-radius:8px;font-size:.75rem;color:var(--t3)">
+      <strong style="color:var(--purple)">How to get your key:</strong> Open your Cloudflare dashboard → Workers &amp; Pages → <code style="background:rgba(255,255,255,.06);padding:1px 4px;border-radius:3px">surveyorai-api</code> → Settings → Variables → copy the value of <code style="background:rgba(255,255,255,.06);padding:1px 4px;border-radius:3px">INTERNAL_API_KEY</code>
+    </div>
+
+  </div>
+</div>
+
+<!-- No-key warning banner (shown at top when key missing) -->
+<div id="noKeyBanner" style="display:none;position:fixed;top:0;left:0;right:0;z-index:500;background:linear-gradient(90deg,rgba(255,171,0,.15),rgba(255,171,0,.08));border-bottom:1px solid rgba(255,171,0,.3);padding:8px 20px;display:none;align-items:center;gap:12px">
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+  <span style="font-size:.8rem;color:var(--amber);flex:1">API key not configured — AI features will not work until you set your key.</span>
+  <button onclick="openSettings()" style="font-size:.78rem;padding:4px 12px;background:var(--amber);border:none;border-radius:6px;color:#000;font-weight:700;cursor:pointer">Configure Now</button>
+  <button onclick="document.getElementById('noKeyBanner').style.display='none'" style="background:none;border:none;color:var(--t3);cursor:pointer;font-size:1rem;padding:2px 6px">✕</button>
+</div>
 
 <div id="toast"></div>
 
@@ -983,31 +1531,25 @@ Download PDF
 <script>
 
 /* ════════════════════════════════════════════════════════════
-
-★ EDIT ONLY THESE 3 LINES ★
-
+★ CONFIG — reads from localStorage so you never edit this file ★
 ════════════════════════════════════════════════════════════ */
 
-var WORKER_URL = 'YOUR_CLOUDFLARE_WORKER_URL_HERE';
-
+var WORKER_URL = localStorage.getItem('sai_worker_url') || 'https://surveyorai-api.amitbhawik.workers.dev';
 var APPS_SCRIPT_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
-
-var INTERNAL_API_KEY = 'YOUR_INTERNAL_API_KEY_HERE'; /* Must match env.INTERNAL_API_KEY in your Worker */
+var INTERNAL_API_KEY = localStorage.getItem('sai_api_key') || 'YOUR_INTERNAL_API_KEY_HERE';
 
 /* ════════════════════════════════════════════════════════════ */
 
-/* AUTH — redirect to login if no valid session */
-
-var user=(function(){try{return JSON.parse(localStorage.getItem('sai_user'));}catch(e){return null;}})();
-
+/* ── FIX 4: Strict auth — no demo bypass, must have valid sat- token + user ── */
+var user=(function(){try{var u=JSON.parse(localStorage.getItem('sai_user'));return(u&&u.email)?u:null;}catch(e){return null;}})();
 var _tok=localStorage.getItem('sai_token')||'';
 
-/* Reject stale demo/preview tokens from old sessions */
-var _isStale=(_tok.indexOf('demo-')==0||_tok.indexOf('demo-preview-')==0);
+/* Valid token must start with sat- and user object must exist */
+var _validSession = (_tok.indexOf('sat-')===0) && !!user && !!user.email;
 
-if(!user||!_tok||_isStale){
+if(!_validSession){
   try{localStorage.removeItem('sai_user');localStorage.removeItem('sai_token');}catch(e){}
-  window.location.href='login.html';
+  window.location.href='sai-login.html';
 }
 
 document.getElementById('uName').textContent=user&&user.name?user.name.split(' ')[0]:(user&&user.email?user.email:'User');
@@ -1020,7 +1562,7 @@ if(!confirm('Sign out of SurveyorAI?'))return;
 
 try{localStorage.removeItem('sai_user');localStorage.removeItem('sai_token');}catch(e){}
 
-window.location.href='login.html';
+window.location.href='sai-login.html';
 
 }
 
@@ -1056,23 +1598,73 @@ setTimeout(function(){el.className='';},dur);
 
 /* INR --- NOT TOUCHED */
 
-function parseINR(s){return parseFloat(String(s).replace(/,/g,''))||0;}
+function parseINR(s){return parseFloat(String(s).replace(/,/g,'').replace(/[^0-9.]/g,''))||0;}
 
-function toINR(n){return '\\u20B9 '+Math.abs(n).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function calcGP(n){
+  /* GP ratio for this row */
+  var rev=parseINR(document.getElementById('gpr'+n).value);
+  var gp=parseINR(document.getElementById('gpg'+n).value);
+  var pct=rev>0?((gp/rev)*100).toFixed(2)+'%':'—';
+  document.getElementById('gpp'+n).textContent=pct;
+
+  /* YoY % change for revenue and GP */
+  for(var i=2;i<=4;i++){
+    var rCur=parseINR(document.getElementById('gpr'+i).value);
+    var rPrev=parseINR(document.getElementById('gpr'+(i-1)).value);
+    var gCur=parseINR(document.getElementById('gpg'+i).value);
+    var gPrev=parseINR(document.getElementById('gpg'+(i-1)).value);
+    var ryoy=rPrev>0?((rCur-rPrev)/rPrev*100).toFixed(2)+'%':'—';
+    var gyoy=gPrev>0?((gCur-gPrev)/gPrev*100).toFixed(2)+'%':'—';
+    if(document.getElementById('gpryoy'+i))document.getElementById('gpryoy'+i).textContent=ryoy;
+    if(document.getElementById('gpgyoy'+i))document.getElementById('gpgyoy'+i).textContent=gyoy;
+  }
+
+  /* Average GP ratio */
+  var total=0,count=0;
+  for(var j=1;j<=4;j++){
+    var r=parseINR(document.getElementById('gpr'+j).value);
+    var g=parseINR(document.getElementById('gpg'+j).value);
+    if(r>0){total+=(g/r)*100;count++;}
+  }
+  document.getElementById('gpAvg').textContent=count>0?(total/count).toFixed(2)+'%':'—';
+}
+
+function toINR(n){var sym='\u20B9';return sym+Math.abs(n).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});}
 
 function fmtINR(inp){
 
-var raw=inp.value.replace(/[\^\\d.]/g,'');
+/* Remove everything except digits and decimal point */
+var raw=inp.value.replace(/[^0-9.]/g,'');
+
+/* Prevent multiple decimal points */
+var parts=raw.split('.');
+if(parts.length>2)raw=parts[0]+'.'+parts.slice(1).join('');
 
 var n=parseFloat(raw);
 
-inp.value=isNaN(n)?raw:n.toLocaleString('en-IN',{minimumFractionDigits:0,maximumFractionDigits:2});
+/* Format with Indian numbering — commas for lakhs/crores */
+if(!isNaN(n)&&raw.slice(-1)!=='.'){
+  var intPart=Math.floor(n).toString();
+  var decPart=raw.indexOf('.')>=0?'.'+raw.split('.')[1]:'';
+  /* Indian format: last 3 digits, then groups of 2 */
+  if(intPart.length>3){
+    var last3=intPart.slice(-3);
+    var rest=intPart.slice(0,-3);
+    rest=rest.replace(/\B(?=(\d{2})+(?!\d))/g,',');
+    inp.value=rest+','+last3+decPart;
+  }else{
+    inp.value=intPart+decPart;
+  }
+}else{
+  inp.value=raw;
+}
 
 }
 
 /* COMPUTE --- NOT TOUCHED */
 
 var CALC=null;
+var REPORT_RAW_MD = ''; /* Raw markdown from AI — used for downloads/storage */
 
 function compute(){
 
@@ -1094,13 +1686,11 @@ var hb=parseFloat(document.getElementById('hb').value)||0;
 
 var ok=true;
 
-if(gc<=0){document.getElementById('egc').classList.add('on');ok=false;}else document.getElementById('egc').classList.remove('on');
-
-if(si<=0){document.getElementById('esi').classList.add('on');ok=false;}else document.getElementById('esi').classList.remove('on');
-
-if(vr<=0){document.getElementById('evr').classList.add('on');ok=false;}else document.getElementById('evr').classList.remove('on');
-
-if(!ok){toast('Fill required financial fields.','e');return;}
+/* All financial fields are optional — compute only when data is present */
+if(gc<=0 && si<=0){toast('Enter at least Gross Loss Assessed to compute settlement.','e');return;}
+document.getElementById('egc').classList.remove('on');
+document.getElementById('esi').classList.remove('on');
+document.getElementById('evr').classList.remove('on');
 
 var btn=document.getElementById('compBtn');
 
@@ -1112,29 +1702,52 @@ btn.disabled=true;
 
 setTimeout(function(){
 
-var gcEx=gc-gst,dsA=gcEx*(ds/100),netRes=gcEx-dsA,glp=netRes-rv;
+/* ── Read new fields ── */
+var salvage = parseINR((document.getElementById('salvageValue')||{}).value||'0');
+/* Sanitize dedMinAmt — strip any ₹ symbol, cap at a reasonable value to prevent garbage input */
+var dedMinRaw = ((document.getElementById('dedMin')||{}).value||'').replace(/[₹\u20B9Rs\.\s]/g,'').replace(/,/g,'');
+var dedMinAmt = parseFloat(dedMinRaw)||0;
+/* Safety cap: minimum deductible amount should never exceed 20% of gross loss — catch stale/garbage values */
+if(gc > 0 && dedMinAmt > gc * 0.2) dedMinAmt = 0;
 
-var uiPct=vr>si?((vr-si)/vr)*100:0,uiA=uiPct>0?glp*(uiPct/100):0;
+/* ── Waterfall calculation ── */
+var gcEx    = gc - gst;                          /* Net cost of restoration ex-GST */
+var dsA     = gcEx * (ds/100);                   /* Upgradation / Improvement deduction */
+var assessed = gcEx - dsA;                       /* Assessed loss before salvage */
+var glp     = assessed - rv - salvage;           /* Gross loss post recovery & salvage */
+if(glp < 0) glp = 0;
+var uiPct   = vr > si ? ((vr - si) / vr) * 100 : 0;
+var uiA     = uiPct > 0 ? glp * (uiPct/100) : 0;
+var adj     = glp - uiA;                         /* After average clause */
+/* Excess: % of adj, but never less than minimum deductible amount (per policy) */
+var exPct   = dd > 0 ? adj * (dd/100) : 0;
+var exA     = dd > 0 ? Math.max(exPct, dedMinAmt) : 0;
+var netAdj  = adj - exA;
+var hbA     = netAdj * (hb/100);
+var netSet  = netAdj - hbA;
 
-var adj=glp-uiA,exA=adj*(dd/100),netAdj=adj-exA,hbA=netAdj*(hb/100),netSet=netAdj-hbA;
+CALC={gc:gc,gst:gst,rec:rv,salvage:salvage,si:si,vr:vr,ds:ds,dd:dd,hb:hb,netRes:gcEx,
+      gcEx:gcEx,dsA:dsA,assessed:assessed,glp:glp,
+      uiPct:uiPct,uiA:uiA,adj:adj,exA:exA,netAdj:netAdj,hbA:hbA,netSet:netSet};
 
-CALC={gc:gc,gst:gst,rec:rv,si:si,vr:vr,ds:ds,dd:dd,hb:hb,gcEx:gcEx,dsA:dsA,netRes:netRes,glp:glp,uiPct:uiPct,uiA:uiA,adj:adj,exA:exA,netAdj:netAdj,hbA:hbA,netSet:netSet};
-
-document.getElementById('v0').textContent=toINR(netRes);
-
-document.getElementById('v1').textContent=toINR(glp);
-
-document.getElementById('v2').textContent=uiPct>0?uiPct.toFixed(2)+'%':'Nil';
-
-document.getElementById('v3').textContent=toINR(adj);
-
-document.getElementById('v4').textContent=toINR(exA);
-
-document.getElementById('v5').textContent=toINR(netAdj);
-
-document.getElementById('v6').textContent=hb>0?toINR(hbA):'Nil';
-
-document.getElementById('v7').textContent=toINR(netSet);
+/* ── Populate all output lines ── */
+document.getElementById('vgross').textContent      = toINR(gc);
+document.getElementById('vgst2').textContent       = toINR(gst);
+document.getElementById('v0').textContent          = toINR(gcEx);
+document.getElementById('vrec2').textContent       = toINR(rv);
+document.getElementById('vds2').textContent        = dsA > 0 ? toINR(dsA) : 'Nil';
+document.getElementById('vassessed').textContent   = toINR(assessed);
+document.getElementById('vsalvage').textContent    = salvage > 0 ? toINR(salvage) : 'NIL';
+document.getElementById('vsalvage').style.color    = salvage > 0 ? 'var(--t1)' : 'var(--t3)';
+document.getElementById('vnetassessed').textContent= toINR(glp);
+document.getElementById('v1').textContent          = toINR(glp);
+document.getElementById('v2').textContent          = uiPct > 0 ? uiPct.toFixed(2)+'%' : 'Nil — No Underinsurance';
+document.getElementById('vui2').textContent        = uiA > 0 ? toINR(uiA) : 'Nil';
+document.getElementById('v3').textContent          = toINR(adj);
+document.getElementById('v4').textContent          = toINR(exA);
+document.getElementById('v5').textContent          = toINR(netAdj);
+document.getElementById('v6').textContent          = hb > 0 ? toINR(hbA) : 'Nil';
+document.getElementById('v7').textContent          = toINR(netSet);
 
 document.getElementById('resPh').style.display='none';
 
@@ -1176,7 +1789,7 @@ var rows=[
 
 ['Net Cost of Restoration (Ex-GST)',c.gcEx,'Gross claimed net of GST'],
 
-['Less: Dead Stock / Obsolescence ('+c.ds+'%)',c.dsA,'Non-admissible slow-moving & obsolete stock'],
+['Less: Upgradation / Improvement ('+c.ds+'%)',c.dsA,'Non-admissible slow-moving & obsolete stock'],
 
 ['Assessed Loss',c.gcEx-c.dsA,'Admissible claim before recovery'],
 
@@ -1211,6 +1824,130 @@ Supports: data.reply | data.text | data.content |
 choices[0].message.content | choices[0].text
 
 ════════════════════════════════════════════════════════════ */
+
+/* ════════════════════════════════════════════════════════════
+   MARKDOWN → PROFESSIONAL HTML RENDERER
+   Converts AI markdown output into styled, sectioned report
+════════════════════════════════════════════════════════════ */
+function markdownToHtml(md){
+  if(!md) return '';
+  var lines = md.split('\n');
+  var html = '';
+  var inSection = false;
+  var inTable = false;
+  var tableRows = [];
+
+  function flushTable(){
+    if(!tableRows.length) return;
+    var out = '<table class="rpt-table">';
+    tableRows.forEach(function(row, i){
+      /* Skip pure separator rows like |---|---| */
+      if(/^\s*[\|\-\s]+$/.test(row.replace(/\|/g,'-'))) return;
+      var cells = row.split('|').filter(function(c,idx,arr){return idx>0&&idx<arr.length-1;});
+      if(i===0){
+        out += '<tr>'+cells.map(function(c){return '<th>'+c.trim()+'</th>';}).join('')+'</tr>';
+      } else {
+        /* Detect totals row (bold or NET/TOTAL keywords) */
+        var isTot = /NET SETTLEMENT|NET ADJUSTED|TOTAL|GROSS LOSS ASSESSED/i.test(row);
+        var cls = isTot ? ' class="rpt-tot"' : '';
+        out += '<tr'+cls+'>'+cells.map(function(c,ci){
+          /* Right-align cells that look like amounts */
+          var isAmt = /Rs\.|₹|\d{1,3}(,\d{2,3})+|\d+\.\d{2}/.test(c.trim()) && ci > 0;
+          return '<td'+(isAmt?' class="rpt-amt"':'')+'>'+c.trim()+'</td>';
+        }).join('')+'</tr>';
+      }
+    });
+    out += '</table>';
+    tableRows = [];
+    inTable = false;
+    html += out;
+  }
+
+  function flushSection(){
+    if(inSection){ html += '</div>'; inSection = false; }
+  }
+
+  /* Known section headings that get their own box */
+  var SECTION_HEADS = [
+    'WITHOUT PREJUDICE','POLICY DETAILS','INTRODUCTION','ABOUT THE INSURED',
+    'NATURE & EXTENT OF LOSS','NATURE & EXTENT OF DAMAGE',
+    'THE INSURED','THIRD PARTY','POLICY CONDITIONS','OTHER INSURANCE',
+    'INSURERS\' LIABILITY','SUBROGATION','GROSS LOSS ASSESSED','GST COMPONENT',
+    'DEDUCTION FOR RECOVERED','UPGRADATION','SALVAGE','UNDERINSURANCE',
+    'POLICY EXCESS','NET ADJUSTED LOSS','REMARKS','ANALYSIS OF GROSS PROFIT',
+    'RECOVERED MATERIAL','CONCURRENCE','ON ACCOUNT','CORPORATE SURVEYOR',
+    'REPORT HEADER','FINANCIAL FIGURES'
+  ];
+
+  function isSectionHead(text){
+    var up = text.toUpperCase();
+    return SECTION_HEADS.some(function(s){ return up.indexOf(s) > -1; });
+  }
+
+  lines.forEach(function(line){
+    /* Table rows */
+    if(line.trim().startsWith('|')){
+      if(!inTable){ flushTable(); inTable = true; }
+      tableRows.push(line);
+      return;
+    } else if(inTable){
+      flushTable();
+    }
+
+    /* Strip leading/trailing ** from entire line (AI sometimes wraps whole line) */
+    var stripped = line.replace(/^\*\*(.+)\*\*\s*$/, '$1').trim();
+
+    /* Blank line */
+    if(!stripped){ if(inSection){ html += ''; } return; }
+
+    /* ### or ## or # headings */
+    var hMatch = stripped.match(/^#{1,3}\s+(.*)/);
+    if(hMatch){
+      flushSection();
+      var headText = hMatch[1].replace(/\*\*/g,'');
+      html += '<div class="rpt-section"><span class="rpt-section-title">'+headText+'</span>';
+      inSection = true;
+      return;
+    }
+
+    /* Line is a bold section heading (e.g. **INTRODUCTION** or **POLICY DETAILS**) */
+    var boldHead = stripped.match(/^\*\*([^*]{4,80})\*\*\s*:?\s*$/);
+    if(boldHead || (stripped === stripped.toUpperCase() && stripped.length > 5 && stripped.length < 80 && isSectionHead(stripped))){
+      flushSection();
+      var ht = boldHead ? boldHead[1] : stripped;
+      html += '<div class="rpt-section"><span class="rpt-section-title">'+ht+'</span>';
+      inSection = true;
+      return;
+    }
+
+    /* Inline bold: **text** → <strong> */
+    var formatted = stripped
+      .replace(/\*\*(.+?)\*\*/g, '<span class="rpt-bold">$1</span>')
+      .replace(/\*(.+?)\*/g, '<em>$1</em>');
+
+    /* Separator lines */
+    if(/^[-=]{4,}$/.test(stripped)){
+      html += '<hr style="border:none;border-top:1px solid rgba(255,255,255,.07);margin:8px 0">';
+      return;
+    }
+
+    /* Regular paragraph line */
+    if(!inSection){
+      html += '<div class="rpt-section"><span class="rpt-section-title">&nbsp;</span>';
+      inSection = true;
+    }
+    html += '<p class="rpt-p">'+formatted+'</p>';
+  });
+
+  flushTable();
+  flushSection();
+
+  /* Footer line */
+  html = html.replace(/(Powered by AB Enterprise[^<]*)/g,
+    '<div class="rpt-footer">$1</div>');
+
+  return html;
+}
 
 function parseAIResponse(data){
 
@@ -1247,35 +1984,15 @@ All AI calls use:
 ════════════════════════════════════════════════════════════ */
 
 function callAI(prompt,maxTokens){
-
-if(!maxTokens)maxTokens=3000;
-
-return fetch(WORKER_URL,{
-
-method:'POST',
-
-headers:{
-
-'Content-Type':'application/json',
-
-'x-api-key':INTERNAL_API_KEY
-
-},
-
-body:JSON.stringify({
-
-messages:[{role:'user',content:prompt}]
-
-})
-
-}).then(function(r){
-
-if(!r.ok)throw new Error('Worker responded with status '+r.status);
-
-return r.json();
-
-});
-
+  if(!maxTokens)maxTokens=4000;
+  if(!INTERNAL_API_KEY||INTERNAL_API_KEY==='YOUR_INTERNAL_API_KEY_HERE'){
+    updateKeyPanelState('missing');
+    var p=document.getElementById('inlineKeyPanel');
+    if(p){p.style.display='block';p.scrollIntoView({behavior:'smooth',block:'center'});}
+    return Promise.reject(new Error('API key not set \u2014 enter your key in the Document Upload section.'));
+  }
+  /* Delegate to callWorker — unified error handling, 401 recovery, vision fallback */
+  return callWorker(prompt, maxTokens);
 }
 
 /* ════════════════════════════════════════════════════════════
@@ -1290,11 +2007,232 @@ AI REPORT GENERATION
 
 ════════════════════════════════════════════════════════════ */
 
+/* ════════════════════════════════════════════════════════════
+   COMPLETION COUNTER — tracks filled fields in real time
+════════════════════════════════════════════════════════════ */
+var TRACKED_FIELDS = [
+  'refNum','claimNum','polType','polNum','insurer','polPeriod',
+  'insured','insuredAddr','lossLocation','bankFinancier','occupation',
+  'dol','doi','dos','cause','situation','circumstances',
+  'introduction','aboutIns','natureExtentLoss','natureExtent',
+  'insuredClaim','insurerLiability','insurersLiability','subrogation',
+  'remarks','lossReserve','gc','gst','rec','si','vr'
+];
+function updateFillBadge(){
+  var filled=0;
+  TRACKED_FIELDS.forEach(function(id){
+    var el=document.getElementById(id);
+    if(el&&el.value&&el.value.trim()&&el.value.trim()!=='—') filled++;
+  });
+  var badge=document.getElementById('fillBadge');
+  var countEl=document.getElementById('fillCount');
+  var totalEl=document.getElementById('fillTotal');
+  if(badge){
+    badge.style.display=filled>0?'flex':'none';
+    var pct=Math.round((filled/TRACKED_FIELDS.length)*100);
+    badge.style.borderColor=pct>=80?'rgba(57,255,20,.4)':pct>=40?'rgba(0,245,255,.3)':'rgba(0,245,255,.15)';
+    badge.style.color=pct>=80?'var(--green)':pct>=40?'var(--blue)':'var(--t2)';
+  }
+  if(countEl) countEl.textContent=filled;
+  if(totalEl) totalEl.textContent=TRACKED_FIELDS.length;
+}
+/* Attach live tracking to all tracked fields */
+(function attachTracking(){
+  function doAttach(){
+    TRACKED_FIELDS.forEach(function(id){
+      var el=document.getElementById(id);
+      if(el) el.addEventListener('input',updateFillBadge);
+    });
+    updateFillBadge();
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',doAttach);
+  else doAttach();
+})();
+
+/* ════════════════════════════════════════════════════════════
+   DRAFT FROM DOCUMENTS — generate full FSR directly from
+   uploaded files without requiring any form fields to be filled
+════════════════════════════════════════════════════════════ */
+async function draftFromDocs(){
+  if(!uploadedFiles||uploadedFiles.length===0){
+    toast('Upload at least one document first — PDF, image, Excel or notes.','e',4000);
+    return;
+  }
+
+  /* Lock UI */
+  var draftBtn=document.getElementById('upDraftBtn');
+  var draftSpin=document.getElementById('upDraftSpin');
+  var draftIco=document.getElementById('upDraftIco');
+  if(draftBtn) draftBtn.disabled=true;
+  if(draftSpin) draftSpin.classList.add('on');
+  if(draftIco) draftIco.style.display='none';
+
+  /* Show progress in result area */
+  var resEl=document.getElementById('upExtResult');
+  if(resEl){resEl.style.display='block';resEl.style.color='var(--blue)';resEl.textContent='Reading documents…';}
+
+  try{
+    /* Step 1 — extract text/images from all uploaded files (reuse existing pipeline) */
+    var allExtractedText='';
+    var imageBlocks=[];
+    for(var i=0;i<uploadedFiles.length;i++){
+      var f=uploadedFiles[i];
+      var ext=(f.name.split('.').pop()||'').toLowerCase();
+      if(resEl) resEl.textContent='Reading: '+f.name+' ('+( i+1)+'/'+uploadedFiles.length+')…';
+
+      if(['jpg','jpeg','png','webp'].includes(ext)){
+        var b64=await fileToBase64(f);
+        var mt=ext==='jpg'||ext==='jpeg'?'image/jpeg':ext==='png'?'image/png':'image/webp';
+        imageBlocks.push({type:'image_url',image_url:{url:'data:'+mt+';base64,'+b64}});
+        imageBlocks.push({type:'text',text:'[Photo: '+f.name+']'});
+      } else if(ext==='pdf'){
+        try{
+          var pdfTxt=await extractPdfText(f);
+          allExtractedText+='=== PDF: '+f.name+' ===\n'+pdfTxt+'\n\n';
+        }catch(e){
+          var raw=await fileToText(f);
+          allExtractedText+='=== FILE: '+f.name+' ===\n'+raw.slice(0,6000)+'\n\n';
+        }
+      } else if(['xlsx','xls','csv'].includes(ext)){
+        try{
+          var xlTxt=await extractExcelText(f,ext);
+          allExtractedText+='=== EXCEL: '+f.name+' ===\n'+xlTxt+'\n\n';
+        }catch(e){
+          var rawCsv=await fileToText(f);
+          allExtractedText+='=== FILE: '+f.name+' ===\n'+rawCsv.slice(0,8000)+'\n\n';
+        }
+      } else {
+        var rawTxt=await fileToText(f);
+        allExtractedText+='=== FILE: '+f.name+' ===\n'+rawTxt.slice(0,6000)+'\n\n';
+      }
+    }
+
+    if(!allExtractedText&&imageBlocks.length===0){
+      throw new Error('Could not read any content from the uploaded files.');
+    }
+
+    if(resEl) resEl.textContent='Analysing documents and drafting FSR…';
+
+    /* Step 2 — build direct-draft prompt */
+    /* Read any form fields already filled (reference number etc.) */
+    var refNum=document.getElementById('refNum')?document.getElementById('refNum').value:'';
+    var claimType=document.getElementById('claimType')?document.getElementById('claimType').options[document.getElementById('claimType').selectedIndex].text:'';
+
+    var draftPrompt =
+'You are a Senior Certified Insurance Surveyor and Loss Assessor. Using ONLY the source documents provided below, generate a complete, professional, IRDAI-compliant Final Survey Report (FSR) in the exact format used by McLarens Insurance Surveyors & Loss Assessors India Pvt Ltd.\n\n'+
+'CRITICAL RULES:\n'+
+'1. Extract ALL information exclusively from the documents provided. Do not fabricate any detail.\n'+
+'2. Write every section as full, formal paragraphs — minimum 2-3 sentences each. Never truncate.\n'+
+'3. If a field cannot be found in the documents, write "[Not found in documents — to be updated]" for that field.\n'+
+'4. Use formal insurance surveyor language. Reproduce numbers, dates, and names EXACTLY as they appear.\n'+
+'5. All monetary amounts must be in Indian format: Rs.X,XX,XXX.XX\n'+
+'6. Bold all section headings.\n'+
+'7. The WITHOUT PREJUDICE summary table and POLICY DETAILS must be formatted as two-column tables.\n'+
+'8. The NET ADJUSTED LOSS section must be a formatted calculation waterfall table.\n\n'+
+(refNum?'Reference Number: '+refNum+'\n':'')+(claimType?'Claim Type: '+claimType+'\n':'')+'\n'+
+'SOURCE DOCUMENTS:\n'+allExtractedText+'\n\n'+
+'Now generate the COMPLETE Final Survey Report with ALL of the following sections in order. Each section must be fully written — not just a heading:\n\n'+
+'1. REPORT HEADER (Our Ref, Date, Surveyor Office, GSTIN, License, To, Kind Attention)\n'+
+'2. WITHOUT PREJUDICE FINAL SURVEY REPORT (two-column table with all standard rows)\n'+
+'3. POLICY DETAILS (two-column table)\n'+
+'4. INTRODUCTION\n'+
+'5. ABOUT THE INSURED\n'+
+'6. NATURE & EXTENT OF LOSS\n'+
+'7. NATURE & EXTENT OF DAMAGE / LOSS\n'+
+'8. THE INSURED\'S CLAIM (include stolen/recovery/balance figures if found)\n'+
+'9. THIRD PARTY\n'+
+'10. POLICY CONDITIONS & WARRANTIES AND THE INSURER\'S LIABILITY UNDER POLICY\n'+
+'11. OTHER INSURANCES\n'+
+'12. INSURERS\' LIABILITY\n'+
+'13. SUBROGATION/RECOVERY\n'+
+'14. GROSS LOSS ASSESSED\n'+
+'15. GST COMPONENT\n'+
+'16. DEDUCTION FOR RECOVERED MATERIAL\n'+
+'17. UPGRADATION / IMPROVEMENT ADJUSTMENT\n'+
+'18. SALVAGE CONSIDERATION\n'+
+'19. UNDERINSURANCE CALCULATION (include adequacy table if SI and VAR found)\n'+
+'20. POLICY EXCESS / DEDUCTIBLE\n'+
+'21. NET ADJUSTED LOSS (full waterfall calculation table)\n'+
+'22. REMARKS\n'+
+'23. ANALYSIS OF GROSS PROFIT RATIO AND FINANCIAL TREND (include GP table if data found)\n'+
+'24. RECOVERED MATERIAL WITH VALUE\n'+
+'25. CONCURRENCE\n'+
+'26. ON ACCOUNT PAYMENT\n'+
+'27. CORPORATE SURVEYOR DECLARATION\n\n'+
+'End with: Powered by AB Enterprise | SurveyorAI v3.2';
+
+    /* Build message content — include images if present */
+    var msgContent;
+    if(imageBlocks.length>0){
+      msgContent=[{type:'text',text:draftPrompt}].concat(imageBlocks);
+    } else {
+      msgContent=draftPrompt;
+    }
+
+    /* Step 3 — call AI */
+    var draftTxt=await callWorker(msgContent,6000);
+    if(!draftTxt||!draftTxt.trim()) throw new Error('Empty response from AI');
+
+    /* Step 4 — push draft into the AI report output section */
+    var rptOut=document.getElementById('rptOut');
+    var rptPh=document.getElementById('rptPh');
+    var rptBadge=document.getElementById('rptBadge');
+    var rptTs=document.getElementById('rptTs');
+    if(rptOut){REPORT_RAW_MD=draftTxt;rptOut.innerHTML=markdownToHtml(draftTxt);rptOut.style.display='block';}
+    if(rptPh) rptPh.style.display='none';
+    if(rptBadge){rptBadge.className='badge bg_';rptBadge.textContent='Draft Generated';}
+    if(rptTs){var now=new Date();rptTs.textContent='Drafted from documents '+now.toLocaleString('en-IN',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});}
+
+    /* Auto-save draft */
+    autoSave(draftTxt);
+
+    /* Navigate to AI report section */
+    switchView('claim');
+    setTimeout(function(){
+      var sec=document.getElementById('aiReportSec');
+      if(sec) sec.scrollIntoView({behavior:'smooth',block:'start'});
+    },300);
+
+    if(resEl){
+      resEl.style.color='var(--green)';
+      resEl.innerHTML='✓ <strong>Full FSR drafted</strong> from '+uploadedFiles.length+' document(s). Scroll to <strong>AI Generated Final Survey Report</strong> section to review.';
+    }
+    toast('✓ Full FSR drafted from your documents!','s',5000);
+
+  } catch(err){
+    var isNetBlock = err.message && err.message.indexOf('Network blocked') > -1;
+    toast(isNetBlock ? 'Network blocked — download & open as standalone HTML file.' : 'Draft error: '+err.message,'e',8000);
+    if(resEl){
+      resEl.style.display='block';
+      resEl.style.color='#ffb080';
+      resEl.innerHTML = isNetBlock
+        ? '⚠ <strong>Preview mode.</strong> Click "Download Dashboard" in the orange banner, then open in Chrome/Edge.'
+        : '⚠ Draft error: '+err.message;
+    }
+  } finally {
+    if(draftBtn) draftBtn.disabled=false;
+    if(draftSpin) draftSpin.classList.remove('on');
+    if(draftIco) draftIco.style.display='';
+  }
+}
+
 function genReport(){
 
 if(!document.getElementById('insured').value){toast('Fill insured name first.','e');return;}
 
-if(!CALC){toast('Compute settlement first.','e');return;}
+/* Financial data optional — report generates in narrative-only mode if CALC not computed */
+var hasFinancials = (CALC !== null);
+
+/* Disable both Generate buttons — prevent double-click / multiple reports */
+var _genBtnNav = document.getElementById('navGenBtn') || document.querySelector('.nbtn.n-pr');
+var _genBtnSec = document.getElementById('aiSpin') ? document.getElementById('aiSpin').closest('button') : null;
+if(_genBtnNav) _genBtnNav.disabled = true;
+if(_genBtnSec) _genBtnSec.disabled = true;
+/* Show nav button spinner */
+var _navSpin = document.getElementById('navGenSpin');
+var _navIco = document.getElementById('navGenIco');
+if(_navSpin) _navSpin.classList.add('on');
+if(_navIco) _navIco.style.display='none';
 
 document.getElementById('genOv').classList.add('on');
 
@@ -1304,7 +2242,7 @@ document.getElementById('rptOut').style.display='none';
 
 document.getElementById('rptBadge').className='badge ba';
 
-document.getElementById('rptBadge').textContent='Generating\\u2026';
+document.getElementById('rptBadge').textContent='Generating\u2026';
 
 var steps=[
 
@@ -1334,73 +2272,240 @@ step++;
 
 },1200);
 
+function gv(id){var el=document.getElementById(id);return el?el.value:'';} /* helper */
+
+/* Build GP trend summary — proper formatted table for AI prompt */
+var gpRows=[];
+for(var gi=1;gi<=4;gi++){
+  var gy=gv('gpy'+gi),gr=gv('gpr'+gi),gg=gv('gpg'+gi),gp=document.getElementById('gpp'+gi)?document.getElementById('gpp'+gi).textContent:'';
+  /* Only include rows that have at least a year or revenue */
+  if((gy||gr)&&gr){
+    /* Recalculate GP ratio inline in case calcGP wasn't triggered */
+    var rN=parseINR(gr),gN=parseINR(gg);
+    var gpRatio=rN>0?((gN/rN)*100).toFixed(2)+'%':(gp||'—');
+    gpRows.push('FY '+gy+' | Revenue: Rs.'+gr+' | Gross Profit: Rs.'+gg+' | GP Ratio: '+gpRatio);
+  }
+}
+var gpSummary=gpRows.length?gpRows.join('\n'):'Not provided';
+var gpAvgVal=document.getElementById('gpAvg')?document.getElementById('gpAvg').textContent:'';
+
 var d={
 
-refNum:document.getElementById('refNum').value,claimNum:document.getElementById('claimNum').value,
+/* Header */
+refNum:gv('refNum'),reportDate:gv('reportDate'),
+surveyorOfficeAddr:gv('surveyorOfficeAddr'),
+surveyorGSTIN:gv('surveyorGSTIN'),surveyorLic2:gv('surveyorLic2'),
+insurerToAddr:gv('insurerToAddr'),kindAttention:gv('kindAttention'),
 
-polNum:document.getElementById('polNum').value,insurer:document.getElementById('insurer').value,
+/* Policy details */
+polType:gv('polType'),polNum:gv('polNum'),
+claimNum:gv('claimNum'),
+insurer:gv('insurer'),polPeriod:gv('polPeriod'),
+clauses:gv('clauses'),warranties:gv('warranties'),
+deductibleDesc:gv('deductibleDesc'),
 
-insured:document.getElementById('insured').value,insuredAddr:document.getElementById('insuredAddr').value,
+/* Insured details */
+insured:gv('insured'),insuredAddr:gv('insuredAddr'),
+lossLocation:gv('lossLocation')||gv('insuredAddr'),
+bankFinancier:gv('bankFinancier'),occupation:gv('occupation'),
 
-dol:document.getElementById('dol').value,doi:document.getElementById('doi').value,
+/* Loss details */
+dol:gv('dol'),doi:gv('doi'),dos:gv('dos'),
+delayIntimation:gv('delayIntimation'),
+cause:gv('cause'),firNumber:gv('firNumber'),firSection:gv('firSection'),
 
-dos:document.getElementById('dos').value,cause:document.getElementById('cause').value,
+/* Narrative sections */
+situation:gv('situation'),
+circumstances:gv('circumstances'),
+lossReserve:gv('lossReserve'),
 
-situation:document.getElementById('situation').value,aboutIns:document.getElementById('aboutIns').value,
+/* Introduction & insured profile */
+introduction:gv('introduction'),aboutIns:gv('aboutIns'),
 
-surveyorName:user&&user.name?user.name:'Insurance Surveyor',
+/* Nature sections */
+natureExtentLoss:gv('natureExtentLoss'),surveyContact:gv('surveyContact'),
+natureExtent:gv('natureExtent'),
 
-surveyorLic:user&&user.license?user.license:'IRDAI/SLA/Reg',
+/* Insured's claim */
+insuredClaim:gv('insuredClaim'),
+materialStolen:gv('materialStolen'),materialRecovery:gv('materialRecovery'),materialBalance:gv('materialBalance'),
 
+/* Liability sections */
+thirdParty:gv('thirdParty'),thirdPartyDetails:gv('thirdPartyDetails'),
+insurerLiability:gv('insurerLiability'),
+insurersLiability:gv('insurersLiability'),
+otherInsurances:gv('otherInsurances'),otherInsuranceDetails:gv('otherInsuranceDetails'),
+subrogation:gv('subrogation'),
+remarks:gv('remarks'),
+
+/* ── Financial assessment sections ── */
+grossLossBasis:gv('grossLossBasis'),
+gstRemarks:gv('gstRemarks'),
+recoveredDesc:gv('recoveredDesc'),
+upgradationBasis:gv('deadStockBasis'),
+salvageValue:gv('salvageValue'),salvageRemarks:gv('salvageRemarks'),
+underinsuranceRemarks:gv('underinsuranceRemarks'),
+dedMin:gv('dedMin'),deductibleRemarks:gv('deductibleRemarks'),
+
+/* ── Computed settlement values (populated after compute()) ── */
+calcGross:CALC?toINR(CALC.gc):'Not computed',
+calcGST:CALC?toINR(CALC.gst):'Not computed',
+calcRecovered:CALC?toINR(CALC.rec):'Not computed',
+calcDeadStockAmt:CALC?toINR(CALC.dsA):'Not computed',
+calcSalvageAmt:CALC?toINR(CALC.salvage):'Not computed',
+calcNetAssessed:CALC?toINR(CALC.glp):'Not computed',
+calcUIPct:CALC&&CALC.uiPct>0?CALC.uiPct.toFixed(2)+'%':'Nil',
+calcUIAmt:CALC&&CALC.uiA>0?toINR(CALC.uiA):'Nil',
+calcAdjLoss:CALC?toINR(CALC.adj):'Not computed',
+calcExcess:CALC?toINR(CALC.exA):'Not computed',
+calcNetAdj:CALC?toINR(CALC.netAdj):'Not computed',
+calcHoldback:CALC&&CALC.hbA>0?toINR(CALC.hbA):'Nil',
+calcNetSettlement:CALC?toINR(CALC.netSet):'Not computed',
+
+/* GP / Financial trend */
+gpSummary:gpSummary,gpAvg:gpAvgVal,
+
+/* Recovered material */
+recGross:gv('recGross'),recTax:gv('recTax'),recTotal:gv('recTotal'),
+
+/* Concurrence */
+assessmentSharedDate:gv('assessmentSharedDate'),
+concurrenceDate:gv('concurrenceDate'),
+concurrenceNotes:gv('concurrenceNotes'),
+
+/* On account payment */
+onAccountPayment:gv('onAccountPayment'),onAccountDetails:gv('onAccountDetails'),
+
+/* Corporate surveyor declaration */
+corpSurveyorName:gv('corpSurveyorName'),
+corpSurveyorLic:gv('corpSurveyorLic'),
+lossAdjuster:gv('lossAdjuster'),
+directorName:gv('directorName'),
+enclosures:gv('enclosures'),
+
+surveyorName:user&&user.name?user.name:(gv('corpSurveyorName')||'Insurance Surveyor'),
+surveyorLic:user&&user.license?user.license:(gv('corpSurveyorLic')||'IRDAI/SLA/Reg'),
 company:'AB Enterprise'
 
 };
 
-var fin=[
-
+var fin = hasFinancials ? [
 'Gross Amount Claimed (incl. GST): '+toINR(CALC.gc),
-
 'Less GST: '+toINR(CALC.gst),
-
-'Net Cost of Restoration: '+toINR(CALC.netRes),
-
+'Net Cost of Restoration: '+toINR(CALC.gcEx),
 'Less Recovered Material: '+toINR(CALC.rec),
-
 'Gross Loss Post Recovery: '+toINR(CALC.glp),
-
 'Sum Insured: '+toINR(CALC.si),
-
 'Value at Risk: '+toINR(CALC.vr),
-
 'Underinsurance: '+(CALC.uiPct>0?CALC.uiPct.toFixed(2)+'%':'NIL'),
-
 'Adjusted Loss: '+toINR(CALC.adj),
-
 'Policy Excess: '+toINR(CALC.exA),
-
 'Net Adjusted Loss: '+toINR(CALC.netAdj),
-
 '*** NET SETTLEMENT RECOMMENDED: '+toINR(CALC.netSet)+' ***'
+].join('\n') : '[FINANCIAL ASSESSMENT PENDING — upload Excel sheet to compute settlement]';
 
-].join('\\n');
+var prompt=
+'You are a Senior Certified Insurance Surveyor and Loss Assessor generating a professional Final Survey Report (FSR) for IRDAI submission, in the exact format used by McLarens Insurance Surveyors & Loss Assessors India Pvt Ltd.\n\n'+
+'CRITICAL RULES:\n'+
+'- Write EVERY section as full professional paragraphs (minimum 2-3 sentences per section). Never truncate.\n'+
+'- Reproduce all field values EXACTLY as provided. Do not paraphrase or shorten factual data.\n'+
+'- Use formal insurance surveyor language throughout.\n'+
+'- Format the WITHOUT PREJUDICE table and POLICY DETAILS as two-column bordered tables.\n'+
+'- Use BOLD for all section headings.\n'+
+'- All amounts must be written as Rs. X,XX,XXX.XX format.\n'+
+'- Never invent figures or change any amount. If a value is blank, write "Not provided" or "Not Applicable".\n\n'+
+'=== REPORT HEADER ===\nOur Ref: '+d.refNum+'\nDate: '+d.reportDate+'\nSurveyor Office: '+d.surveyorOfficeAddr+'\nGSTIN: '+d.surveyorGSTIN+'\nLicense: '+d.surveyorLic2+'\nTo: '+d.insurerToAddr+'\nKind Attention: '+d.kindAttention+'\n\n'+
+'=== WITHOUT PREJUDICE FINAL SURVEY REPORT TABLE ===\n'+
+'POLICY TYPE/NO: '+d.polType+' | '+d.polNum+'\nCLAIM NO: '+d.claimNum+'\nINSURED: '+d.insured+'\nDATE & TIME OF LOSS: '+d.dol+'\nDATE & TIME OF INTIMATION: '+d.doi+'\nDATE OF SURVEY: '+d.dos+'\nDELAY IN INTIMATION: '+d.delayIntimation+'\nLOSS LOCATION: '+d.lossLocation+'\nSITUATION OF LOSS: '+d.situation+'\nCAUSE OF LOSS: '+d.cause+(d.firNumber?' | FIR No.: '+d.firNumber:'')+(d.firSection?' | Section: '+d.firSection:'')+'\nCIRCUMSTANCES OF LOSS: '+d.circumstances+'\nLOSS RESERVE RECOMMENDED EARLIER: Rs.'+d.lossReserve+'\nGROSS ASSESSED LOSS: '+(hasFinancials?toINR(CALC.gc):'[PENDING]')+'\nNET ADJUSTED LOSS/SETTLEMENT AVAILABLE: '+(hasFinancials?toINR(CALC.netAdj):'[PENDING]')+'\n'+(hasFinancials&&CALC.hb>0?'LESS '+CALC.hb+'% IN ABSENCE OF POLICE FR: '+toINR(CALC.hbA)+'\nSETTLEMENT AVAILABLE: '+toINR(CALC.netSet)+'\n':'')+'\n'+
+'=== POLICY DETAILS TABLE ===\n'+
+'POLICY TYPE/NO: '+d.polType+' / '+d.polNum+'\nINSURERS: '+d.insurer+'\nNAME & ADDRESS OF INSURED: '+d.insured+', '+d.insuredAddr+'\nBANK/FINANCIERS: '+d.bankFinancier+'\nOCCUPATION: '+d.occupation+'\nLOCATION OF LOSS AFFECTED: '+d.lossLocation+'\nPERIOD OF INSURANCE: '+d.polPeriod+'\nCLAUSES: '+d.clauses+'\nWARRANTIES/CONDITIONS: '+d.warranties+'\nDEDUCTIBLE: '+d.deductibleDesc+'\n\n'+
+'=== INTRODUCTION ===\n[Write 2-3 full paragraphs. Include: date instructions received, contact made, survey appointment, visit date, discussion with insured representative, verification steps taken (CCTV, documents, statements). Use this content:]\n'+d.introduction+'\n\n'+
+'=== ABOUT THE INSURED ===\n[Write 3 full paragraphs describing the insured company: nature of business, products/services, certifications, market position, operations. Use this content:]\n'+d.aboutIns+'\n\n'+
+'=== NATURE & EXTENT OF LOSS ===\n[Write 2 full paragraphs. Include: instructions received from insurer, contact established, survey date, person met ('+d.surveyContact+'), discussion details. Use this content:]\n'+d.natureExtentLoss+'\n\n'+
+'=== NATURE & EXTENT OF DAMAGE / LOSS ===\n[Write 4-5 bullet points OR 3 full paragraphs describing: premises condition, how entry was gained, surveillance/CCTV evidence, what was stolen, police involvement. Use this content:]\n'+d.natureExtent+'\n\n'+
+'=== THE INSURED\'S CLAIM ===\n[Write 2 paragraphs describing the claim submission and stock verification process. Include these exact figures:]\n'+d.insuredClaim+'\nMaterial Stolen: Rs.'+d.materialStolen+'\nRecovery: Rs.'+d.materialRecovery+'\nBalance: Rs.'+d.materialBalance+'\n\n'+
+'=== THIRD PARTY ===\n'+(d.thirdPartyDetails||'There is no loss/damage caused to any third-party property and/or material.')+'\n\n'+
+'=== POLICY CONDITIONS & WARRANTIES AND THE INSURER\'S LIABILITY UNDER POLICY ===\n[Write 1 full paragraph confirming coverage, no breach of warranty, policy conditions compliance. Use this content:]\n'+d.insurerLiability+'\n\n'+
+'=== OTHER INSURANCES ===\n'+(d.otherInsuranceDetails||'The Insured has confirmed that they do not have any other insurance covering the damaged/lost property.')+'\n\n'+
+'=== INSURERS\' LIABILITY ===\n[Write 1 paragraph confirming insurer liability attaches. Use this content:]\n'+(d.insurersLiability||'The loss took place during the current policy period. The risk location is found covered. Hence insurer\'s liability will attach.')+'\n\n'+
+'=== SUBROGATION/RECOVERY ===\n[Write 1-2 paragraphs on recovery status, police investigation, subrogation rights. Use this content:]\n'+d.subrogation+'\n\n'+
+'=== GROSS LOSS ASSESSED ===\n'+
+(hasFinancials?'Gross Loss Assessed (Including GST): '+toINR(CALC.gc)+'\n':'[FINANCIAL ASSESSMENT PENDING]\n')+
+'[Write 2 paragraphs explaining how gross loss was assessed, reference to annexure, claim validation. Use this content:]\n'+(d.grossLossBasis||'The total amount claimed by the insured has been examined against purchase invoices, stock register and physical verification.')+'\n\n'+
+'=== GST COMPONENT ===\n'+
+'Less: GST Component: '+d.calcGST+'\n'+
+'[Write 1 paragraph explaining why GST is excluded — insured can avail ITC. Use this content:]\n'+(d.gstRemarks||'GST component is disallowed as the insured is eligible to avail Input Tax Credit on the GST component. Therefore, as per standard insurance practice, GST is not considered part of the payable loss when input credit is recoverable.')+'\n\n'+
+'=== DEDUCTION FOR RECOVERED MATERIAL ===\n'+
+'Less: Recovered Material: '+d.calcRecovered+'\n'+
+'[Write 1 paragraph on recovered material, confirmation by insured, net effect. Use this content:]\n'+(d.recoveredDesc||'A deduction has been made towards recovered material as confirmed by the insured. After accounting for this recovery, only the actual net financial loss sustained is considered for indemnification.')+'\n\n'+
+'=== UPGRADATION / IMPROVEMENT ADJUSTMENT ===\n'+
+'Less: Upgradation/Improvement Deduction: '+d.calcDeadStockAmt+'\n'+
+'[Write 1 paragraph on this deduction. Use this content:]\n'+(d.upgradationBasis||'A deduction has been considered towards upgradation, improvement and betterment as applicable per policy terms.')+'\n\n'+
+'=== SALVAGE CONSIDERATION ===\n'+
+'Salvage Value: '+(d.salvageValue&&d.salvageValue!='0'?'Rs.'+d.salvageValue:'NIL')+'\n'+
+'[Write 1 paragraph explaining salvage position. Use this content:]\n'+(d.salvageRemarks||'No deduction has been made towards salvage as the material involved was stolen and not completely recovered. Therefore, there was no salvage value realizable to offset against the loss.')+'\n\n'+
+'=== UNDERINSURANCE CALCULATION ===\n'+
+'Sum Insured: '+(hasFinancials?toINR(CALC.si):'[PENDING]')+'\nValue at Risk: '+(hasFinancials?toINR(CALC.vr):'[PENDING]')+'\nUnderinsurance: '+d.calcUIPct+'\nUnderinsurance Deduction: '+d.calcUIAmt+'\n'+
+'[Write 2 paragraphs: first explaining the adequacy analysis (SI vs VAR comparison, shortfall calculation, average clause applicability); second explaining how the proportionate deduction was computed. Use this content:]\n'+(d.underinsuranceRemarks||'')+'\n\n'+
+'=== POLICY EXCESS / DEDUCTIBLE ===\n'+
+'Policy Excess: '+d.calcExcess+'\nDeductible Terms: '+d.deductibleDesc+'\n'+
+'[Write 1 paragraph on deductible application per policy terms. Use this content:]\n'+(d.deductibleRemarks||'As per policy conditions, the deductible has been applied as per the stated terms.')+'\n\n'+
+(hasFinancials ? '=== NET ADJUSTED LOSS ===\n'+
+'[Write 2 paragraphs summarizing the waterfall and final settlement. Then reproduce this exact table:]\n'+
+'Particulars | Amount (Rs.)\n'+
+'Gross Loss Assessed (Incl. GST) | '+toINR(CALC.gc)+'\n'+
+'Less: GST Component | '+toINR(CALC.gst)+'\n'+
+'Net Cost of Restoration (Ex-GST) | '+toINR(CALC.gcEx)+'\n'+
+'Less: Recovered Material | '+toINR(CALC.rec)+'\n'+
+'Less: Upgradation / Improvement Adjustment | '+(CALC.dsA>0?toINR(CALC.dsA):'NIL')+'\n'+
+'Less: Salvage Consideration | '+(CALC.salvage>0?toINR(CALC.salvage):'NIL')+'\n'+
+'Net Assessed Loss | '+toINR(CALC.glp)+'\n'+
+(CALC.uiPct>0?'Less: Underinsurance Adjustment ('+d.calcUIPct+') | '+toINR(CALC.uiA)+'\n':'')+
+'Adjusted Loss | '+toINR(CALC.adj)+'\n'+
+'Less: Policy Excess / Deductible | '+toINR(CALC.exA)+'\n'+
+'NET ADJUSTED LOSS | '+toINR(CALC.netAdj)+'\n'+
+(CALC.hb>0?'Less: Holdback ('+CALC.hb+'%) | '+toINR(CALC.hbA)+'\n':'')+
+'NET SETTLEMENT RECOMMENDED | '+toINR(CALC.netSet)+'\n\n' : '[FINANCIAL ASSESSMENT PENDING — TO BE UPDATED AFTER EXCEL UPLOAD]\n\n')+
+'=== REMARKS ===\n'+d.remarks+'\n\n'+
+'=== ANALYSIS OF GROSS PROFIT RATIO AND FINANCIAL TREND ===\n'+
+'[Write 1 analytical paragraph covering revenue trend, GP ratio movement, and what it implies for the claim. Then reproduce this table:]\n'+
+d.gpSummary+(d.gpAvg&&d.gpAvg!='—'?'\nAverage GP Ratio: '+d.gpAvg:'')+'\n\n'+
+'=== RECOVERED MATERIAL WITH VALUE ===\n'+
+'[Write 1 paragraph on recovered material value. Then reproduce this table:]\n'+
+'Description | Amount (Rs.)\nGross Material Value | Rs.'+d.recGross+'\nTaxable Amount | Rs.'+d.recTax+'\nTotal Recovered Value | Rs.'+d.recTotal+'\n\n'+
+'=== CONCURRENCE ===\n'+
+'Assessment shared with insured on: '+d.assessmentSharedDate+'\nConcurrence received: '+d.concurrenceDate+'\n'+(d.concurrenceNotes||'')+'\n\n'+
+'=== ON ACCOUNT PAYMENT ===\n'+(d.onAccountPayment||'Not Recommended.')+(d.onAccountDetails?' — '+d.onAccountDetails:'')+'\n\n'+
+'=== CORPORATE SURVEYOR DECLARATION ===\n'+
+'The above report is issued without prejudice to the rights of the Insurers. The payment of the claim is subject to the terms and conditions of the policy under which the claim has been preferred.\n\n'+
+'Name of Corporate Surveyor: '+d.corpSurveyorName+'\nLicense No: '+d.corpSurveyorLic+'\nWe / I hereby declare that no unlicensed person is involved in the survey and loss assessment of this claim.\n\n'+
+d.lossAdjuster+(d.lossAdjuster?'\nLoss Adjuster\n':'')+d.directorName+(d.directorName?'\nDirector\n':'')+'\n\n'+
+'Enclosures:\n'+d.enclosures+'\n\n'+
+'FINAL OUTPUT RULES:\n'+
+'1. Every section must be fully written — no placeholder text except where explicitly marked [PENDING].\n'+
+'2. All amounts must use Indian number format: Rs.60,26,495.82 (not ₹ symbol, not European format).\n'+
+'3. Bold ALL section headings.\n'+
+'4. The WITHOUT PREJUDICE and POLICY DETAILS sections must be formatted as proper two-column tables.\n'+
+'5. NET ADJUSTED LOSS table must show all rows with amounts right-aligned.\n'+
+(hasFinancials?'6. NET SETTLEMENT RECOMMENDED = '+toINR(CALC.netSet)+' — THIS FIGURE IS FINAL AND MUST NOT BE CHANGED.\n':'6. Mark all financial figures as [TBD — PENDING EXCEL UPLOAD].\n')+
+'7. End with: Powered by AB Enterprise | SurveyorAI v3.2';
 
-var prompt='You are a certified insurance surveyor generating a formal Final Survey Report for IRDAI submission, following the professional format used by McLarens Insurance Surveyors.\\n\\nCLAIM DETAILS:\\nOur Ref: '+d.refNum+'\\nClaim No: '+d.claimNum+'\\nPolicy No: '+d.polNum+'\\nInsurer: '+d.insurer+'\\nInsured: '+d.insured+'\\nAddress: '+d.insuredAddr+'\\nDate of Loss: '+d.dol+'\\nDate of Intimation: '+d.doi+'\\nDate of Survey: '+d.dos+'\\nCause of Loss: '+d.cause+'\\nSituation: '+d.situation+'\\nAbout Insured: '+d.aboutIns+'\\nSurveyor: '+d.surveyorName+' | License: '+d.surveyorLic+'\\n\\nFINANCIAL FIGURES (USE EXACTLY AS GIVEN --- DO NOT RECALCULATE):\\n'+fin+'\\n\\nGenerate a complete formal Final Survey Report with sections:\\n1. WITHOUT PREJUDICE / FINAL SURVEY REPORT header\\n2. Policy Details Table\\n3. Introduction (appointment, surveyor credentials)\\n4. About the Insured\\n5. Circumstances of Loss\\n6. Nature & Extent of Loss\\n7. The Insured\'s Claim\\n8. Policy Conditions & Insurer\'s Liability\\n9. Other Insurances\\n10. Subrogation/Recovery\\n11. Gross Loss Assessed (with GST component explanation)\\n12. Underinsurance Calculation (adequacy table if applicable)\\n13. Policy Excess / Deductible\\n14. Net Adjusted Loss calculation table\\n15. Concurrence\\n16. On Account Payment\\n17. Corporate Surveyor Declaration\\n\\nRULES: Net Settlement = '+toINR(CALC.netSet)+' --- DO NOT CHANGE. Professional insurance language. Include IRDAI references. End: Powered by AB Enterprise | SurveyorAI v3.2';
 
-callAI(prompt)
+callAI(prompt, 6000)
 
-.then(function(data){
+.then(function(txt){
 
-var txt=parseAIResponse(data); /* ✅ Fix 2 */
-
-if(!txt)throw new Error('Empty response from AI');
+/* callWorker already returns parsed string — use directly */
+if(!txt || !txt.trim())throw new Error('Empty response from AI');
 
 clearInterval(prog);
 
 document.getElementById('genFill').style.width='100%';
 
-  /* ✅ Fix 1 - display in rptOut */
+  /* ✅ Fix 1 - display in rptOut as rendered HTML */
   var rptOut=document.getElementById('rptOut');
-  rptOut.textContent=txt;
+  REPORT_RAW_MD = txt; /* store raw markdown for downloads */
+  rptOut.innerHTML = markdownToHtml(txt);
   rptOut.style.display='block';
   document.getElementById('rptPh').style.display='none';
 
@@ -1423,6 +2528,10 @@ document.getElementById('genFill').style.width='100%';
   document.getElementById('genOv').classList.remove('on');
   document.getElementById('aiSpin').classList.remove('on');
   document.getElementById('aiIco').style.display='';
+  if(_navSpin) _navSpin.classList.remove('on');
+  if(_navIco) _navIco.style.display='';
+  if(_genBtnNav) _genBtnNav.disabled = false;
+  if(_genBtnSec) _genBtnSec.disabled = false;
 });
 }
 
@@ -1484,7 +2593,7 @@ function saveDraft(){
       situation:document.getElementById('situation').value,
       aboutIns:document.getElementById('aboutIns').value,
       calc:CALC,
-      report:document.getElementById('rptOut').textContent||'',
+      report:REPORT_RAW_MD || document.getElementById('rptOut').innerText||'',
       savedBy:user&&user.name?user.name:'User'
     };
     var all=JSON.parse(localStorage.getItem('sai_vault')||'{}');
@@ -1499,28 +2608,69 @@ function saveDraft(){
 
 /* DOWNLOADS */
 function getReportText(){
-  return document.getElementById('rptOut').textContent||'';
+  /* Return raw markdown (not stripped HTML) for downloads and storage */
+  return REPORT_RAW_MD || document.getElementById('rptOut').innerText || '';
 }
 
 function dlPDF(){
-  var txt=getReportText();
-  if(!txt){toast('Generate a report first.','e');return;}
-  try{
-    var doc=new window.jspdf.jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
-    doc.setFont('helvetica');
-    doc.setFontSize(9);
-    var margin=15,pageW=210,pageH=297,usableW=pageW-margin*2;
-    var lines=doc.splitTextToSize(txt,usableW);
-    var y=margin;
-    lines.forEach(function(line){
-      if(y+5>pageH-margin){doc.addPage();y=margin;}
-      doc.text(line,margin,y);
-      y+=5;
-    });
-    var fn='SurveyReport_'+(document.getElementById('refNum').value||'Draft').replace(/[^a-z0-9_\-]/gi,'_')+'_'+new Date().toISOString().slice(0,10)+'.pdf';
-    doc.save(fn);
-    toast('PDF downloaded','s');
-  }catch(e){toast('PDF error: '+e.message,'e');}
+  var md = getReportText();
+  if(!md){toast('Generate a report first.','e');return;}
+
+  /* Build a standalone print-ready HTML document */
+  var refNum = (document.getElementById('refNum')||{}).value || 'Report';
+  var fn = 'SurveyReport_'+refNum.replace(/[^a-z0-9_\-]/gi,'_')+'_'+new Date().toISOString().slice(0,10);
+
+  var printHTML = '<!DOCTYPE html><html><head><meta charset="UTF-8">'
+    +'<title>'+fn+'</title>'
+    +'<style>'
+    /* Page setup */
+    +'@page{size:A4;margin:18mm 16mm 18mm 16mm}'
+    +'*{box-sizing:border-box;margin:0;padding:0}'
+    +'body{font-family:Arial,Helvetica,sans-serif;font-size:9pt;color:#111;line-height:1.6;background:#fff}'
+    /* Header */
+    +'.rpt-header{border:1.5pt solid #1a3a5c;border-radius:4pt;padding:10pt 14pt;margin-bottom:10pt;background:#f5f9ff}'
+    +'.rpt-header-title{font-size:11pt;font-weight:bold;color:#1a3a5c;text-transform:uppercase;letter-spacing:.5pt}'
+    +'.rpt-header-sub{font-size:7.5pt;color:#555;margin-top:2pt}'
+    /* Sections */
+    +'.rpt-section{border:1pt solid #d0d9e8;border-radius:3pt;padding:9pt 12pt;margin-bottom:8pt;page-break-inside:avoid}'
+    +'.rpt-section-title{font-size:8pt;font-weight:bold;text-decoration:underline;text-transform:uppercase;letter-spacing:.6pt;color:#1a3a5c;display:block;margin-bottom:7pt}'
+    +'.rpt-p{margin:0 0 5pt;font-size:9pt;color:#222;line-height:1.65}'
+    /* Tables */
+    +'.rpt-table{width:100%;border-collapse:collapse;margin:6pt 0 3pt;font-size:8.5pt}'
+    +'.rpt-table th{background:#e8f0fb;color:#1a3a5c;font-weight:bold;text-align:left;padding:5pt 8pt;border:1pt solid #b0bfd4;font-size:7.5pt;text-transform:uppercase;letter-spacing:.3pt}'
+    +'.rpt-table td{padding:4.5pt 8pt;border:1pt solid #d0d9e8;vertical-align:top;color:#222}'
+    +'.rpt-table tr:nth-child(even) td{background:#f7faff}'
+    +'.rpt-amt{text-align:right;font-family:"Courier New",monospace;font-weight:600}'
+    +'.rpt-tot td{border-top:2pt solid #1a3a5c;font-weight:bold;color:#1a3a5c;background:#edf4ff!important}'
+    +'.rpt-bold{font-weight:bold}'
+    +'.rpt-footer{text-align:center;font-size:7pt;color:#888;margin-top:14pt;padding-top:8pt;border-top:1pt solid #ddd}'
+    /* Watermark-like "WITHOUT PREJUDICE" */
+    +'.wp-stamp{text-align:center;font-size:8pt;font-weight:bold;color:#cc0000;letter-spacing:2pt;margin-bottom:6pt}'
+    /* Print controls */
+    +'.no-print{display:none}'
+    +'@media print{.no-print{display:none}body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}'
+    +'</style>'
+    +'</head><body>'
+    /* Print button — only visible before printing */
+    +'<div class="no-print" style="position:fixed;top:0;left:0;right:0;background:#1a3a5c;padding:8px 16px;display:flex;align-items:center;gap:12px;z-index:999">'
+    +'<span style="color:#fff;font-size:13px;font-weight:bold">'+fn+'</span>'
+    +'<button onclick="window.print()" style="margin-left:auto;background:#2563eb;color:#fff;border:none;padding:6px 18px;border-radius:4px;font-size:13px;cursor:pointer;font-weight:600">⬇ Save as PDF</button>'
+    +'<button onclick="window.close()" style="background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);padding:6px 12px;border-radius:4px;font-size:13px;cursor:pointer">✕ Close</button>'
+    +'</div>'
+    +'<div style="margin-top:44px">'
+    +'<div class="wp-stamp">WITHOUT PREJUDICE</div>'
+    + markdownToHtml(md)
+    +'</div>'
+    +'</body></html>';
+
+  /* Open in new window and auto-trigger print dialog */
+  var w = window.open('','_blank','width=900,height=700,scrollbars=yes');
+  if(!w){toast('Pop-up blocked — allow pop-ups for this page and try again.','e',5000);return;}
+  w.document.write(printHTML);
+  w.document.close();
+  /* Give browser 800ms to render before triggering print */
+  setTimeout(function(){ try{w.print();}catch(e){} }, 800);
+  toast('PDF window opened — click "Save as PDF" in print dialog','s',5000);
 }
 
 function dlWord(){
@@ -1545,7 +2695,11 @@ function dlTXT(){
   toast('TXT downloaded','s');
 }
 
-/* FILE UPLOAD & AI EXTRACTION */
+/* ═══════════════════════════════════════════════
+   FILE UPLOAD & AI EXTRACTION — REBUILT
+   Supports: PDF (base64 document), Images (vision), TXT (plain text)
+   Fills ALL 40+ form fields
+═══════════════════════════════════════════════ */
 var uploadedFiles=[];
 
 function handleFiles(files){
@@ -1553,106 +2707,559 @@ function handleFiles(files){
   renderFileList();
 }
 
-function handleDrop(e){
-  e.preventDefault();
-  document.getElementById('uzone').classList.remove('drag');
-  handleFiles(e.dataTransfer.files);
-}
-
 function clearFiles(){
   uploadedFiles=[];
-  document.getElementById('flist').innerHTML='';
-  document.getElementById('upActs').style.display='none';
-  document.getElementById('fileIn').value='';
+  renderFileList();
+  document.getElementById('upFileIn').value='';
+  var res=document.getElementById('upExtResult');
+  if(res)res.style.display='none';
 }
 
-function renderFileList(){
-  var fl=document.getElementById('flist');
-  fl.innerHTML='';
-  uploadedFiles.forEach(function(f,i){
-    var div=document.createElement('div');
-    div.className='fitem';
-    div.innerHTML='<span style="font-size:1.1rem">📄</span>'
-      +'<span class="fname">'+f.name+'</span>'
-      +'<span class="fst fp" id="fst'+i+'">Ready</span>'
-      +'<button style="background:none;border:none;color:var(--t3);cursor:pointer;font-size:.8rem" onclick="removeFile('+i+')">✕</button>';
-    fl.appendChild(div);
-  });
-  document.getElementById('upActs').style.display=uploadedFiles.length?'':'none';
-}
-
-function removeFile(i){
-  uploadedFiles.splice(i,1);
+function removeFile(idx){
+  uploadedFiles.splice(idx,1);
   renderFileList();
 }
 
-async function aiExtract(){
-  if(!uploadedFiles.length){toast('No files to extract.','e');return;}
-  var btn=document.getElementById('extBtn');
-  btn.disabled=true;
-  document.getElementById('extSpin').classList.add('on');
-  document.getElementById('extIco').style.display='none';
-
-  try{
-    var allText='';
-    for(var i=0;i<uploadedFiles.length;i++){
-      var f=uploadedFiles[i];
-      document.getElementById('fst'+i).className='fst fp';
-      document.getElementById('fst'+i).textContent='Reading...';
-      var text=await readFileText(f);
-      allText+='[File: '+f.name+']\n'+text+'\n\n';
-      document.getElementById('fst'+i).className='fst fd';
-      document.getElementById('fst'+i).textContent='Done';
-    }
-
-    var extractPrompt='You are an insurance claim data extractor. From the following document text, extract all available claim fields and return ONLY a valid JSON object with these exact keys (use empty string "" if not found):\n'
-      +'refNum, claimNum, polNum, insurer, insured, insuredAddr, dol (YYYY-MM-DD), doi (YYYY-MM-DD), dos (YYYY-MM-DD), cause, situation, aboutIns, gc (number only), gst (number only), rec (number only), si (number only), vr (number only), ds (number 0-100), ded (number 0-100), hb (number 0-100)\n\n'
-      +'DOCUMENT TEXT:\n'+allText.slice(0,8000);
-
-    var data=await callAI(extractPrompt,1000);
-    var raw=parseAIResponse(data);
-    var clean=raw.replace(/```json|```/g,'').trim();
-    var parsed=JSON.parse(clean);
-
-    /* Fill form fields */
-    var fields=['refNum','claimNum','polNum','insurer','insured','insuredAddr','dol','doi','dos','situation','aboutIns'];
-    fields.forEach(function(id){
-      if(parsed[id]){var el=document.getElementById(id);if(el)el.value=parsed[id];}
-    });
-    if(parsed.cause){
-      var sel=document.getElementById('cause');
-      for(var o=0;o<sel.options.length;o++){
-        if(sel.options[o].value===parsed.cause||sel.options[o].text.toLowerCase().includes(parsed.cause.toLowerCase())){
-          sel.selectedIndex=o; break;
-        }
-      }
-    }
-    var numFields=['gc','gst','rec','si','vr','ds','ded','hb'];
-    numFields.forEach(function(id){
-      if(parsed[id]&&parseFloat(parsed[id])>0){
-        var el=document.getElementById(id);
-        if(el){el.value=parseFloat(parsed[id]).toLocaleString('en-IN',{minimumFractionDigits:0,maximumFractionDigits:2});}
-      }
-    });
-    toast('✓ AI extracted and filled '+Object.keys(parsed).filter(function(k){return parsed[k];}).length+' fields','s');
-  }catch(e){
-    toast('Extraction failed: '+e.message,'e',5000);
-  }
-  btn.disabled=false;
-  document.getElementById('extSpin').classList.remove('on');
-  document.getElementById('extIco').style.display='';
+function fileIcon(name){
+  var ext=(name.split('.').pop()||'').toLowerCase();
+  if(['jpg','jpeg','png','gif','webp'].includes(ext))return '\uD83D\uDDBC\uFE0F';
+  if(ext==='pdf')return '\uD83D\uDCD5';
+  return '\uD83D\uDCC4';
 }
 
-function readFileText(file){
-  return new Promise(function(resolve,reject){
-    var reader=new FileReader();
-    reader.onload=function(e){resolve(e.target.result||'');};
-    reader.onerror=reject;
-    if(file.type==='application/pdf'||file.name.endsWith('.pdf')){
-      reader.readAsText(file);
-    } else {
-      reader.readAsText(file);
+function renderFileList(){
+  var fl=document.getElementById('upFileList');
+  if(!fl)return;
+  fl.innerHTML='';
+  uploadedFiles.forEach(function(f,i){
+    var kb=(f.size/1024).toFixed(1);
+    var div=document.createElement('div');
+    div.style.cssText='display:flex;align-items:center;gap:10px;padding:9px 12px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:8px';
+    div.innerHTML=
+      '<span style="font-size:1.3rem;flex-shrink:0">'+fileIcon(f.name)+'</span>'
+      +'<div style="flex:1;min-width:0">'
+        +'<div style="font-size:.82rem;color:var(--t1);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+f.name+'</div>'
+        +'<div style="font-size:.7rem;color:var(--t3);font-family:\'DM Mono\',monospace;margin-top:2px">'+kb+' KB</div>'
+      +'</div>'
+      +'<span id="upfst'+i+'" style="font-size:.7rem;font-family:\'DM Mono\',monospace;color:var(--amber);flex-shrink:0">Ready</span>'
+      +'<button onclick="removeFile('+i+')" style="background:none;border:none;color:var(--t3);cursor:pointer;font-size:1rem;padding:2px 6px" title="Remove">\u2715</button>';
+    fl.appendChild(div);
+  });
+  var acts=document.getElementById('upActions');
+  if(acts)acts.style.display=uploadedFiles.length?'block':'none';
+}
+
+function fileToBase64(file){
+  return new Promise(function(res,rej){
+    var r=new FileReader();
+    r.onload=function(e){res(e.target.result.split(',')[1]);};
+    r.onerror=rej;
+    r.readAsDataURL(file);
+  });
+}
+
+function fileToText(file){
+  return new Promise(function(res,rej){
+    var r=new FileReader();
+    r.onload=function(e){res(e.target.result||'');};
+    r.onerror=rej;
+    r.readAsText(file);
+  });
+}
+
+async function doExtract(){
+  if(!uploadedFiles.length){toast('Upload at least one file first.','e');return;}
+
+  /* ── FIX 5: Key check — show inline panel if missing ── */
+  if(!INTERNAL_API_KEY||INTERNAL_API_KEY==='YOUR_INTERNAL_API_KEY_HERE'){
+    updateKeyPanelState('missing');
+    var panel=document.getElementById('inlineKeyPanel');
+    if(panel){panel.style.display='block';panel.scrollIntoView({behavior:'smooth',block:'center'});}
+    toast('Enter your API key in the panel above first.','e',5000);
+    return;
+  }
+
+  var btn=document.getElementById('upExtractBtn');
+  if(btn)btn.disabled=true;
+  var sp=document.getElementById('upExtSpin');if(sp)sp.classList.add('on');
+  var ico=document.getElementById('upExtIco');if(ico)ico.style.display='none';
+  var resEl=document.getElementById('upExtResult');if(resEl)resEl.style.display='none';
+
+  /* Show extraction progress overlay */
+  var extOv=document.getElementById('extOv');
+  var extBar=document.getElementById('extOvBar');
+  var extTitle=document.getElementById('extOvTitle');
+  var extSub=document.getElementById('extOvSub');
+  function setExtProg(title,sub,pct){
+    if(extOv) extOv.style.display='block';
+    if(extTitle) extTitle.textContent=title;
+    if(extSub) extSub.textContent=sub;
+    if(extBar) extBar.style.width=pct+'%';
+  }
+  function hideExtOv(){if(extOv) extOv.style.display='none';}
+  setExtProg('Starting…','Preparing document reader…',5);
+
+  try{
+    /* ── FIX 5: Build content — text extraction for all file types ── */
+    var allExtractedText = '';
+    var imageBlocks = [];   /* OpenAI vision blocks */
+    var totalFiles = uploadedFiles.length;
+
+    for(var i=0;i<uploadedFiles.length;i++){
+      var f = uploadedFiles[i];
+      var ext = (f.name.split('.').pop()||'').toLowerCase();
+      var stEl = document.getElementById('upfst'+i);
+      if(stEl){stEl.textContent='Reading…';stEl.style.color='var(--blue)';}
+
+      /* Progress: file reading phase = 5% → 50% */
+      var filePct = Math.round(5 + ((i / totalFiles) * 45));
+      var fileType = ['jpg','jpeg','png','webp'].includes(ext) ? 'image' : ext.toUpperCase();
+      setExtProg('Reading documents…','File '+(i+1)+' of '+totalFiles+' — '+f.name.slice(0,30)+(f.name.length>30?'…':''), filePct);
+
+      if(['jpg','jpeg','png','webp'].includes(ext)){
+        /* Images: base64 data URL for OpenAI vision */
+        var b64img = await fileToBase64(f);
+        var mt = ext==='jpg'||ext==='jpeg' ? 'image/jpeg' : ext==='png' ? 'image/png' : 'image/webp';
+        imageBlocks.push({type:'image_url', image_url:{url:'data:'+mt+';base64,'+b64img}});
+        imageBlocks.push({type:'text', text:'[Image: '+f.name+']'});
+
+      } else if(ext==='pdf'){
+        /* PDF: extract text using PDF.js */
+        if(stEl){stEl.textContent='Parsing PDF…';stEl.style.color='var(--blue)';}
+        try{
+          var pdfText = await extractPdfText(f);
+          allExtractedText += '=== PDF: '+f.name+' ===\n'+pdfText+'\n\n';
+        }catch(pe){
+          var rawFb = await fileToText(f);
+          allExtractedText += '=== FILE: '+f.name+' ===\n'+rawFb.slice(0,6000)+'\n\n';
+        }
+
+      } else if(['xlsx','xls','csv'].includes(ext)){
+        /* ── EXCEL / CSV: parse with SheetJS → extract all sheet data as text ── */
+        if(stEl){stEl.textContent='Parsing Excel…';stEl.style.color='var(--blue)';}
+        try{
+          var excelText = await extractExcelText(f, ext);
+          allExtractedText += '=== EXCEL: '+f.name+' ===\n'+excelText+'\n\n';
+        }catch(ee){
+          var rawCsv = await fileToText(f);
+          allExtractedText += '=== FILE: '+f.name+' ===\n'+rawCsv.slice(0,8000)+'\n\n';
+        }
+
+      } else {
+        /* TXT / other → plain text */
+        var rawTxt = await fileToText(f);
+        allExtractedText += '=== FILE: '+f.name+' ===\n'+rawTxt.slice(0,6000)+'\n\n';
+      }
+
+      if(stEl){stEl.textContent='Done ✓';stEl.style.color='var(--green)';}
     }
+
+    /* ── Build extraction prompt ── */
+    var hasExcel = uploadedFiles.some(function(f){
+      var e = (f.name.split('.').pop()||'').toLowerCase();
+      return ['xlsx','xls','csv'].includes(e);
+    });
+    var instruction = [
+      'You are an expert insurance survey data extractor.',
+      'Extract ALL available fields from the documents provided — which may include handwritten notes, PDFs, images, and/or Excel sheets.',
+      'If an Excel sheet is present, extract financial figures (gross loss, GST, recovered material, sum insured, value at risk etc.) from it.',
+      'Return ONLY a valid JSON object with no markdown, no backticks, no explanation, no preamble.',
+      'Use empty string "" for any field not found. Never invent or guess values.',
+      'JSON keys:',
+      'refNum, claimNum, polType, polNum, insurer, polPeriod, clauses, warranties, deductibleDesc,',
+      'insured, insuredAddr, lossLocation, bankFinancier, occupation,',
+      'dol, doi, dos, delayIntimation, cause, firNumber, firSection,',
+      'situation, circumstances, introduction, aboutIns, natureExtentLoss, surveyContact, natureExtent,',
+      'insuredClaim, materialStolen, materialRecovery, materialBalance,',
+      'thirdPartyDetails, insurerLiability, insurersLiability, otherInsuranceDetails, subrogation, remarks, lossReserve,',
+      'concurrenceNotes, onAccountPayment,',
+      'gc, gst, rec, si, vr, ds, ded, hb, recGross, recTax, recTotal, salvageValue,',
+      'gpy1, gpr1, gpg1, gpy2, gpr2, gpg2, gpy3, gpr3, gpg3, gpy4, gpr4, gpg4.',
+      'FIELD RULES:',
+      '- gpy1/gpy2/gpy3/gpy4 = FINANCIAL YEAR LABEL only (e.g. "2021-22" or "FY/21-22"). NOT a number.',
+      '- gpr1/gpr2/gpr3/gpr4 = REVENUE amount (digits only, e.g. 87623384)',
+      '- gpg1/gpg2/gpg3/gpg4 = GROSS PROFIT amount (digits only, e.g. 18174169)',
+      '- ded = deductible PERCENTAGE only (e.g. 5 for 5%). Do NOT put minimum amount here.',
+      '- ds = upgradation/improvement deduction PERCENTAGE (e.g. 3 for 3%)',
+      '- gc = gross loss TOTAL including GST (digits only)',
+      '- gst = GST amount only (digits only)',
+      '- rec = recovered material amount (digits only)',
+      '- si = sum insured (digits only)',
+      '- vr = value at risk (digits only)',
+      'NUMBER FIELDS (digits only, no commas, no Rs/₹): gc, gst, rec, si, vr, ds, ded, hb, lossReserve, salvageValue,',
+      'materialStolen, materialRecovery, materialBalance, recGross, recTax, recTotal,',
+      'gpr1, gpg1, gpr2, gpg2, gpr3, gpg3, gpr4, gpg4.',
+      hasExcel ? 'EXCEL DATA IS PRESENT — prioritize financial figures from Excel sheets over handwritten notes.' : '',
+      allExtractedText ? ('DOCUMENT CONTENTS:\n' + allExtractedText) : ''
+    ].filter(Boolean).join('\n');
+
+    /* ── FIX 5: Try with images first (OpenAI vision), fallback to text-only ── */
+    var msgContent;
+    if(imageBlocks.length > 0){
+      /* Vision request: images + text */
+      msgContent = imageBlocks.concat([{type:'text', text:instruction}]);
+    } else {
+      /* Text-only request */
+      msgContent = instruction;
+    }
+
+    setExtProg('Sending to AI…','All documents ready — calling extraction model…', 55);
+    var rawResponse = await callWorker(msgContent, 2000);
+    setExtProg('Filling fields…','AI responded — mapping data to form fields…', 85);
+
+    /* ── FIX 6: Parse extracted JSON and fill fields ── */
+    processExtractedJson(rawResponse, resEl);
+
+  }catch(e){
+    var isNetworkBlock = e.message && e.message.indexOf('Network blocked') > -1;
+    var errMsg = isNetworkBlock
+      ? 'Network blocked — open dashboard as standalone HTML file in your browser.'
+      : 'AI extraction failed: '+e.message;
+    toast(errMsg,'e',10000);
+    console.error('doExtract error:',e);
+    if(resEl){
+      resEl.style.display='block';
+      resEl.style.background='rgba(255,120,0,.06)';
+      resEl.style.borderColor='rgba(255,120,0,.3)';
+      resEl.style.color='#ffb080';
+      resEl.innerHTML = isNetworkBlock
+        ? '⚠ <strong>Running in preview mode.</strong> AI features are blocked by the browser sandbox.<br>'
+          +'<strong>Fix:</strong> Click <em>"Download Dashboard"</em> in the orange banner → open the downloaded file in Chrome/Edge → all AI features will work normally.'
+        : '⚠ AI extraction failed: <strong>'+e.message+'</strong><br>Manual entry is still available — fill fields below and click Generate AI Draft.';
+    }
+  }
+  if(btn)btn.disabled=false;
+  if(sp)sp.classList.remove('on');
+  if(ico)ico.style.display='';
+  hideExtOv();
+}
+
+/* ── Environment detection — Claude.ai sandbox blocks outbound fetch ── */
+var IS_SANDBOXED = (function(){
+  try{
+    /* Claude.ai artifact iframes have no top-level access and block cross-origin fetch */
+    return window.self !== window.top || window.location.href.indexOf('claude.ai') > -1
+      || window.location.href.indexOf('localhost') === -1 && window.location.protocol === 'blob:';
+  }catch(e){
+    return true; /* cross-origin frame — assume sandboxed */
+  }
+})();
+
+/* ── Show sandbox warning banner if needed ── */
+(function(){
+  if(IS_SANDBOXED){
+    var existing = document.getElementById('sandboxBanner');
+    if(!existing){
+      var b = document.createElement('div');
+      b.id = 'sandboxBanner';
+      b.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:9999;background:linear-gradient(90deg,rgba(255,171,0,.18),rgba(255,120,0,.1));border-bottom:1px solid rgba(255,171,0,.5);padding:7px 18px;display:flex;align-items:center;gap:10px;font-size:.75rem;font-family:DM Mono,monospace;color:#ffd080';
+      b.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#ffb020" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>'
+        + '<span><strong>Preview mode detected</strong> — AI features require the dashboard to run as a standalone file. Download &amp; open in your browser for full functionality.</span>'
+        + '<button onclick="downloadDashboard()" style="margin-left:auto;background:rgba(255,171,0,.25);border:1px solid rgba(255,171,0,.5);color:#ffd080;border-radius:6px;padding:3px 10px;cursor:pointer;font-family:DM Mono,monospace;font-size:.72rem;white-space:nowrap">⬇ Download Dashboard</button>'
+        + '<button onclick="document.getElementById(\'sandboxBanner\').style.display=\'none\'" style="background:none;border:none;color:rgba(255,171,0,.5);cursor:pointer;font-size:1rem;padding:0 4px">✕</button>';
+      document.body.insertBefore(b, document.body.firstChild);
+    }
+  }
+})();
+
+function downloadDashboard(){
+  var html = document.documentElement.outerHTML;
+  var blob = new Blob([html], {type:'text/html'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'SurveyorAI-Dashboard.html';
+  a.click();
+}
+
+/* ── FIX 5: Unified Worker call — detects sandbox/CORS/network errors clearly ── */
+async function callWorker(content, maxTokens){
+  var payload = {
+    messages:[{role:'user', content: content}],
+    max_tokens: maxTokens || 2000
+  };
+
+  var resp;
+  try{
+    resp = await fetch(WORKER_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': INTERNAL_API_KEY
+      },
+      body: JSON.stringify(payload)
+    });
+  }catch(networkErr){
+    /* "Failed to fetch" — network/CORS/sandbox error */
+    var msg = networkErr.message || String(networkErr);
+    var isFetchFail = msg.toLowerCase().indexOf('failed to fetch') > -1
+                   || msg.toLowerCase().indexOf('networkerror') > -1
+                   || msg.toLowerCase().indexOf('load failed') > -1;
+    if(isFetchFail){
+      /* Show the download banner */
+      var sb = document.getElementById('sandboxBanner');
+      if(sb) sb.style.display='flex';
+      throw new Error('Network blocked — this dashboard must be opened as a standalone HTML file in your browser (not inside a preview iframe). Click "Download Dashboard" in the banner above.');
+    }
+    throw new Error('Network error: '+msg);
+  }
+
+  if(!resp.ok){
+    var errBody = await resp.text();
+
+    if(resp.status === 401){
+      updateKeyPanelState('wrong');
+      var panel = document.getElementById('inlineKeyPanel');
+      if(panel){panel.style.display='block';panel.scrollIntoView({behavior:'smooth',block:'center'});}
+      var inp = document.getElementById('inlineApiKey');
+      if(inp) setTimeout(function(){inp.focus();}, 500);
+      throw new Error('Wrong API key (401). Enter the correct key in the panel above.');
+    }
+
+    if(resp.status === 400 && typeof content !== 'string'){
+      /* Vision not supported — retry with text-only */
+      var textOnly = (Array.isArray(content) ? content : [content])
+        .filter(function(p){return p.type==='text';})
+        .map(function(p){return p.text;}).join('\n');
+      return callWorker(textOnly, maxTokens);
+    }
+
+    throw new Error('Worker error '+resp.status+': '+errBody.slice(0,200));
+  }
+
+  var data = await resp.json();
+  var raw = parseAIResponse(data);
+  if(!raw) throw new Error('Empty response from Worker');
+  return raw;
+}
+
+
+/* ── Extract all data from Excel / CSV using SheetJS ── */
+async function extractExcelText(file, ext){
+  /* Dynamically load SheetJS if not already loaded */
+  if(!window.XLSX){
+    await new Promise(function(res, rej){
+      var s = document.createElement('script');
+      s.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+      s.onload = res; s.onerror = rej;
+      document.head.appendChild(s);
+    });
+  }
+  return new Promise(function(resolve, reject){
+    var reader = new FileReader();
+    reader.onload = function(e){
+      try{
+        var data = new Uint8Array(e.target.result);
+        var workbook = XLSX.read(data, {type:'array'});
+        var allText = '';
+        workbook.SheetNames.forEach(function(sheetName){
+          var ws = workbook.Sheets[sheetName];
+          /* Get sheet as CSV text — preserves structure */
+          var csv = XLSX.utils.sheet_to_csv(ws, {blankrows:false});
+          if(csv.trim()){
+            allText += '--- Sheet: '+sheetName+' ---\n'+csv+'\n\n';
+          }
+        });
+        resolve(allText || 'No readable data found in Excel file.');
+      }catch(err){
+        reject(err);
+      }
+    };
+    reader.onerror = reject;
+    reader.readAsArrayBuffer(file);
+  });
+}
+
+/* Extract text from PDF using PDF.js */
+async function extractPdfText(file){
+  /* Dynamically load PDF.js if not already loaded */
+  if(!window.pdfjsLib){
+    await new Promise(function(res,rej){
+      var s=document.createElement('script');
+      s.src='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+      s.onload=res; s.onerror=rej;
+      document.head.appendChild(s);
+    });
+    /* Set workerSrc to eliminate "Setting up fake worker" warning */
+    window.pdfjsLib.GlobalWorkerOptions.workerSrc=
+      'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  }
+  var ab=await file.arrayBuffer();
+  /* disableWorker:false ensures real worker is used; verbosity:0 suppresses font warnings */
+  var loadingTask = window.pdfjsLib.getDocument({
+    data: ab,
+    verbosity: 0  /* suppress TT: undefined function warnings */
+  });
+  var pdf=await loadingTask.promise;
+  var text='';
+  for(var p=1;p<=Math.min(pdf.numPages,15);p++){
+    var page=await pdf.getPage(p);
+    var tc=await page.getTextContent();
+    text+=tc.items.map(function(it){return it.str;}).join(' ')+'\n';
+  }
+  return text;
+}
+
+/* Parse extracted JSON and fill all form fields */
+function processExtractedJson(raw, resEl){
+  var clean=raw.replace(/^```json\s*/,'').replace(/^```\s*/,'').replace(/```\s*$/,'').trim();
+  var jsonStart=clean.indexOf('{');
+  var jsonEnd=clean.lastIndexOf('}');
+  if(jsonStart<0||jsonEnd<0)throw new Error('No JSON found in response: '+clean.slice(0,200));
+  var parsed=JSON.parse(clean.slice(jsonStart,jsonEnd+1));
+
+  /* Text / textarea fields */
+  var txtF=['refNum','claimNum','polType','polNum','insurer','polPeriod','clauses','warranties','deductibleDesc',
+    'insured','insuredAddr','lossLocation','bankFinancier','occupation',
+    'dol','doi','dos','firNumber','firSection',
+    'situation','circumstances','introduction','aboutIns','natureExtentLoss','surveyContact','natureExtent',
+    'insuredClaim','thirdPartyDetails','insurerLiability','insurersLiability',
+    'otherInsuranceDetails','subrogation','remarks','concurrenceNotes','onAccountPayment',
+    'gpy1','gpy2','gpy3','gpy4'];
+  txtF.forEach(function(id){
+    if(parsed[id]&&String(parsed[id]).trim()){
+      var el=document.getElementById(id);if(el)el.value=String(parsed[id]).trim();
+    }
+  });
+
+  /* Select: delayIntimation */
+  if(parsed.delayIntimation){
+    var ds=document.getElementById('delayIntimation');
+    if(ds)ds.value=String(parsed.delayIntimation).toLowerCase().indexOf('no')>=0?'No delay':'Delayed — reasons provided';
+  }
+
+  /* Select: cause of loss */
+  if(parsed.cause){
+    var cs=document.getElementById('cause');
+    if(cs){
+      var cl=String(parsed.cause).toLowerCase();
+      for(var o=0;o<cs.options.length;o++){
+        if(cs.options[o].text.toLowerCase().indexOf(cl.substring(0,5))>=0){cs.selectedIndex=o;break;}
+      }
+    }
+  }
+
+  /* INR amount fields */
+  var amtF=['materialStolen','materialRecovery','materialBalance','lossReserve',
+            'gc','gst','rec','si','vr','recGross','recTax','recTotal','salvageValue',
+            'gpr1','gpg1','gpr2','gpg2','gpr3','gpg3','gpr4','gpg4'];
+  amtF.forEach(function(id){
+    var v=parsed[id];
+    if(v&&parseFloat(String(v).replace(/,/g,''))>0){
+      var el=document.getElementById(id);
+      if(el)el.value=parseFloat(String(v).replace(/,/g,'')).toLocaleString('en-IN',{maximumFractionDigits:2});
+    }
+  });
+
+  /* Percentage fields */
+  ['ds','ded','hb'].forEach(function(id){
+    if(parsed[id]&&parseFloat(parsed[id])>0){var el=document.getElementById(id);if(el)el.value=parseFloat(parsed[id]);}
+  });
+
+  /* Recalculate GP ratios */
+  [1,2,3,4].forEach(function(n){
+    var el=document.getElementById('gpr'+n);
+    if(el&&el.value)calcGP(n);
+  });
+
+  /* ── Auto-compute settlement if financial fields were extracted from Excel ── */
+  var gcVal = parseFloat((document.getElementById('gc')||{value:'0'}).value.replace(/,/g,'')||0);
+  var siVal = parseFloat((document.getElementById('si')||{value:'0'}).value.replace(/,/g,'')||0);
+  if(gcVal > 0 && siVal > 0){
+    setTimeout(function(){
+      compute();
+      toast('✓ Financial data found — settlement auto-computed!','s',4000);
+    }, 800);
+  }
+
+  var filled=Object.keys(parsed).filter(function(k){return parsed[k]&&String(parsed[k]).trim();}).length;
+
+  /* Update progress bar to 100% */
+  var extBar2=document.getElementById('extOvBar');
+  var extTitle2=document.getElementById('extOvTitle');
+  var extSub2=document.getElementById('extOvSub');
+  if(extBar2) extBar2.style.width='100%';
+  if(extTitle2) extTitle2.textContent='✓ Complete — '+filled+' fields filled';
+  if(extSub2) extSub2.textContent='Review each section and click Generate AI Draft';
+
+  if(resEl){
+    resEl.style.display='block';
+    resEl.innerHTML='\u2713 Extracted <strong>'+filled+' fields</strong> from '+uploadedFiles.length+' file(s). '
+      +(gcVal>0 ? 'Financial data detected — <strong>settlement auto-computed</strong>. ' : 'No financial figures found — fill manually or upload Excel. ')
+      +'Review each section then click <strong>Generate AI Draft</strong>.';
+  }
+
+  /* Remove the warning banner since key works */
+  var banner=document.getElementById('noKeyBanner');
+  if(banner)banner.style.display='none';
+
+  toast('\u2713 '+filled+' fields auto-filled from your document','s',5000);
+  updateFillBadge();
+
+  /* Scroll to top of form */
+  var firstSection=document.querySelector('#viewClaim .sec');
+  if(firstSection)firstSection.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+/* ═══════════════════════════════════════════════
+   INLINE API KEY PANEL
+═══════════════════════════════════════════════ */
+function updateKeyPanelState(status){
+  var panel=document.getElementById('inlineKeyPanel');
+  var label=document.getElementById('inlineKeyLabel');
+  if(!panel)return;
+  if(status==='ok'){
+    panel.style.display='none';
+  } else {
+    panel.style.display='block';
+    if(status==='wrong'){
+      panel.style.background='rgba(255,60,60,.07)';
+      panel.style.borderColor='rgba(255,60,60,.4)';
+      if(label){label.textContent='\u26D4 Wrong key \u2014 401 Unauthorized. Paste the correct INTERNAL_API_KEY below.';label.style.color='#ff6060';}
+    } else {
+      panel.style.background='rgba(255,171,0,.07)';
+      panel.style.borderColor='rgba(255,171,0,.35)';
+      if(label){label.textContent='Enter your INTERNAL_API_KEY to enable AI extraction';label.style.color='var(--amber)';}
+    }
+  }
+}
+
+function saveInlineKey(){
+  var inp=document.getElementById('inlineApiKey');
+  var key=inp?inp.value.trim():'';
+  if(!key){toast('Key cannot be empty','e');return;}
+  localStorage.setItem('sai_api_key',key);
+  INTERNAL_API_KEY=key;
+  var cfgInp=document.getElementById('cfgApiKey');
+  if(cfgInp)cfgInp.value=key;
+  updateKeyPanelState('ok');
+  var nb=document.getElementById('noKeyBanner');
+  if(nb)nb.style.display='none';
+  toast('\u2713 API key saved \u2014 AI features ready!','s',4000);
+}
+
+function toggleInlineKeyVis(){
+  var inp=document.getElementById('inlineApiKey');
+  if(inp)inp.type=inp.type==='password'?'text':'password';
+}
+
+/* ═══════════════════════════════════════════════
+   HARDCODE MCLARENS OFFICE DATA ON PAGE LOAD
+═══════════════════════════════════════════════ */
+function prefillMcLarens(){
+  var hc={
+    surveyorOfficeAddr:'McLarens Insurance Surveyors & Loss Assessors India Pvt Ltd\nMetro House, 3rd Floor, Block no. 5, Mangaldas Road, Pune 411 001, Maharashtra',
+    surveyorGSTIN:'27AAGCM4241E1ZP',
+    surveyorLic2:'Corp SLA No 72502 valid up to 13/03/2028',
+    corpSurveyorName:'McLarens Insurance Surveyors & Loss Assessors India Pvt Ltd',
+    corpSurveyorLic:'SLA-72502/2025-28',
+    lossAdjuster:'Mr. Atharva A. Deshmukh, Loss Adjuster, Pune',
+    directorName:'Mr. Amarnath Maurya, Director',
+    insurerToAddr:'ICICI Lombard General Insurance Co. Ltd.\n3rd Floor C Wing, Manikchand Icon, Bund Garden, Pune - 411001',
+    enclosures:'Loss Assessment Annexure – 1\nPolice FIR and Panchanama\nRevised Police FIR Mentioning the value of stolen stock\nClaim bill\nPurchase Invoices of stolen material\nStock statement\nConsent Email\nKYC Documents\nPhoto Sheet\nSF Bill'
+  };
+  Object.keys(hc).forEach(function(id){
+    var el=document.getElementById(id);
+    if(el&&!el.value)el.value=hc[id];
   });
 }
 
@@ -1753,7 +3360,7 @@ function openModal(id){
     }
     if(!currentModalRecord){toast('Record not found.','e');return;}
     document.getElementById('mtitle').textContent=(currentModalRecord.insured||'Report')+' — '+(currentModalRecord.refNum||currentModalRecord.id);
-    document.getElementById('mrpt').textContent=currentModalRecord.report||'No report text available.';
+    document.getElementById('mrpt').innerHTML=markdownToHtml(currentModalRecord.report||'No report text available.');
     document.getElementById('moverlay').classList.add('on');
   }catch(e){toast('Cannot open: '+e.message,'e');}
 }
@@ -1765,19 +3372,45 @@ function closeModal(){
 
 function dlModalPDF(){
   if(!currentModalRecord||!currentModalRecord.report){toast('No report available.','e');return;}
-  try{
-    var doc=new window.jspdf.jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
-    doc.setFont('helvetica');doc.setFontSize(9);
-    var margin=15,pageW=210,pageH=297,usableW=pageW-margin*2;
-    var lines=doc.splitTextToSize(currentModalRecord.report,usableW);
-    var y=margin;
-    lines.forEach(function(line){
-      if(y+5>pageH-margin){doc.addPage();y=margin;}
-      doc.text(line,margin,y);y+=5;
-    });
-    var fn='SurveyReport_'+(currentModalRecord.refNum||currentModalRecord.id).replace(/[^a-z0-9_\-]/gi,'_')+'.pdf';
-    doc.save(fn);toast('PDF downloaded','s');
-  }catch(e){toast('PDF error: '+e.message,'e');}
+  var md = currentModalRecord.report;
+  var refNum = (currentModalRecord.refNum||currentModalRecord.id||'Report').replace(/[^a-z0-9_\-]/gi,'_');
+  var fn = 'SurveyReport_'+refNum;
+
+  var printHTML = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>'+fn+'</title>'
+    +'<style>'
+    +'@page{size:A4;margin:18mm 16mm 18mm 16mm}'
+    +'*{box-sizing:border-box;margin:0;padding:0}'
+    +'body{font-family:Arial,Helvetica,sans-serif;font-size:9pt;color:#111;line-height:1.6;background:#fff}'
+    +'.rpt-header{border:1.5pt solid #1a3a5c;border-radius:4pt;padding:10pt 14pt;margin-bottom:10pt;background:#f5f9ff}'
+    +'.rpt-header-title{font-size:11pt;font-weight:bold;color:#1a3a5c;text-transform:uppercase;letter-spacing:.5pt}'
+    +'.rpt-section{border:1pt solid #d0d9e8;border-radius:3pt;padding:9pt 12pt;margin-bottom:8pt;page-break-inside:avoid}'
+    +'.rpt-section-title{font-size:8pt;font-weight:bold;text-decoration:underline;text-transform:uppercase;letter-spacing:.6pt;color:#1a3a5c;display:block;margin-bottom:7pt}'
+    +'.rpt-p{margin:0 0 5pt;font-size:9pt;color:#222;line-height:1.65}'
+    +'.rpt-table{width:100%;border-collapse:collapse;margin:6pt 0 3pt;font-size:8.5pt}'
+    +'.rpt-table th{background:#e8f0fb;color:#1a3a5c;font-weight:bold;text-align:left;padding:5pt 8pt;border:1pt solid #b0bfd4;font-size:7.5pt;text-transform:uppercase}'
+    +'.rpt-table td{padding:4.5pt 8pt;border:1pt solid #d0d9e8;vertical-align:top;color:#222}'
+    +'.rpt-table tr:nth-child(even) td{background:#f7faff}'
+    +'.rpt-amt{text-align:right;font-family:"Courier New",monospace;font-weight:600}'
+    +'.rpt-tot td{border-top:2pt solid #1a3a5c;font-weight:bold;color:#1a3a5c;background:#edf4ff!important}'
+    +'.rpt-bold{font-weight:bold}'
+    +'.rpt-footer{text-align:center;font-size:7pt;color:#888;margin-top:14pt;padding-top:8pt;border-top:1pt solid #ddd}'
+    +'.wp-stamp{text-align:center;font-size:8pt;font-weight:bold;color:#cc0000;letter-spacing:2pt;margin-bottom:6pt}'
+    +'@media print{.no-print{display:none}body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}'
+    +'</style></head><body>'
+    +'<div class="no-print" style="position:fixed;top:0;left:0;right:0;background:#1a3a5c;padding:8px 16px;display:flex;align-items:center;gap:12px;z-index:999">'
+    +'<span style="color:#fff;font-size:13px;font-weight:bold">'+fn+'</span>'
+    +'<button onclick="window.print()" style="margin-left:auto;background:#2563eb;color:#fff;border:none;padding:6px 18px;border-radius:4px;font-size:13px;cursor:pointer;font-weight:600">⬇ Save as PDF</button>'
+    +'<button onclick="window.close()" style="background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);padding:6px 12px;border-radius:4px;font-size:13px;cursor:pointer">✕ Close</button>'
+    +'</div>'
+    +'<div style="margin-top:44px"><div class="wp-stamp">WITHOUT PREJUDICE</div>'+markdownToHtml(md)+'</div>'
+    +'</body></html>';
+
+  var w = window.open('','_blank','width=900,height=700,scrollbars=yes');
+  if(!w){toast('Pop-up blocked — allow pop-ups for this page.','e',5000);return;}
+  w.document.write(printHTML);
+  w.document.close();
+  setTimeout(function(){try{w.print();}catch(e){}},800);
+  toast('PDF window opened — click "Save as PDF"','s',5000);
 }
 
 /* ═══════════════════════════════════════════════
@@ -1830,6 +3463,123 @@ async function sendChat(){
 /* Close modal on overlay click */
 document.getElementById('moverlay').addEventListener('click',function(e){
   if(e.target===this)closeModal();
+});
+
+/* ════════════════════════════════════════════════════════════
+   SETTINGS MODAL
+════════════════════════════════════════════════════════════ */
+function openSettings(){
+  /* Pre-fill with current values */
+  document.getElementById('cfgWorkerUrl').value = WORKER_URL;
+  document.getElementById('cfgApiKey').value = localStorage.getItem('sai_api_key') || '';
+  /* Show hint about currently saved key */
+  var hintEl = document.getElementById('savedKeyHint');
+  if(hintEl){
+    var saved = localStorage.getItem('sai_api_key');
+    if(saved && saved.length > 4){
+      hintEl.innerHTML = 'Currently saved: <strong style="color:var(--blue)">'
+        + saved.slice(0,4)+'••••••••'+saved.slice(-4)
+        + '</strong> ('+ saved.length +' chars)';
+    } else if(saved) {
+      hintEl.innerHTML = '<span style="color:var(--amber)">Key saved but very short — may be incorrect</span>';
+    } else {
+      hintEl.innerHTML = '<span style="color:var(--amber)">No key saved yet</span>';
+    }
+  }
+  document.getElementById('cfgStatus').style.display = 'none';
+  var ov = document.getElementById('settingsOverlay');
+  ov.style.display = 'flex';
+}
+
+function closeSettings(){
+  document.getElementById('settingsOverlay').style.display = 'none';
+}
+
+function toggleKeyVis(){
+  var inp = document.getElementById('cfgApiKey');
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+}
+
+function saveSettings(){
+  var url = document.getElementById('cfgWorkerUrl').value.trim();
+  var key = document.getElementById('cfgApiKey').value.trim();
+
+  if(!key){ showCfgStatus('API key cannot be empty','e'); return; }
+  if(!url){ showCfgStatus('Worker URL cannot be empty','e'); return; }
+
+  localStorage.setItem('sai_worker_url', url);
+  localStorage.setItem('sai_api_key', key);
+
+  /* Update live vars */
+  WORKER_URL = url;
+  INTERNAL_API_KEY = key;
+
+  showCfgStatus('✓ Saved! AI features are now active.','s');
+  document.getElementById('noKeyBanner').style.display = 'none';
+  setTimeout(closeSettings, 1400);
+  toast('✓ API key saved — AI ready','s');
+}
+
+function showCfgStatus(msg, type){
+  var el = document.getElementById('cfgStatus');
+  el.style.display = 'block';
+  el.textContent = msg;
+  el.style.background = type==='s' ? 'rgba(57,255,20,.08)' : 'rgba(255,60,60,.08)';
+  el.style.border = '1px solid ' + (type==='s' ? 'rgba(57,255,20,.25)' : 'rgba(255,60,60,.25)');
+  el.style.color = type==='s' ? 'var(--green)' : '#ff6060';
+}
+
+async function testConnection(){
+  var key = document.getElementById('cfgApiKey').value.trim();
+  var url = document.getElementById('cfgWorkerUrl').value.trim();
+  if(!key||!url){ showCfgStatus('Fill in both fields first','e'); return; }
+
+  var sp = document.getElementById('testSpin');
+  sp.classList.add('on');
+  showCfgStatus('Testing connection…','s');
+
+  try{
+    var r = await fetch(url, {
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':key},
+      body:JSON.stringify({messages:[{role:'user',content:'Reply with exactly: OK'}], max_tokens:10})
+    });
+    if(r.ok){
+      showCfgStatus('✓ Connection successful! Worker is reachable.','s');
+    } else {
+      var eb = await r.text();
+      showCfgStatus('Worker returned ' + r.status + ': ' + eb.slice(0,80), 'e');
+    }
+  } catch(e){
+    showCfgStatus('Connection failed: ' + e.message, 'e');
+  }
+  sp.classList.remove('on');
+}
+
+/* Close settings overlay on background click */
+document.getElementById('settingsOverlay').addEventListener('click', function(e){
+  if(e.target === this) closeSettings();
+});
+
+/* Init on load */
+window.addEventListener('load',function(){
+  prefillMcLarens();
+
+  /* Store this dashboard's path so sai-login.html can redirect back correctly
+     Works for both local files (file://) and hosted (https://) */
+  try{
+    localStorage.setItem('sai_dashboard_path', window.location.href);
+  }catch(e){}
+
+  /* Show/hide inline key panel */
+  var savedKey = localStorage.getItem('sai_api_key');
+  if(savedKey && savedKey !== 'YOUR_INTERNAL_API_KEY_HERE'){
+    updateKeyPanelState('ok');
+    document.getElementById('noKeyBanner').style.display='none';
+  } else {
+    updateKeyPanelState('missing');
+    document.getElementById('noKeyBanner').style.display='flex';
+  }
 });
 
 </script>
