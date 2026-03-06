@@ -1360,6 +1360,7 @@ Compute Settlement
   </div>
   <div style="margin-top:8px;font-size:.72rem;color:var(--t3)">
     Where to find it: <strong style="color:var(--t2)">Cloudflare Dashboard → Workers &amp; Pages → surveyorai-api → Settings → Variables → INTERNAL_API_KEY</strong>
+    <span id="savedKeyHint" style="display:none;margin-left:12px;color:var(--t3)">Currently saved: <code id="savedKeyShow" style="background:rgba(255,255,255,.06);padding:1px 5px;border-radius:3px;font-size:.72rem"></code></span>
   </div>
 </div>
 
@@ -3132,7 +3133,8 @@ async function callWorker(content, maxTokens){
       if(panel){panel.style.display='block';panel.scrollIntoView({behavior:'smooth',block:'center'});}
       var inp = document.getElementById('inlineApiKey');
       if(inp) setTimeout(function(){inp.focus();}, 500);
-      throw new Error('Wrong API key (401). Enter the correct key in the panel above.');
+      var maskedKey = INTERNAL_API_KEY ? INTERNAL_API_KEY.slice(0,4)+'…'+INTERNAL_API_KEY.slice(-4) : '(none)';
+      throw new Error('401 Unauthorized — key "'+maskedKey+'" rejected by Worker. Scroll to Document Upload section and enter the correct INTERNAL_API_KEY.');
     }
 
     if(resp.status === 400 && typeof content !== 'string'){
@@ -3327,6 +3329,14 @@ function updateKeyPanelState(status){
   var panel=document.getElementById('inlineKeyPanel');
   var label=document.getElementById('inlineKeyLabel');
   if(!panel)return;
+  /* Show masked current key so user can diagnose mismatch */
+  var savedKey=localStorage.getItem('sai_api_key')||'';
+  var hint=document.getElementById('savedKeyHint');
+  var show=document.getElementById('savedKeyShow');
+  if(hint&&show&&savedKey){
+    hint.style.display='inline';
+    show.textContent=savedKey.slice(0,4)+'…'+savedKey.slice(-4)+'  ('+savedKey.length+' chars)';
+  }
   if(status==='ok'){
     panel.style.display='none';
   } else {
@@ -3343,18 +3353,45 @@ function updateKeyPanelState(status){
   }
 }
 
-function saveInlineKey(){
+async function saveInlineKey(){
   var inp=document.getElementById('inlineApiKey');
   var key=inp?inp.value.trim():'';
   if(!key){toast('Key cannot be empty','e');return;}
+
+  /* Optimistically save */
   localStorage.setItem('sai_api_key',key);
   INTERNAL_API_KEY=key;
   var cfgInp=document.getElementById('cfgApiKey');
   if(cfgInp)cfgInp.value=key;
-  updateKeyPanelState('ok');
   var nb=document.getElementById('noKeyBanner');
   if(nb)nb.style.display='none';
-  toast('\u2713 API key saved \u2014 AI features ready!','s',4000);
+
+  /* Test the key with a tiny ping to the Worker */
+  var saveBtn=inp?inp.parentElement.parentElement.querySelector('button[onclick*="saveInlineKey"]'):null;
+  if(saveBtn){saveBtn.textContent='Testing…';saveBtn.disabled=true;}
+  try{
+    var testResp=await fetch(WORKER_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':key},
+      body:JSON.stringify({messages:[{role:'user',content:'ping'}],max_tokens:5})
+    });
+    if(testResp.status===401){
+      /* Key is wrong — update label but keep panel open */
+      if(saveBtn){saveBtn.textContent='Save Key';saveBtn.disabled=false;}
+      updateKeyPanelState('wrong');
+      toast('\u26D4 401 — This key does not match your Cloudflare Worker\'s INTERNAL_API_KEY. Check the value in Worker → Settings → Variables.','e',8000);
+      return;
+    }
+    /* 200 or any non-401 = key is accepted */
+    updateKeyPanelState('ok');
+    toast('\u2713 Key verified & saved — AI features ready!','s',4000);
+  }catch(netErr){
+    /* Network error during test — save key anyway, show warning */
+    updateKeyPanelState('ok');
+    toast('Key saved (could not verify — network issue). If extraction fails, check Worker URL.','d',5000);
+  }finally{
+    if(saveBtn){saveBtn.textContent='Save Key';saveBtn.disabled=false;}
+  }
 }
 
 function toggleInlineKeyVis(){
@@ -3708,11 +3745,13 @@ function toggleSection(hdEl){
   var sec = hdEl.closest('section') || hdEl.parentElement;
   sec.classList.toggle('collapsed');
 }
-/* Default: collapse all except first 2 sections (header + WP table stay open) */
+/* Default: collapse middle sections, keep critical ones open */
 (function(){
+  /* Always-open sections by index: 0=Report Header, 1=WP Table, 20=Settlement, 26=AI Report, 28=Upload */
+  var ALWAYS_OPEN = [0, 1, 20, 26, 28];
   var sections = document.querySelectorAll('#viewClaim .sec');
   sections.forEach(function(sec, i){
-    if(i >= 2) sec.classList.add('collapsed');
+    if(ALWAYS_OPEN.indexOf(i) === -1) sec.classList.add('collapsed');
   });
 })();
 </script>
