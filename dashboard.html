@@ -3598,21 +3598,26 @@ async function sendChat(){
 
   var thinkBbl=document.createElement('div');
   thinkBbl.className='bbl bai';
-  thinkBbl.textContent='Thinking…';
+  thinkBbl.innerHTML='<span style="opacity:.5;font-style:italic">Thinking…</span>';
   msgs.appendChild(thinkBbl);
   msgs.scrollTop=msgs.scrollHeight;
 
-  var reportContext=document.getElementById('rptOut').textContent||'';
-  var sysCtx=reportContext?'Current report context (first 2000 chars):\n'+reportContext.slice(0,2000)+'\n\n':'';
+  /* Use raw markdown (not stripped HTML textContent) for report context */
+  var reportContext = REPORT_RAW_MD || '';
+  var sysCtx = reportContext
+    ? 'You are an AI Co-Pilot for a professional insurance surveyor. Here is the current FSR report context (first 2500 chars):\n\n'+reportContext.slice(0,2500)+'\n\n---\n'
+    : 'You are an AI Co-Pilot for a professional insurance surveyor. No report has been generated yet.\n\n';
 
-  var fullPrompt=sysCtx+'User request: '+msg+'\n\nProvide a concise, professional response. If asked to rewrite a section, output only the rewritten text. If answering a question, be direct.';
+  var fullPrompt = sysCtx
+    + 'User request: '+msg+'\n\n'
+    + 'Respond concisely and professionally. If asked to rewrite a section, output only the improved text. If answering a question, be direct and specific.';
 
   try{
-    var data=await callAI(fullPrompt,1200);
-    var reply=parseAIResponse(data);
-    thinkBbl.textContent=reply||'(No response)';
+    /* callAI already returns parsed text — do NOT call parseAIResponse again */
+    var reply = await callAI(fullPrompt, 1200);
+    thinkBbl.textContent = reply || '(No response — check API key in Document Upload section)';
   }catch(e){
-    thinkBbl.textContent='Error: '+e.message;
+    thinkBbl.textContent = 'Error: '+e.message;
   }
   msgs.scrollTop=msgs.scrollHeight;
 }
