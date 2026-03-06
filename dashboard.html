@@ -2647,7 +2647,7 @@ var prompt=
 '- All amounts must be written as Rs. X,XX,XXX.XX format.\n'+
 '- Never invent figures or change any amount. If a value is blank, write "Not provided" or "Not Applicable".\n\n'+
 '=== REPORT HEADER ===\nOur Ref: '+d.refNum+'\nDate: '+d.reportDate+'\nSurveyor Office: '+d.surveyorOfficeAddr+'\nGSTIN: '+d.surveyorGSTIN+'\nLicense: '+d.surveyorLic2+'\nTo: '+d.insurerToAddr+'\nKind Attention: '+d.kindAttention+'\n\n'+
-'=== WITHOUT PREJUDICE FINAL SURVEY REPORT TABLE ===\n'+
+'=== CLAIM SUMMARY TABLE ===\n'+
 'POLICY TYPE/NO: '+d.polType+' | '+d.polNum+'\nCLAIM NO: '+d.claimNum+'\nINSURED: '+d.insured+'\nDATE & TIME OF LOSS: '+d.dol+'\nDATE & TIME OF INTIMATION: '+d.doi+'\nDATE OF SURVEY: '+d.dos+'\nDELAY IN INTIMATION: '+d.delayIntimation+'\nLOSS LOCATION: '+d.lossLocation+'\nSITUATION OF LOSS: '+d.situation+'\nCAUSE OF LOSS: '+d.cause+(d.firNumber?' | FIR No.: '+d.firNumber:'')+(d.firSection?' | Section: '+d.firSection:'')+'\nCIRCUMSTANCES OF LOSS: '+d.circumstances+'\nLOSS RESERVE RECOMMENDED EARLIER: Rs.'+d.lossReserve+'\nGROSS ASSESSED LOSS: '+(hasFinancials?toINR(CALC.gc):'[PENDING]')+'\nNET ADJUSTED LOSS/SETTLEMENT AVAILABLE: '+(hasFinancials?toINR(CALC.netAdj):'[PENDING]')+'\n'+(hasFinancials&&CALC.hb>0?'LESS '+CALC.hb+'% IN ABSENCE OF POLICE FR: '+toINR(CALC.hbA)+'\nSETTLEMENT AVAILABLE: '+toINR(CALC.netSet)+'\n':'')+'\n'+
 '=== POLICY DETAILS TABLE ===\n'+
 'POLICY TYPE/NO: '+d.polType+' / '+d.polNum+'\nINSURERS: '+d.insurer+'\nNAME & ADDRESS OF INSURED: '+d.insured+', '+d.insuredAddr+'\nBANK/FINANCIERS: '+d.bankFinancier+'\nOCCUPATION: '+d.occupation+'\nLOCATION OF LOSS AFFECTED: '+d.lossLocation+'\nPERIOD OF INSURANCE: '+d.polPeriod+'\nCLAUSES: '+d.clauses+'\nWARRANTIES/CONDITIONS: '+d.warranties+'\nDEDUCTIBLE: '+d.deductibleDesc+'\n\n'+
@@ -2854,146 +2854,184 @@ function dlPDF(){
   var md = getReportText();
   if(!md){toast('Generate a report first.','e');return;}
 
-  /* ── Pull key fields from form for letterhead ── */
   function fv(id){ var el=document.getElementById(id); return el?el.value.trim():''; }
   var refNum    = fv('refNum')    || 'PENDING';
   var claimNum  = fv('claimNum')  || 'PENDING';
-  var rptDate   = fv('reportDate')|| new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'long',year:'numeric'});
-  var survAddr  = fv('surveyorOfficeAddr');
-  var survGST   = fv('surveyorGSTIN');
-  var survLic   = fv('surveyorLic2');
+  var rptDate   = fv('reportDate')
+    ? new Date(fv('reportDate')).toLocaleDateString('en-IN',{day:'2-digit',month:'long',year:'numeric'})
+    : new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'long',year:'numeric'});
   var insurerTo = fv('insurerToAddr');
   var kindAttn  = fv('kindAttention');
-  var adjuster  = fv('lossAdjuster')  || '';
-  var director  = fv('directorName')  || '';
+  var adjuster  = fv('lossAdjuster')     || '';
+  var director  = fv('directorName')     || '';
   var corpName  = fv('corpSurveyorName') || 'McLarens Insurance Surveyors & Loss Assessors India Pvt Ltd';
-  var corpLic   = fv('corpSurveyorLic') || '';
-  var encl      = fv('enclosures')    || '';
+  var corpLic   = fv('corpSurveyorLic')  || '';
+  var encl      = fv('enclosures')       || '';
 
-  /* ── Format insurer address lines ── */
   var insurerLines = (insurerTo||'').split('\n').map(function(l){return l.trim();}).filter(Boolean);
-  var survLines    = (survAddr||'').split('\n').map(function(l){return l.trim();}).filter(Boolean);
 
-  /* ── Build letterhead header ── */
-  function row(label,val){
-    return '<tr><td class="hdr-lbl">'+label+'</td><td class="hdr-sep">#</td><td class="hdr-val">'+val+'</td></tr>';
-  }
+  /* ── McLarens logo SVG ── */
+  var logoSVG = '<div class="mcl-logo"><svg width="190" height="46" viewBox="0 0 190 46" xmlns="http://www.w3.org/2000/svg">'
+    +'<polygon points="4,4 22,4 22,30 13,38 4,30" fill="#c8102e"/>'
+    +'<polygon points="22,4 40,4 40,30 31,38 22,30" fill="#003087"/>'
+    +'<text x="8" y="27" font-family="Arial" font-weight="900" font-size="16" fill="white">M</text>'
+    +'<text x="48" y="19" font-family="Arial" font-weight="700" font-size="13.5" fill="#003087" letter-spacing="0.5">McLARENS</text>'
+    +'<text x="48" y="31" font-family="Arial" font-weight="400" font-size="7.5" fill="#444" letter-spacing="0.3">Insurance Surveyors &amp; Loss Assessors</text>'
+    +'<text x="48" y="42" font-family="Arial" font-weight="400" font-size="7" fill="#777" letter-spacing="0.2">India Private Limited</text>'
+    +'</svg></div>';
 
+  /* ── Letterhead ── */
   var letterhead =
     '<div class="letterhead">'
-    /* Two-column top: ref block left, date right */
+    + logoSVG
+    +'<div class="hdr-rule"></div>'
     +'<table class="hdr-refs"><tbody>'
-    +row('McLarens Ref', refNum)
-    +row('Claim Ref', claimNum)
-    +'<tr><td class="hdr-lbl">Date</td><td class="hdr-sep"></td><td class="hdr-val">'+rptDate+'</td></tr>'
+    +'<tr><td class="hdr-lbl">McLarens Ref #</td><td class="hdr-sep">&nbsp;</td><td class="hdr-val">'+refNum+'</td></tr>'
+    +'<tr><td class="hdr-lbl">Claim Ref #</td><td class="hdr-sep">&nbsp;</td><td class="hdr-val">'+claimNum+'</td></tr>'
+    +'<tr><td class="hdr-lbl">Date:</td><td class="hdr-sep">&nbsp;</td><td class="hdr-val">'+rptDate+'</td></tr>'
     +'</tbody></table>'
-    /* Insurer address */
     +(insurerLines.length ? '<div class="hdr-to">'+insurerLines.join('<br>')+'</div>' : '')
-    /* Kind Attn */
     +(kindAttn ? '<div class="hdr-attn">Kind Attn.: '+kindAttn+'</div>' : '')
-    /* WP + Title */
-    +'<div class="wp-title">WITHOUT PREJUDICE</div>'
+    +'<div class="wp-title">W I T H O U T &nbsp; P R E J U D I C E</div>'
     +'<div class="fsr-title">FINAL SURVEY REPORT</div>'
-    +'<div class="narr-title">NARRATIVE REPORT</div>'
     +'</div>';
 
   /* ── Signature block ── */
+  var adjParts = adjuster ? adjuster.split(/,\s*/) : [];
+  var adjName  = adjParts[0] || '';
+  var adjRole2 = adjParts.slice(1).join(', ');
+  var dirParts = director ? director.split(/,\s*/) : [];
+  var dirName  = dirParts[0] || '';
+  var dirRole2 = dirParts.slice(1).join(', ');
+
   var sigBlock =
     '<div class="sig-block">'
     +'<p class="sig-para">The above report is issued without prejudice to the rights of the Insurers. The payment of the claim is subject to the terms and conditions of the policy under which the claim has been preferred.</p>'
-    +(corpName  ? '<p class="sig-line"><strong>Name of Corporate Surveyor:</strong> '+corpName+'</p>' : '')
-    +(corpLic   ? '<p class="sig-line"><strong>License No:</strong> '+corpLic+'</p>' : '')
+    +(corpName ? '<p class="sig-line"><strong>Name of Corporate Surveyor:</strong> '+corpName+'</p>' : '')
+    +(corpLic  ? '<p class="sig-line"><strong>License No:</strong> '+corpLic+'</p>' : '')
     +'<p class="sig-decl">We / I hereby declare that no unlicensed person is involved in the survey and loss assessment of this claim.</p>'
     +'<table class="sig-table"><tr>'
-    +(adjuster ? '<td><p class="sig-name">'+adjuster.replace(',','<br>')+'</p><p class="sig-role">Loss Adjuster</p></td>' : '<td></td>')
-    +(director ? '<td><p class="sig-name">'+director.replace(',','<br>')+'</p><p class="sig-role">Director</p></td>' : '<td></td>')
+    +(adjName ? '<td><div class="sig-gap"></div><p class="sig-name">'+adjName+'</p>'+(adjRole2?'<p class="sig-desig">'+adjRole2+'</p>':'')+'<p class="sig-role">Loss Adjuster</p></td>' : '<td></td>')
+    +(dirName ? '<td><div class="sig-gap"></div><p class="sig-name">'+dirName+'</p>'+(dirRole2?'<p class="sig-desig">'+dirRole2+'</p>':'')+'<p class="sig-role">Director</p></td>' : '<td></td>')
     +'</tr></table>'
-    +(encl ? '<div class="encl-block"><strong>Enclosures:</strong><br>'+encl.split('\n').filter(Boolean).map(function(e){return '&nbsp;&nbsp;– '+e.trim();}).join('<br>')+'</div>' : '')
+    +(encl ? '<div class="encl-block"><p><strong>Enclosures:</strong></p>'+encl.split('\n').filter(Boolean).map(function(e){return '<p class="encl-item">– '+e.trim()+'</p>';}).join('')+'</div>' : '')
     +'<p class="std-footer">Powered by AB Enterprise | SurveyorAI v3.2</p>'
     +'</div>';
 
-  /* ── Remove header/footer sections from markdown (they're in letterhead/sig) ── */
+  /* ══ COMPREHENSIVE bodyMd STRIPPING ══
+     Remove ALL content that belongs to the letterhead or sig block.
+     The AI generates these as markdown — we must strip every variant. */
   var bodyMd = md
-    .replace(/^.*FINAL SURVEY REPORT.*$/gm,'')
-    .replace(/^.*WITHOUT PREJUDICE.*$/gm,'')
-    .replace(/^.*NARRATIVE REPORT.*$/gm,'')
-    .replace(/^.*CORPORATE SURVEYOR DECLARATION.*[\s\S]*?(?=\n\n|\n$|$)/m, '')
-    .replace(/^.*Powered by AB Enterprise.*$/gm,'')
+    /* 1. Strip the entire AI-generated report header block (Our Ref / Date / Surveyor Office etc.)
+       Matches from start or "Our Ref" through "Kind Attention" line */
+    .replace(/^[-–]*\s*$/gm, '__BLANK__')          /* mark blank lines */
+    .replace(/^(Our Ref\s*:|McLarens Ref|Ref\s*:|Our Reference).*$/gim, '')
+    .replace(/^Date\s*:.*$/gim, '')
+    .replace(/^Surveyor\s*(Office)?\s*:.*$/gim, '')
+    .replace(/^Metro House.*$/gim, '')
+    .replace(/^GSTIN\s*:.*$/gim, '')
+    .replace(/^License\s*:.*$/gim, '')
+    .replace(/^To\s*:.*$/gim, '')
+    .replace(/^(ICICI|United India|New India|Oriental|National|Bajaj|HDFC|Tata AIG|Reliance|SBI|Chola).*Insurance.*$/gim, '')
+    .replace(/^(3rd|2nd|1st|4th|5th)?\s*(Floor|Block|Wing).*$/gim, '')
+    .replace(/^Kind Attention\s*:.*$/gim, '')
+    .replace(/^Kind Attn\s*\.?\s*:.*$/gim, '')
+    /* 2. Remove "WITHOUT PREJUDICE" and all FSR title / table variants */
+    .replace(/^.*WITHOUT\s+PREJUDICE.*$/gim, '')
+    .replace(/^.*FINAL\s+SURVEY\s+REPORT.*TABLE.*$/gim, '')
+    .replace(/^.*FINAL\s+SURVEY\s+REPORT.*$/gim, '')
+    .replace(/^.*NARRATIVE\s+REPORT.*$/gim, '')
+    /* 3. Strip CORPORATE SURVEYOR DECLARATION and everything after it
+       (sig block is rendered from form fields) */
+    .replace(/CORPORATE\s+SURVEYOR\s+DECLARATION[\s\S]*/i, '')
+    /* 4. Strip any stray signature / enclosure lines that leaked through */
+    .replace(/^.*above report is issued without prejudice.*$/gim, '')
+    .replace(/^.*payment of the claim is subject.*$/gim, '')
+    .replace(/^Name of Corporate Surveyor\s*:.*$/gim, '')
+    .replace(/^License No\s*:.*$/gim, '')
+    .replace(/^.*hereby declare that no unlicensed.*$/gim, '')
+    .replace(/^(Mr\.|Ms\.|Mrs\.)\s*\w.*Loss Adjuster.*$/gim, '')
+    .replace(/^(Mr\.|Ms\.|Mrs\.)\s*\w.*Director.*$/gim, '')
+    .replace(/^Loss Adjuster\s*$/gim, '')
+    .replace(/^Director\s*$/gim, '')
+    .replace(/^Enclosures?\s*:.*$/gim, '')
+    .replace(/^–\s*(Loss Assessment|Police FIR|Claim bill|Purchase|Stock|Consent|KYC|Photo|SF Bill).*$/gim, '')
+    .replace(/^Powered by AB Enterprise.*$/gim, '')
+    /* 5. Collapse 3+ consecutive blank lines to one */
+    .replace(/(__BLANK__\s*){3,}/g, '\n\n')
+    .replace(/__BLANK__/g, '')
+    .replace(/\n{3,}/g, '\n\n')
     .trim();
 
   var fn = 'SurveyReport_'+refNum.replace(/[^a-z0-9_\-]/gi,'_')+'_'+new Date().toISOString().slice(0,10);
 
-  var printHTML = '<!DOCTYPE html><html><head>'
-    +'<meta charset="UTF-8"><title>'+fn+'</title>'
-    +'<style>'
-    /* ── Page ── */
-    +'@page{size:A4;margin:20mm 18mm 22mm 18mm}'
+  var CSS =
+    '@page{size:A4;margin:22mm 18mm 22mm 18mm}'
     +'*{box-sizing:border-box;margin:0;padding:0}'
-    +'body{font-family:"Times New Roman",Times,serif;font-size:10pt;color:#000;line-height:1.55;background:#fff}'
-    /* ── No-print toolbar — MUST stay hidden in print ── */
+    +'body{font-family:"Times New Roman",Times,serif;font-size:10pt;color:#000;line-height:1.6;background:#fff}'
+    /* Toolbar — hidden in print */
     +'.no-print{position:fixed;top:0;left:0;right:0;background:#1a3a5c;padding:8px 16px;display:flex;align-items:center;gap:12px;z-index:9999}'
     +'@media print{.no-print{display:none!important}.print-body{margin-top:0!important}body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}'
-    /* ── Letterhead ── */
-    +'.letterhead{margin-bottom:18pt}'
-    +'.hdr-refs{width:auto;border:none;margin-bottom:10pt}'
-    +'.hdr-refs td{padding:1pt 4pt 1pt 0;border:none;font-size:10pt;vertical-align:top}'
-    +'.hdr-lbl{font-weight:bold;white-space:nowrap;padding-right:6pt!important}'
-    +'.hdr-sep{padding:0 4pt!important;color:#666}'
+    /* Letterhead */
+    +'.letterhead{margin-bottom:16pt}'
+    +'.mcl-logo{margin-bottom:10pt}'
+    +'.hdr-rule{border-top:2pt solid #003087;margin:8pt 0 10pt}'
+    +'.hdr-refs{border:none;margin-bottom:10pt}'
+    +'.hdr-refs td{padding:1.5pt 6pt 1.5pt 0;border:none;font-size:10pt;vertical-align:top}'
+    +'.hdr-lbl{font-weight:bold;white-space:nowrap}'
     +'.hdr-val{}'
-    +'.hdr-to{margin:10pt 0 6pt;font-size:10pt;line-height:1.6}'
-    +'.hdr-attn{margin-bottom:12pt;font-size:10pt}'
-    +'.wp-title{text-align:center;font-weight:bold;font-size:11pt;letter-spacing:3pt;margin:14pt 0 4pt;text-decoration:underline}'
-    +'.fsr-title{text-align:center;font-weight:bold;font-size:13pt;letter-spacing:1pt;margin-bottom:3pt}'
-    +'.narr-title{text-align:center;font-weight:bold;font-size:10pt;margin-bottom:16pt;text-decoration:underline}'
-    /* ── Section headings ── */
-    +'.std-heading{font-size:10pt;font-weight:bold;text-decoration:underline;text-transform:uppercase;margin:14pt 0 5pt;page-break-after:avoid}'
-    /* ── Body text ── */
-    +'.std-para{margin:0 0 6pt;font-size:10pt;text-align:justify;line-height:1.6}'
-    +'.std-bullet{margin:0 0 4pt 16pt;font-size:10pt;text-indent:-12pt}'
-    +'.std-rule{border:none;border-top:1pt solid #999;margin:10pt 0}'
-    /* ── Tables ── */
-    +'.std-table{width:100%;border-collapse:collapse;margin:8pt 0 10pt;font-size:9.5pt;page-break-inside:avoid}'
-    +'.std-table th{background:#f0f0f0;font-weight:bold;text-align:left;padding:4pt 7pt;border:1pt solid #000;font-size:9pt;text-transform:uppercase}'
-    +'.std-table td{padding:3.5pt 7pt;border:1pt solid #333;vertical-align:top}'
-    +'.std-table tr:nth-child(even) td{background:#fafafa}'
+    +'.hdr-to{margin:10pt 0 4pt;font-size:10pt;line-height:1.7}'
+    +'.hdr-attn{margin-bottom:14pt;font-size:10pt}'
+    +'.wp-title{text-align:center;font-weight:bold;font-size:11pt;letter-spacing:4pt;margin:16pt 0 4pt}'
+    +'.fsr-title{text-align:center;font-weight:bold;font-size:13pt;letter-spacing:1pt;margin-bottom:0;text-decoration:underline}'
+    /* Section headings */
+    +'.std-heading{font-size:10pt;font-weight:bold;text-decoration:underline;text-transform:uppercase;margin:13pt 0 4pt;page-break-after:avoid}'
+    /* Body text */
+    +'.std-para{margin:0 0 5pt;font-size:10pt;text-align:justify;line-height:1.65}'
+    +'.std-bullet{margin:0 0 3pt 14pt;font-size:10pt;text-indent:-10pt}'
+    +'.std-rule{border:none;border-top:1pt solid #aaa;margin:8pt 0}'
+    /* Tables */
+    +'.std-table{width:100%;border-collapse:collapse;margin:6pt 0 10pt;font-size:9.5pt;page-break-inside:avoid}'
+    +'.std-table th{background:#efefef;font-weight:bold;text-align:left;padding:4pt 7pt;border:1pt solid #000;font-size:9pt;text-transform:uppercase}'
+    +'.std-table td{padding:3pt 7pt;border:1pt solid #333;vertical-align:top}'
+    +'.std-table tr:nth-child(even) td{background:#f9f9f9}'
     +'.amt-cell{text-align:right;font-family:"Courier New",Courier,monospace;white-space:nowrap}'
-    +'.tot-row td{border-top:2pt solid #000!important;font-weight:bold;background:#f0f0f0!important}'
-    +'.sub-row td{font-style:italic}'
-    /* ── Signature block ── */
-    +'.sig-block{margin-top:20pt;border-top:1pt solid #000;padding-top:10pt}'
-    +'.sig-para{font-size:9.5pt;margin-bottom:8pt;font-style:italic}'
-    +'.sig-line{font-size:9.5pt;margin-bottom:4pt}'
-    +'.sig-decl{font-size:9pt;margin:8pt 0;font-style:italic}'
-    +'.sig-table{width:100%;border:none;margin-top:14pt}'
-    +'.sig-table td{border:none;width:50%;vertical-align:top;padding:0 8pt 0 0}'
-    +'.sig-name{font-weight:bold;font-size:9.5pt;margin-bottom:2pt}'
-    +'.sig-role{font-size:9pt;text-decoration:underline}'
-    +'.encl-block{margin-top:12pt;font-size:9pt;line-height:1.7}'
-    +'.std-footer{text-align:center;font-size:7.5pt;color:#666;margin-top:16pt;padding-top:6pt;border-top:1pt solid #ccc}'
-    +'</style>'
-    +'</head><body>'
+    +'.tot-row td{border-top:2pt solid #000!important;font-weight:bold;background:#e8e8e8!important}'
+    +'.sub-row td{border-top:1pt solid #666}'
+    /* Signature block */
+    +'.sig-block{margin-top:18pt;border-top:1.5pt solid #000;padding-top:10pt;page-break-inside:avoid}'
+    +'.sig-para{font-size:9.5pt;margin-bottom:7pt;font-style:italic;line-height:1.5}'
+    +'.sig-line{font-size:9.5pt;margin-bottom:3pt}'
+    +'.sig-decl{font-size:9pt;margin:7pt 0 0;font-style:italic}'
+    +'.sig-table{width:100%;border:none;margin-top:16pt}'
+    +'.sig-table td{border:none;width:50%;vertical-align:top;padding-right:12pt}'
+    +'.sig-gap{height:28pt;border-bottom:1pt solid #333;margin-bottom:4pt;width:120pt}'
+    +'.sig-name{font-weight:bold;font-size:9.5pt;margin-bottom:1pt}'
+    +'.sig-desig{font-size:8.5pt;color:#333;margin-bottom:1pt}'
+    +'.sig-role{font-size:9pt;text-decoration:underline;color:#222}'
+    +'.encl-block{margin-top:12pt}'
+    +'.encl-item{font-size:9pt;line-height:1.7;padding-left:8pt}'
+    +'.std-footer{text-align:center;font-size:7.5pt;color:#888;margin-top:14pt;padding-top:6pt;border-top:1pt solid #ddd}';
 
-    /* ── Toolbar (screen only, hidden in print) ── */
+  var printHTML = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>'+fn+'</title>'
+    +'<style>'+CSS+'</style></head><body>'
     +'<div class="no-print">'
     +'<span style="color:#fff;font-size:13px;font-weight:bold;font-family:Arial">'+fn+'</span>'
     +'<button onclick="window.print()" style="margin-left:auto;background:#2563eb;color:#fff;border:none;padding:6px 20px;border-radius:4px;font-size:13px;cursor:pointer;font-weight:700;font-family:Arial">⬇ Save as PDF</button>'
     +'<button onclick="window.close()" style="background:rgba(255,255,255,.18);color:#fff;border:1px solid rgba(255,255,255,.4);padding:6px 14px;border-radius:4px;font-size:13px;cursor:pointer;font-family:Arial">✕ Close</button>'
     +'</div>'
-
-    /* ── Document body ── */
     +'<div class="print-body" style="margin-top:50px">'
     + letterhead
     + markdownToPrintHtml(bodyMd)
     + sigBlock
-    +'</div>'
-    +'</body></html>';
+    +'</div></body></html>';
 
   var w = window.open('','_blank','width=960,height=780,scrollbars=yes');
   if(!w){toast('Pop-up blocked — allow pop-ups and retry.','e',5000);return;}
   w.document.write(printHTML);
   w.document.close();
   setTimeout(function(){try{w.focus();w.print();}catch(e){}}, 900);
-  toast('PDF preview opened — click "Save as PDF" in the print dialog','s',5000);
+  toast('PDF preview opened — click "Save as PDF" in print dialog','s',5000);
 }
 
 function dlWord(){
@@ -3754,8 +3792,19 @@ function dlModalPDF(){
 
   var insurerLines = (insurerTo).split('\n').map(function(l){return l.trim();}).filter(Boolean);
 
+  var logoSVG2 = '<div class="mcl-logo"><svg width="190" height="46" viewBox="0 0 190 46" xmlns="http://www.w3.org/2000/svg">'
+    +'<polygon points="4,4 22,4 22,30 13,38 4,30" fill="#c8102e"/>'
+    +'<polygon points="22,4 40,4 40,30 31,38 22,30" fill="#003087"/>'
+    +'<text x="8" y="27" font-family="Arial" font-weight="900" font-size="16" fill="white">M</text>'
+    +'<text x="48" y="19" font-family="Arial" font-weight="700" font-size="13.5" fill="#003087" letter-spacing="0.5">McLARENS</text>'
+    +'<text x="48" y="31" font-family="Arial" font-weight="400" font-size="7.5" fill="#444" letter-spacing="0.3">Insurance Surveyors &amp; Loss Assessors</text>'
+    +'<text x="48" y="42" font-family="Arial" font-weight="400" font-size="7" fill="#777" letter-spacing="0.2">India Private Limited</text>'
+    +'</svg></div>';
+
   var letterhead =
     '<div class="letterhead">'
+    + logoSVG2
+    +'<div class="hdr-rule"></div>'
     +'<table class="hdr-refs"><tbody>'
     +'<tr><td class="hdr-lbl">McLarens Ref</td><td class="hdr-sep">#</td><td class="hdr-val">'+refNum+'</td></tr>'
     +'<tr><td class="hdr-lbl">Claim Ref</td><td class="hdr-sep">#</td><td class="hdr-val">'+claimNum+'</td></tr>'
@@ -3763,9 +3812,8 @@ function dlModalPDF(){
     +'</tbody></table>'
     +(insurerLines.length ? '<div class="hdr-to">'+insurerLines.join('<br>')+'</div>' : '')
     +(kindAttn ? '<div class="hdr-attn">Kind Attn.: '+kindAttn+'</div>' : '')
-    +'<div class="wp-title">WITHOUT PREJUDICE</div>'
+    +'<div class="wp-title">W I T H O U T &nbsp; P R E J U D I C E</div>'
     +'<div class="fsr-title">FINAL SURVEY REPORT</div>'
-    +'<div class="narr-title">NARRATIVE REPORT</div>'
     +'</div>';
 
   var sigBlock =
@@ -3786,23 +3834,51 @@ function dlModalPDF(){
     .replace(/^.*FINAL SURVEY REPORT.*$/gm,'')
     .replace(/^.*WITHOUT PREJUDICE.*$/gm,'')
     .replace(/^.*NARRATIVE REPORT.*$/gm,'')
-    .replace(/^.*CORPORATE SURVEYOR DECLARATION.*[\s\S]*?(?=\n\n|\n$|$)/m, '')
-    .replace(/^.*Powered by AB Enterprise.*$/gm,'')
+    .replace(/^.*CLAIM SUMMARY TABLE.*$/gm,'')
+    .replace(/^(Our Ref\s*:|McLarens Ref|Ref\s*:|Our Reference).*$/gim,'')
+    .replace(/^Date\s*:.*$/gim,'')
+    .replace(/^Surveyor\s*(Office)?\s*:.*$/gim,'')
+    .replace(/^Metro House.*$/gim,'')
+    .replace(/^GSTIN\s*:.*$/gim,'')
+    .replace(/^License\s*:.*$/gim,'')
+    .replace(/^To\s*:.*$/gim,'')
+    .replace(/^(ICICI|United India|New India|Oriental|National|Bajaj|HDFC|Tata|Reliance|SBI|Chola).*Insurance.*$/gim,'')
+    .replace(/^(\d+\w*\s+Floor|Block|Wing).*$/gim,'')
+    .replace(/^Kind Att(ention|n)\s*\.?\s*:.*$/gim,'')
+    .replace(/^===.*===\s*$/gm,'')
+    .replace(/CORPORATE\s+SURVEYOR\s+DECLARATION[\s\S]*/i,'')
+    .replace(/^.*above report is issued without prejudice.*$/gim,'')
+    .replace(/^.*payment of the claim is subject.*$/gim,'')
+    .replace(/^Name of Corporate Surveyor\s*:.*$/gim,'')
+    .replace(/^License No\s*:.*$/gim,'')
+    .replace(/^.*hereby declare that no unlicensed.*$/gim,'')
+    .replace(/^(Mr\.|Ms\.|Mrs\.)\s*\w.*Loss Adjuster.*$/gim,'')
+    .replace(/^(Mr\.|Ms\.|Mrs\.)\s*\w.*Director.*$/gim,'')
+    .replace(/^Loss Adjuster\s*$/gim,'')
+    .replace(/^Director\s*$/gim,'')
+    .replace(/^Enclosures?\s*:?.*$/gim,'')
+    .replace(/^[-–]\s*(Loss Assessment|Police FIR|Claim bill|Purchase|Stock|Consent|KYC|Photo|SF Bill).*$/gim,'')
+    .replace(/^Powered by AB Enterprise.*$/gim,'')
+    .replace(/\n{3,}/g,'\n\n')
     .trim();
 
-  var CSS = '@page{size:A4;margin:20mm 18mm 22mm 18mm}'
+  var CSS = '@page{size:A4;margin:22mm 18mm 22mm 18mm}'
     +'*{box-sizing:border-box;margin:0;padding:0}'
-    +'body{font-family:"Times New Roman",Times,serif;font-size:10pt;color:#000;line-height:1.55;background:#fff}'
+    +'body{font-family:"Times New Roman",Times,serif;font-size:10pt;color:#000;line-height:1.6;background:#fff}'
     +'.no-print{position:fixed;top:0;left:0;right:0;background:#1a3a5c;padding:8px 16px;display:flex;align-items:center;gap:12px;z-index:9999}'
     +'@media print{.no-print{display:none!important}.print-body{margin-top:0!important}body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}'
-    +'.letterhead{margin-bottom:18pt}'
-    +'.hdr-refs{width:auto;border:none;margin-bottom:10pt}.hdr-refs td{padding:1pt 4pt 1pt 0;border:none;font-size:10pt;vertical-align:top}'
-    +'.hdr-lbl{font-weight:bold;white-space:nowrap;padding-right:6pt!important}.hdr-sep{padding:0 4pt!important;color:#666}'
-    +'.hdr-to{margin:10pt 0 6pt;font-size:10pt;line-height:1.6}.hdr-attn{margin-bottom:12pt;font-size:10pt}'
-    +'.wp-title{text-align:center;font-weight:bold;font-size:11pt;letter-spacing:3pt;margin:14pt 0 4pt;text-decoration:underline}'
-    +'.fsr-title{text-align:center;font-weight:bold;font-size:13pt;letter-spacing:1pt;margin-bottom:3pt}'
-    +'.narr-title{text-align:center;font-weight:bold;font-size:10pt;margin-bottom:16pt;text-decoration:underline}'
-    +'.std-heading{font-size:10pt;font-weight:bold;text-decoration:underline;text-transform:uppercase;margin:14pt 0 5pt;page-break-after:avoid}'
+    +'.letterhead{margin-bottom:16pt}'
+    +'.mcl-logo{margin-bottom:10pt}'
+    +'.hdr-rule{border-top:2pt solid #003087;margin:8pt 0 10pt}'
+    +'.hdr-refs{border:none;margin-bottom:10pt}'
+    +'.hdr-refs td{padding:1.5pt 6pt 1.5pt 0;border:none;font-size:10pt;vertical-align:top}'
+    +'.hdr-lbl{font-weight:bold;white-space:nowrap}'
+    +'.hdr-val{}'
+    +'.hdr-to{margin:10pt 0 4pt;font-size:10pt;line-height:1.7}'
+    +'.hdr-attn{margin-bottom:14pt;font-size:10pt}'
+    +'.wp-title{text-align:center;font-weight:bold;font-size:11pt;letter-spacing:4pt;margin:16pt 0 4pt}'
+    +'.fsr-title{text-align:center;font-weight:bold;font-size:13pt;letter-spacing:1pt;margin-bottom:14pt;text-decoration:underline}'
+    +'.std-heading{font-size:10pt;font-weight:bold;text-decoration:underline;text-transform:uppercase;margin:13pt 0 4pt;page-break-after:avoid}'
     +'.std-para{margin:0 0 6pt;font-size:10pt;text-align:justify;line-height:1.6}'
     +'.std-bullet{margin:0 0 4pt 16pt;font-size:10pt;text-indent:-12pt}'
     +'.std-rule{border:none;border-top:1pt solid #999;margin:10pt 0}'
