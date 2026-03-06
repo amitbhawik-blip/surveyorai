@@ -342,6 +342,27 @@ throw new Error('no_server');
 
 }catch(e){
 
+/* Check local registry first (accounts registered without Apps Script) */
+var registry={};
+try{registry=JSON.parse(localStorage.getItem('sai_registry')||'{}');}catch(re){}
+var localUser=registry[email.toLowerCase()];
+if(localUser){
+  var checkHash=await hashPwd(pwd);
+  if(checkHash===localUser.hash){
+    var token='sat-'+Date.now();
+    localStorage.setItem('sai_user',JSON.stringify({id:localUser.id,name:localUser.name,email:localUser.email,role:localUser.role,license:localUser.license}));
+    localStorage.setItem('sai_token',token);
+    showAlert('Welcome back, '+localUser.name+'! Redirecting…','s');
+    setTimeout(function(){window.location.href='dashboard.html';},800);
+    btn.disabled=false;document.getElementById('lSpin').classList.remove('on');
+    return;
+  } else {
+    showAlert('Incorrect password.');
+    btn.disabled=false;document.getElementById('lSpin').classList.remove('on');
+    return;
+  }
+}
+
 /* Demo fallback — works when Apps Script not yet configured */
 if(email==='admin@surveyorai.com'&&pwd==='Admin@123'){
   var demo={id:'admin-001',name:'Admin User',email:email,role:'Admin',license:'IRDAI/SLA/Reg/2024/001'};
@@ -364,48 +385,73 @@ async function doReg(){
 hideAlert();
 
 var name=document.getElementById('rName').value.trim();
-
 var email=document.getElementById('rEmail').value.trim();
-
 var lic=document.getElementById('rLic').value.trim();
-
 var role=document.getElementById('rRole').value;
-
 var pwd=document.getElementById('rPwd').value;
 
 if(!name||!email||!pwd){showAlert('Name, email and password are required.');return;}
-
 if(pwd.length<8){showAlert('Password must be at least 8 characters.');return;}
 
-var btn=document.getElementById('rBtn');
+/* Basic email format check */
+if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){showAlert('Enter a valid email address.');return;}
 
+var btn=document.getElementById('rBtn');
 btn.disabled=true;document.getElementById('rSpin').classList.add('on');
 
 try{
+  var hash=await hashPwd(pwd);
 
-var hash=await hashPwd(pwd);
+  /* Load existing user registry from localStorage */
+  var registry={};
+  try{registry=JSON.parse(localStorage.getItem('sai_registry')||'{}');}catch(e){}
 
-if(!APPS_SCRIPT_URL||APPS_SCRIPT_URL==='YOUR_GOOGLE_APPS_SCRIPT_URL_HERE'){
-  showAlert('Registration requires Google Apps Script setup. Contact admin for access.','e');
+  /* Check if email already registered */
+  if(registry[email.toLowerCase()]){
+    showAlert('This email is already registered. Use Sign In instead.','e');
+    btn.disabled=false;document.getElementById('rSpin').classList.remove('on');
+    return;
+  }
+
+  /* Create user record */
+  var userId='usr-'+Date.now();
+  var newUser={
+    id:userId,
+    name:name,
+    email:email.toLowerCase(),
+    hash:hash,
+    role:role,
+    license:lic||'IRDAI/SLA/Reg',
+    createdAt:new Date().toISOString()
+  };
+
+  /* Save to registry */
+  registry[email.toLowerCase()]=newUser;
+  localStorage.setItem('sai_registry',JSON.stringify(registry));
+
+  /* If Apps Script is configured, also sync there (non-blocking) */
+  if(APPS_SCRIPT_URL&&APPS_SCRIPT_URL!=='YOUR_GOOGLE_APPS_SCRIPT_URL_HERE'){
+    fetch(APPS_SCRIPT_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({action:'register',name:name,email:email,hash:hash,role:role,license:lic})
+    }).catch(function(){});/* fire and forget */
+  }
+
+  showAlert('Account created! Signing you in…','s');
+
+  /* Auto sign-in after registration */
+  setTimeout(function(){
+    var token='sat-'+Date.now();
+    localStorage.setItem('sai_user',JSON.stringify({id:userId,name:name,email:email.toLowerCase(),role:role,license:lic||'IRDAI/SLA/Reg'}));
+    localStorage.setItem('sai_token',token);
+    window.location.href='dashboard.html';
+  },1000);
+
+}catch(e){
+  showAlert('Registration error: '+e.message);
   btn.disabled=false;document.getElementById('rSpin').classList.remove('on');
-  return;
 }
-
-var resp=await fetch(APPS_SCRIPT_URL,{
-  method:'POST',
-  headers:{'Content-Type':'application/json','x-api-key':INTERNAL_API_KEY},
-  body:JSON.stringify({action:'register',name:name,email:email,hash:hash,role:role,license:lic})
-});
-if(!resp.ok){throw new Error('Server returned '+resp.status);}
-var data=await resp.json();
-
-if(data.success){showAlert('Account created! You can sign in now.','s');setTimeout(function(){sw('login');},1500);}
-
-else{showAlert(data.error||'Registration failed.');}
-
-}catch(e){showAlert('Cannot connect: '+e.message);}
-
-btn.disabled=false;document.getElementById('rSpin').classList.remove('on');
 
 }
 
