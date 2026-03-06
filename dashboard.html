@@ -2357,6 +2357,10 @@ if(_navIco) _navIco.style.display='none';
 
 document.getElementById('genOv').classList.add('on');
 
+/* ── Scroll to AI Report section immediately so user sees the overlay ── */
+var _rptSec = document.getElementById('aiReportSec');
+if(_rptSec) _rptSec.scrollIntoView({behavior:'smooth', block:'start'});
+
 document.getElementById('rptPh').style.display='none';
 
 document.getElementById('rptOut').style.display='none';
@@ -2638,6 +2642,12 @@ document.getElementById('genFill').style.width='100%';
 
   toast('✓ Report generated successfully!','s');
   autoSave(txt);
+
+  /* Scroll to top of report section so user sees the result */
+  setTimeout(function(){
+    var sec = document.getElementById('aiReportSec');
+    if(sec) sec.scrollIntoView({behavior:'smooth', block:'start'});
+  }, 150);
 
 }).catch(function(err){
   toast('AI Error: '+err.message,'e',5000);
