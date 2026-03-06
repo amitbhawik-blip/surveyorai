@@ -194,7 +194,7 @@ border-radius:50%;animation:rot .8s linear infinite;display:none;}
 
 <div class="hint">
 
-<div>📧 admin@surveyorai.com</div>
+<div>📧 <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="3051545d595e704345424655495f4251591e535f5d">[email&#160;protected]</a></div>
 
 <div>🔑 Admin@123</div>
 
@@ -246,7 +246,7 @@ border-radius:50%;animation:rot .8s linear infinite;display:none;}
 
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 
 /* ★ EDIT THESE 2 LINES ★ */
 
@@ -254,9 +254,24 @@ var APPS_SCRIPT_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
 
 var INTERNAL_API_KEY = 'YOUR_INTERNAL_API_KEY_HERE'; /* Must match env.INTERNAL_API_KEY in Worker */
 
-/* Redirect to dashboard if already logged in */
-var _tok=localStorage.getItem('sai_token');
-if(_tok)window.location.href='dashboard.html';
+/* Redirect to dashboard only if session is valid AND not expired (24h) */
+(function(){
+  var tok = localStorage.getItem('sai_token') || '';
+  var user = null;
+  try{ user = JSON.parse(localStorage.getItem('sai_user')); }catch(e){}
+  if(!tok || !user || !user.email) return; /* no session — show login */
+  /* Extract timestamp from sat-{timestamp} token */
+  var ts = parseInt(tok.replace('sat-',''),10);
+  var age = Date.now() - ts;
+  var MAX_AGE = 24 * 60 * 60 * 1000; /* 24 hours */
+  if(!isNaN(ts) && age < MAX_AGE){
+    window.location.href = 'dashboard.html';
+  } else {
+    /* Session expired — clear and show login form */
+    localStorage.removeItem('sai_token');
+    localStorage.removeItem('sai_user');
+  }
+})();
 
 function sw(t){
 
@@ -402,3 +417,16 @@ btn.disabled=false;document.getElementById('rSpin').classList.remove('on');
 
 <!\-- ════════ END OF FILE 2: login.html ════════ \-->
 
+<!\-- ════════════════════════════════════════════════════════════
+
+FILE 3 OF 3 → Save as: dashboard.html
+
+Integration fixes applied per spec:
+
+✅ Fix 1 --- All AI output targets rptOut correctly
+
+✅ Fix 2 --- parseAIResponse() handles all Worker formats
+
+✅ Fix 3 --- .finally() always closes genOv loader
+
+✅ Fix 4 --- Al
