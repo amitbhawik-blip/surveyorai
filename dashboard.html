@@ -458,6 +458,14 @@ footer{position:relative;z-index:1;text-align:center;padding:20px 0 16px;border-
 
 .fc{display:flex;align-items:center;gap:8px;}
 
+
+/* ── Collapsible sections ── */
+.sechd{cursor:pointer;user-select:none;}
+.sechd:hover .sec-chev{opacity:1;}
+.sec-chev{margin-left:auto;flex-shrink:0;color:var(--t3);opacity:.5;transition:transform .25s ease,opacity .2s;}
+.sec.collapsed .sec-chev{transform:rotate(-90deg);}
+.sec-body{overflow:hidden;transition:none;}
+.sec.collapsed .sec-body{display:none;}
 </style>
 
 </head>
@@ -561,11 +569,14 @@ Sign Out
 
 <!-- ════ REPORT HEADER ════ -->
 <section class="sec">
-<div class="sechd">
+<div class="sechd" onclick="toggleSection(this)">
 <div class="sico ib"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00F5FF" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
 <div><div class="stitle">Report Header</div><div class="ssub">Surveyor office · reference · date · addressee</div></div>
 <div style="margin-left:auto"><span class="badge bb"><span class="pdot"></span> Draft</span></div>
+
+<svg class="sec-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
 </div>
+<div class="sec-body">
 <div class="card cb">
 <div class="fgrid">
 <div class="fg"><label>Our Ref</label><input type="text" id="refNum" placeholder="e.g. MCL-PUN-26-04-0463"/></div>
@@ -577,14 +588,18 @@ Sign Out
 <div class="fg"><label>Kind Attention</label><input type="text" id="kindAttention" placeholder="e.g. Mr. Saurabh Gundawar"/></div>
 </div>
 </div>
+</div>
 </section>
 
 <!-- ════ WITHOUT PREJUDICE — FINAL SURVEY REPORT ════ -->
 <section class="sec">
-<div class="sechd">
+<div class="sechd" onclick="toggleSection(this)">
 <div class="sico ib"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00F5FF" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
 <div><div class="stitle">WITHOUT PREJUDICE — FINAL SURVEY REPORT</div><div class="ssub">Claim summary table — as appears on page 1 of every FSR</div></div>
+
+<svg class="sec-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
 </div>
+<div class="sec-body">
 <div class="card cb" style="padding:0;overflow:hidden">
 
 <div style="display:grid;grid-template-columns:230px 1fr">
@@ -676,14 +691,18 @@ Sign Out
 </div>
 
 </div>
+</div>
 </section>
 
 <!-- ════ POLICY DETAILS ════ -->
 <section class="sec">
-<div class="sechd">
+<div class="sechd" onclick="toggleSection(this)">
 <div class="sico ib"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00F5FF" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
 <div><div class="stitle">POLICY DETAILS</div><div class="ssub">Complete policy &amp; insured particulars table</div></div>
+
+<svg class="sec-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
 </div>
+<div class="sec-body">
 <div class="card cb" style="padding:0;overflow:hidden">
 
 <div style="display:grid;grid-template-columns:230px 1fr">
@@ -737,67 +756,87 @@ Sign Out
 </div>
 
 </div>
+</div>
 </section>
 
 <!-- ════ INTRODUCTION ════ -->
 <section class="sec">
-<div class="sechd">
+<div class="sechd" onclick="toggleSection(this)">
 <div class="sico ib"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00F5FF" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
 <div><div class="stitle">INTRODUCTION</div><div class="ssub">Survey appointment, inspection account &amp; documents verified</div></div>
+
+<svg class="sec-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
 </div>
+<div class="sec-body">
 <div class="card cb">
 <div class="fgrid">
 <div class="fg full"><label>Introduction</label><textarea id="introduction" rows="4" placeholder="Pursuant to the instructions received from insurers on [date/time], we have contacted the concerned person and scheduled our survey inspection as per the appointment given by the concerned. During our initial visit at the Insured location on [date], we had a discussion with the concerned person in respect of the reported loss, wherein we understand the circumstance of loss and cause of loss and extent of loss.&#10;&#10;We also confirm that we have verified the CCTV footage and obtained copy of same depicting the coverage of entire incident occurred. We also have collected statement from Security guard and other officials."></textarea></div>
+</div>
 </div>
 </div>
 </section>
 
 <!-- ════ ABOUT THE INSURED ════ -->
 <section class="sec">
-<div class="sechd">
+<div class="sechd" onclick="toggleSection(this)">
 <div class="sico ib"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00F5FF" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
 <div><div class="stitle">ABOUT THE INSURED</div><div class="ssub">Business background, ISO certifications, products, markets</div></div>
+
+<svg class="sec-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
 </div>
+<div class="sec-body">
 <div class="card cb">
 <div class="fgrid">
 <div class="fg full"><label>About the Insured</label><textarea id="aboutIns" rows="4" placeholder="Automotive and Consumer Product Wiring Harness Manufacturer. ISO 9001:2015 certified. Operating in India for 10+ years. Products: wiring harnesses, electrical connecting assemblies. Exports to USA and European countries..."></textarea></div>
+</div>
 </div>
 </div>
 </section>
 
 <!-- ════ NATURE & EXTENT OF LOSS ════ -->
 <section class="sec">
-<div class="sechd">
+<div class="sechd" onclick="toggleSection(this)">
 <div class="sico ib"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00F5FF" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg></div>
 <div><div class="stitle">NATURE &amp; EXTENT OF LOSS</div><div class="ssub">Survey inspection visit account &amp; discussion with insured</div></div>
+
+<svg class="sec-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
 </div>
+<div class="sec-body">
 <div class="card cb">
 <div class="fgrid">
 <div class="fg full"><label>Nature &amp; Extent of Loss</label><textarea id="natureExtentLoss" rows="3" placeholder="Pursuant to the instructions received from [Insurer] dated [date], we had established our contact with the concerned person and the appointment was fixed for [date] as per the availability of the Insured. At the time of our survey visit, we had a chance to discuss the loss scenario with [Name, Designation] of the Insured premises. Based on such inspection and our physical inspection..."></textarea></div>
 <div class="fg"><label>Survey Contact Person &amp; Designation</label><input type="text" id="surveyContact" placeholder="e.g. Mr. Sandip Shinde, Manager"/></div>
 </div>
 </div>
+</div>
 </section>
 
 <!-- ════ NATURE & EXTENT OF DAMAGE / LOSS ════ -->
 <section class="sec">
-<div class="sechd">
+<div class="sechd" onclick="toggleSection(this)">
 <div class="sico ib"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00F5FF" stroke-width="2"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
 <div><div class="stitle">NATURE &amp; EXTENT OF DAMAGE / LOSS</div><div class="ssub">Detailed physical findings &amp; key observations from survey</div></div>
+
+<svg class="sec-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
 </div>
+<div class="sec-body">
 <div class="card cb">
 <div class="fgrid">
 <div class="fg full"><label>Nature &amp; Extent of Damage / Loss <span style="color:var(--t3);font-size:.68rem">(each finding on new line — AI will format as bullets)</span></label><textarea id="natureExtent" rows="6" placeholder="During our survey inspection we have noted the premises was covered with suitable compound wall and having RCC walls with industrial shed. As we understand the loss was occurred the following observations:&#10;&#10;A comprehensive review of the incident documentation reveals a critical security vulnerability that facilitated the burglary.&#10;The factory was vacated by staff and laborers on January 31, 2026, for the scheduled weekly Sunday holiday.&#10;This lapse in active surveillance provided an uninterrupted window for unauthorized individuals to forcefully pry open the rear shop floor shutter gate.&#10;The targeted theft of high-value inventory, including imported cables, suggests the perpetrators may have possessed prior knowledge of the facility's high-value stock locations.&#10;The breach was eventually discovered at 05:30 AM and promptly reported to the Ranjangaon MIDC Police."></textarea></div>
+</div>
 </div>
 </div>
 </section>
 
 <!-- ════ THE INSURED'S CLAIM ════ -->
 <section class="sec">
-<div class="sechd">
+<div class="sechd" onclick="toggleSection(this)">
 <div class="sico ib"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00F5FF" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
 <div><div class="stitle">THE INSURED'S CLAIM</div><div class="ssub">Claim bill submitted, stock register verification, material values</div></div>
+
+<svg class="sec-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
 </div>
+<div class="sec-body">
 <div class="card cb">
 <div class="fgrid">
 <div class="fg full"><label>The Insured's Claim (Narrative)</label><textarea id="insuredClaim" rows="3" placeholder="Insured has submitted a claim bill, indicated their loss to the extent of ₹[amount] also provided the cost supporting invoices against the items claimed. The Insured's claim follows — For details please refer loss assessment sheet enclosed with this report as annexure - 1.&#10;&#10;At the time of our survey visit, we were furnished with the stock register for our review. Initially, we had undertaken the quantification exercise, on a sampling basis. As per the claimed asset list provided by the Insured, we have verified the actual stock present inside the shop, in accordance with the stock register."></textarea></div>
@@ -817,151 +856,195 @@ Sign Out
 </div>
 </div>
 </div>
+</div>
 </section>
 
 <!-- ════ THIRD PARTY ════ -->
 <section class="sec">
-<div class="sechd">
+<div class="sechd" onclick="toggleSection(this)">
 <div class="sico ib"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00F5FF" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
 <div><div class="stitle">THIRD PARTY</div><div class="ssub">Third-party property or material loss/damage</div></div>
+
+<svg class="sec-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
 </div>
+<div class="sec-body">
 <div class="card cb">
 <div class="fgrid">
 <div class="fg"><label>Third Party Loss / Damage</label><select id="thirdParty"><option value="None">None — There is no loss/damage caused to any third-party property and/or material</option><option value="Yes">Yes — details below</option></select></div>
 <div class="fg full"><label>Third Party Details <span style="color:var(--t3);font-size:.68rem">(leave blank if none)</span></label><input type="text" id="thirdPartyDetails" placeholder="Describe if applicable"/></div>
 </div>
 </div>
+</div>
 </section>
 
 <!-- ════ POLICY CONDITIONS & WARRANTIES AND THE INSURER'S LIABILITY UNDER POLICY ════ -->
 <section class="sec">
-<div class="sechd">
+<div class="sechd" onclick="toggleSection(this)">
 <div class="sico ib"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00F5FF" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
 <div><div class="stitle">POLICY CONDITIONS &amp; WARRANTIES AND THE INSURER'S LIABILITY UNDER POLICY</div><div class="ssub">Coverage confirmation, warranty compliance, breach assessment</div></div>
+
+<svg class="sec-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
 </div>
+<div class="sec-body">
 <div class="card cb">
 <div class="fgrid">
 <div class="fg full"><label>Policy Conditions, Warranties &amp; Insurer's Liability</label><textarea id="insurerLiability" rows="3" placeholder="The loss to the subject stock of various cables was occurred due to theft / burglary which is sudden, accidental, and unforeseen in nature. The cause of loss is deemed covered under the Policy. We have not found any breach of warranty as per the policy terms and conditions. We have gone through the Policy wordings and to the scrutiny of all we hereby confirm that all the warranties / conditions under the policy is compiled herewith."></textarea></div>
+</div>
 </div>
 </div>
 </section>
 
 <!-- ════ OTHER INSURANCES ════ -->
 <section class="sec">
-<div class="sechd">
+<div class="sechd" onclick="toggleSection(this)">
 <div class="sico ib"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00F5FF" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></div>
 <div><div class="stitle">OTHER INSURANCES</div><div class="ssub">Concurrent / double insurance confirmation</div></div>
+
+<svg class="sec-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
 </div>
+<div class="sec-body">
 <div class="card cb">
 <div class="fgrid">
 <div class="fg"><label>Other Insurances</label><select id="otherInsurances"><option value="None">None — The Insured has confirmed that they do not have any other insurance covering the damaged / lost property</option><option value="Yes">Yes — details below</option></select></div>
 <div class="fg full"><label>Other Insurance Details <span style="color:var(--t3);font-size:.68rem">(if applicable)</span></label><input type="text" id="otherInsuranceDetails" placeholder="Leave blank if none"/></div>
 </div>
 </div>
+</div>
 </section>
 
 <!-- ════ INSURERS' LIABILITY ════ -->
 <section class="sec">
-<div class="sechd">
+<div class="sechd" onclick="toggleSection(this)">
 <div class="sico ib"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00F5FF" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div>
 <div><div class="stitle">INSURERS' LIABILITY</div><div class="ssub">Liability attachment confirmation</div></div>
+
+<svg class="sec-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
 </div>
+<div class="sec-body">
 <div class="card cb">
 <div class="fgrid">
 <div class="fg full"><label>Insurers' Liability</label><textarea id="insurersLiability" rows="2" placeholder="The damage to insured stock is occurred due to theft / burglary which is covered under the Policy. The loss took place during current policy period. The risk location is found covered. Hence insurer's liability will attach."></textarea></div>
+</div>
 </div>
 </div>
 </section>
 
 <!-- ════ SUBROGATION/RECOVERY ════ -->
 <section class="sec">
-<div class="sechd">
+<div class="sechd" onclick="toggleSection(this)">
 <div class="sico ib"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00F5FF" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></div>
 <div><div class="stitle">SUBROGATION/RECOVERY</div><div class="ssub">Recovery status, police investigation &amp; insured's consent</div></div>
+
+<svg class="sec-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
 </div>
+<div class="sec-body">
 <div class="card cb">
 <div class="fgrid">
 <div class="fg full"><label>Subrogation / Recovery</label><textarea id="subrogation" rows="3" placeholder="Stolen material is yet not recovered by Police and Police investigation is still under process. Although insured have provided their consent after adjustment from Net Adjusted Loss i.e. ₹[amount] which was adjusted in absence of Final police report and or waiver of recovery details. Insurers are requested to obtain suitable documents in context of same, required if any prior to settle the claim."></textarea></div>
+</div>
 </div>
 </div>
 </section>
 
 <!-- ════ 1. GROSS LOSS ASSESSED ════ -->
 <section class="sec">
-<div class="sechd">
+<div class="sechd" onclick="toggleSection(this)">
 <div class="sico ip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9D4EDD" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
 <div><div class="stitle">GROSS LOSS ASSESSED</div><div class="ssub">Total gross loss including GST as assessed by surveyor</div></div>
+
+<svg class="sec-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
 </div>
+<div class="sec-body">
 <div class="card cp">
 <div class="fgrid">
 <div class="fg"><label style="font-weight:700">Gross Loss Assessed (Including GST) ₹</label><div class="ipw hsp"><span class="ipr">₹</span><input type="text" id="gc" placeholder="e.g. 60,26,495.82" oninput="fmtINR(this)"/></div><span class="ferr" id="egc">Required</span></div>
 <div class="fg full"><label>Basis of Assessment</label><textarea id="grossLossBasis" rows="2" placeholder="e.g. Based on the stock register, purchase invoices and physical verification of stolen/damaged material, the gross loss is assessed as under..."></textarea></div>
 </div>
 </div>
+</div>
 </section>
 
 <!-- ════ 2. GST COMPONENT ════ -->
 <section class="sec">
-<div class="sechd">
+<div class="sechd" onclick="toggleSection(this)">
 <div class="sico ip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9D4EDD" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
 <div><div class="stitle">GST COMPONENT</div><div class="ssub">GST portion disallowed — insured may avail input tax credit</div></div>
+
+<svg class="sec-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
 </div>
+<div class="sec-body">
 <div class="card cp">
 <div class="fgrid">
 <div class="fg"><label>Less: GST Component ₹</label><div class="ipw hsp"><span class="ipr">₹</span><input type="text" id="gst" placeholder="e.g. 9,19,295.97" oninput="fmtINR(this)"/></div></div>
 <div class="fg full"><label>GST Remarks</label><input type="text" id="gstRemarks" placeholder="e.g. GST component of ₹[amount] is being disallowed as the insured can avail input tax credit on the same."/></div>
 </div>
 </div>
+</div>
 </section>
 
 <!-- ════ 3. DEDUCTION FOR RECOVERED MATERIAL ════ -->
 <section class="sec">
-<div class="sechd">
+<div class="sechd" onclick="toggleSection(this)">
 <div class="sico ip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9D4EDD" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
 <div><div class="stitle">DEDUCTION FOR RECOVERED MATERIAL</div><div class="ssub">Material recovered / salvaged after the incident — deducted from gross loss</div></div>
+
+<svg class="sec-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
 </div>
+<div class="sec-body">
 <div class="card cp">
 <div class="fgrid">
 <div class="fg"><label>Less: Recovered Material ₹ <span style="color:var(--t3);font-size:.67rem">(as confirmed by insured &amp; surveyor)</span></label><div class="ipw hsp"><span class="ipr">₹</span><input type="text" id="rec" placeholder="e.g. 6,82,947.75" oninput="fmtINR(this)"/></div></div>
 <div class="fg full"><label>Description of Recovered Material</label><textarea id="recoveredDesc" rows="2" placeholder="e.g. Material partially recovered by the insured in a damaged / burnt / wet condition. The recovered material value has been mutually agreed at ₹[amount] as confirmed by the insured vide consent letter."></textarea></div>
 </div>
 </div>
+</div>
 </section>
 
 <!-- ════ 4. UPGRADATION / IMPROVEMENT ADJUSTMENT ════ -->
 <section class="sec">
-<div class="sechd">
+<div class="sechd" onclick="toggleSection(this)">
 <div class="sico ip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFB800" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
 <div><div class="stitle">UPGRADATION / IMPROVEMENT ADJUSTMENT</div><div class="ssub">Deduction for upgrades, improvements and betterment applied to reinstated items</div></div>
+
+<svg class="sec-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
 </div>
+<div class="sec-body">
 <div class="card cp">
 <div class="fgrid">
 <div class="fg"><label>Upgradation / Improvement Deduction %</label><input type="number" id="ds" placeholder="e.g. 3" min="0" max="100" step="0.01"/></div>
 <div class="fg full"><label>Basis &amp; Justification</label><textarea id="deadStockBasis" rows="2" placeholder="e.g. During reinstatement, certain upgrades and improvements were carried out beyond like-for-like replacement. A deduction of [X]% amounting to ₹[amount] is applied towards upgradation / improvement / betterment."></textarea></div>
 </div>
 </div>
+</div>
 </section>
 
 <!-- ════ 5. SALVAGE CONSIDERATION ════ -->
 <section class="sec">
-<div class="sechd">
+<div class="sechd" onclick="toggleSection(this)">
 <div class="sico ip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFB800" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
 <div><div class="stitle">SALVAGE CONSIDERATION</div><div class="ssub">Residual value of damaged property / goods after the loss event</div></div>
+
+<svg class="sec-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
 </div>
+<div class="sec-body">
 <div class="card cp">
 <div class="fgrid">
 <div class="fg"><label>Salvage Value ₹ <span style="color:var(--t3);font-size:.67rem">(leave 0 if NIL)</span></label><div class="ipw hsp"><span class="ipr">₹</span><input type="text" id="salvageValue" placeholder="e.g. 0" oninput="fmtINR(this)"/></div></div>
 <div class="fg full"><label>Salvage Remarks</label><textarea id="salvageRemarks" rows="2" placeholder="e.g. The material involved in the incident is reported to be stolen. No salvage is available for consideration. Salvage value is taken as NIL."></textarea></div>
 </div>
 </div>
+</div>
 </section>
 
 <!-- ════ 6. UNDERINSURANCE CALCULATION ════ -->
 <section class="sec">
-<div class="sechd">
+<div class="sechd" onclick="toggleSection(this)">
 <div class="sico ip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFB800" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
 <div><div class="stitle">UNDERINSURANCE CALCULATION</div><div class="ssub">Average clause — if value at risk exceeds sum insured, proportionate deduction applies</div></div>
+
+<svg class="sec-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
 </div>
+<div class="sec-body">
 <div class="card cp">
 <div class="fgrid">
 <div class="fg"><label style="font-weight:700">Sum Insured ₹</label><div class="ipw hsp"><span class="ipr">₹</span><input type="text" id="si" placeholder="e.g. 4,00,00,000" oninput="fmtINR(this)"/></div><span class="ferr" id="esi">Required</span></div>
@@ -969,14 +1052,18 @@ Sign Out
 <div class="fg full"><label>Underinsurance Remarks</label><textarea id="underinsuranceRemarks" rows="2" placeholder="e.g. As per the average clause of the policy, the sum insured (₹[SI]) is less than the value at risk (₹[VAR]) at the time of loss, attracting underinsurance deduction of [X]% amounting to ₹[amount]."></textarea></div>
 </div>
 </div>
+</div>
 </section>
 
 <!-- ════ 7. POLICY EXCESS / DEDUCTIBLE ════ -->
 <section class="sec">
-<div class="sechd">
+<div class="sechd" onclick="toggleSection(this)">
 <div class="sico ip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFB800" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
 <div><div class="stitle">POLICY EXCESS / DEDUCTIBLE</div><div class="ssub">Contractual deductible per policy terms — applied after underinsurance</div></div>
+
+<svg class="sec-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
 </div>
+<div class="sec-body">
 <div class="card cp">
 <div class="fgrid">
 <div class="fg"><label>Policy Excess / Deductible %</label><input type="number" id="ded" placeholder="e.g. 5" min="0" max="100" step="0.01"/></div>
@@ -984,14 +1071,18 @@ Sign Out
 <div class="fg full"><label>Deductible Remarks</label><input type="text" id="deductibleRemarks" placeholder="e.g. As per policy condition, 5% of claim amount subject to minimum ₹10,000 is applied as policy excess."/></div>
 </div>
 </div>
+</div>
 </section>
 
 <!-- ════ 8. NET ADJUSTED LOSS ════ -->
 <section class="sec">
-<div class="sechd">
+<div class="sechd" onclick="toggleSection(this)">
 <div class="sico ig"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#39FF14" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>
 <div><div class="stitle">NET ADJUSTED LOSS / SETTLEMENT RECOMMENDED</div><div class="ssub">Final computed settlement — click Compute Settlement to calculate</div></div>
+
+<svg class="sec-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
 </div>
+<div class="sec-body">
 <div class="card">
 <div style="font-size:.7rem;color:var(--t3);font-family:'DM Mono',monospace;margin-bottom:16px;padding:8px 12px;background:rgba(57,255,20,.04);border-radius:6px;border-left:3px solid var(--green)">Fill all sections above then click <strong style="color:var(--green)">Compute Settlement</strong> to see the full calculation waterfall.</div>
 <button class="btn bc" id="compBtn" onclick="compute()" style="width:100%;margin-bottom:20px">
@@ -1022,27 +1113,35 @@ Compute Settlement
 <div class="rline rtot"><span class="rl" style="font-weight:700">NET SETTLEMENT RECOMMENDED</span><span class="rv" id="v7">---</span></div>
 </div>
 </div>
+</div>
 </section>
 
 <!-- ════ REMARKS ════ -->
 <section class="sec">
-<div class="sechd">
+<div class="sechd" onclick="toggleSection(this)">
 <div class="sico ib"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00F5FF" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
 <div><div class="stitle">REMARKS</div><div class="ssub">Non-standard adjustments &amp; surveyor instructions to insurer</div></div>
+
+<svg class="sec-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
 </div>
+<div class="sec-body">
 <div class="card cb">
 <div class="fgrid">
 <div class="fg full"><label>Remarks</label><textarea id="remarks" rows="3" placeholder="We have adjusted ₹[amount] towards non-standard i.e. [X]% of Net Adjusted Loss in absence of Final Police Report. Insurers are requested to collect necessary documentation and declaration from insured in context of this adjustment prior to settle the claim."></textarea></div>
+</div>
 </div>
 </div>
 </section>
 
 <!-- ════ ANALYSIS OF GROSS PROFIT RATIO AND FINANCIAL TREND ════ -->
 <section class="sec">
-<div class="sechd">
+<div class="sechd" onclick="toggleSection(this)">
 <div class="sico ib"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00F5FF" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
 <div><div class="stitle">ANALYSIS OF GROSS PROFIT RATIO AND FINANCIAL TREND</div><div class="ssub">4-year revenue, gross profit &amp; YoY% — GP ratio auto-computed</div></div>
+
+<svg class="sec-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
 </div>
+<div class="sec-body">
 <div class="card cb">
 <div style="overflow-x:auto">
 <table style="width:100%;border-collapse:collapse;font-size:.78rem">
@@ -1092,14 +1191,18 @@ Compute Settlement
 </table>
 </div>
 </div>
+</div>
 </section>
 
 <!-- ════ RECOVERED MATERIAL WITH VALUE ════ -->
 <section class="sec">
-<div class="sechd">
+<div class="sechd" onclick="toggleSection(this)">
 <div class="sico ib"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00F5FF" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div>
 <div><div class="stitle">RECOVERED MATERIAL WITH VALUE</div><div class="ssub">Gross value · taxable amount · total recovered value</div></div>
+
+<svg class="sec-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
 </div>
+<div class="sec-body">
 <div class="card cb" style="padding:0;overflow:hidden">
 <div style="display:grid;grid-template-columns:230px 1fr">
 <div style="background:rgba(0,245,255,.05);padding:10px 14px;font-weight:700;font-size:.78rem;border-bottom:1px solid var(--border);border-right:1px solid var(--border)">Gross Material Value</div>
@@ -1114,14 +1217,18 @@ Compute Settlement
 <div style="padding:8px 12px;display:flex;align-items:center;gap:8px"><span style="color:var(--t3)">₹</span><input type="text" id="recTotal" placeholder="e.g. 8,05,878.35" oninput="fmtINR(this)" style="background:transparent;border:none;outline:none;color:var(--t1);font-size:.82rem;flex:1"/></div>
 </div>
 </div>
+</div>
 </section>
 
 <!-- ════ CONCURRENCE ════ -->
 <section class="sec">
-<div class="sechd">
+<div class="sechd" onclick="toggleSection(this)">
 <div class="sico ib"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00F5FF" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div>
 <div><div class="stitle">CONCURRENCE</div><div class="ssub">Insured's acceptance of the loss assessment</div></div>
+
+<svg class="sec-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
 </div>
+<div class="sec-body">
 <div class="card cb">
 <div class="fgrid">
 <div class="fg"><label>Assessment Shared with Insured On</label><input type="date" id="assessmentSharedDate"/></div>
@@ -1129,18 +1236,23 @@ Compute Settlement
 <div class="fg full"><label>Concurrence Details</label><textarea id="concurrenceNotes" rows="2" placeholder="The assessment of loss was shared with the Insured vide e-mail dated [date] on seeking for their consent on the assessment of loss. Now, we have received the Insured's concurrence vide their e-mail dated [date] enclosed with the report."></textarea></div>
 </div>
 </div>
+</div>
 </section>
 
 <!-- ════ ON ACCOUNT PAYMENT ════ -->
 <section class="sec">
-<div class="sechd">
+<div class="sechd" onclick="toggleSection(this)">
 <div class="sico ib"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00F5FF" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></div>
 <div><div class="stitle">ON ACCOUNT PAYMENT</div><div class="ssub">Interim / advance payment recommendation</div></div>
+
+<svg class="sec-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
 </div>
+<div class="sec-body">
 <div class="card cb">
 <div class="fgrid">
 <div class="fg"><label>On Account Payment</label><select id="onAccountPayment"><option value="Not Recommended">Not Recommended</option><option value="Recommended">Recommended — details below</option></select></div>
 <div class="fg full"><label>On Account Payment Details <span style="color:var(--t3);font-size:.68rem">(if recommended)</span></label><input type="text" id="onAccountDetails" placeholder="Leave blank if Not Recommended"/></div>
+</div>
 </div>
 </div>
 </section>
@@ -1177,10 +1289,13 @@ Compute Settlement
 
 <!-- ════ CORPORATE SURVEYOR DECLARATION ════ -->
 <section class="sec">
-<div class="sechd">
+<div class="sechd" onclick="toggleSection(this)">
 <div class="sico ib"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00F5FF" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg></div>
 <div><div class="stitle">CORPORATE SURVEYOR DECLARATION</div><div class="ssub">Surveyor details, license, signatures &amp; enclosure list</div></div>
+
+<svg class="sec-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
 </div>
+<div class="sec-body">
 <div class="card cb" style="padding:0;overflow:hidden">
 
 <div style="display:grid;grid-template-columns:230px 1fr">
@@ -1209,14 +1324,18 @@ Compute Settlement
 </div>
 
 </div>
+</div>
 </section>
 
 <!-- ════ DOCUMENT UPLOAD & AI EXTRACTION ════ -->
 <section class="sec">
-<div class="sechd">
+<div class="sechd" onclick="toggleSection(this)">
 <div class="sico ig"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#39FF14" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
 <div><div class="stitle">Document Upload &amp; AI Extraction</div><div class="ssub">Upload PDFs · Images · Excel · Word — Extract fields <em>or</em> generate full report draft directly from documents</div></div>
+
+<svg class="sec-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
 </div>
+<div class="sec-body">
 <div class="card" style="padding:20px">
 
 <!-- ── INLINE API KEY PANEL ── shown when key is missing or wrong ── -->
@@ -1298,6 +1417,7 @@ Compute Settlement
   <div style="font-size:.7rem;color:var(--t3);font-family:'DM Mono',monospace" id="extOvSub">Initialising…</div>
 </div>
 
+</div>
 </div>
 </section>
 
@@ -3582,6 +3702,19 @@ window.addEventListener('load',function(){
   }
 });
 
+
+/* ── Collapsible section toggle ── */
+function toggleSection(hdEl){
+  var sec = hdEl.closest('section') || hdEl.parentElement;
+  sec.classList.toggle('collapsed');
+}
+/* Default: collapse all except first 2 sections (header + WP table stay open) */
+(function(){
+  var sections = document.querySelectorAll('#viewClaim .sec');
+  sections.forEach(function(sec, i){
+    if(i >= 2) sec.classList.add('collapsed');
+  });
+})();
 </script>
 </body>
 </html>
